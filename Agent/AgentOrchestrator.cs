@@ -3,37 +3,50 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Logging;
+using Azure.AI.OpenAI;
+using Microsoft.Extensions.Configuration;
+using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate
 {
-    public static class AgentOrchestrator
+    public class AgentOrchestrator
     {
+        private readonly AzureOpenAIClient _openAIClient;
+        private readonly AppConfiguration _configuration;
+
+        public AgentOrchestrator(AzureOpenAIClient openAIClient, AppConfiguration configuration)
+        {
+            _openAIClient = openAIClient;
+            _configuration = configuration;
+        }
+
         [Function(nameof(AgentOrchestrator))]
-        public static async Task<AgentResponseDto> RunOrchestrator(
+        public async Task<AgentResponseDto> RunOrchestrator(
             [OrchestrationTrigger] TaskOrchestrationContext context)
         {
-            ILogger logger = context.CreateReplaySafeLogger(nameof(AgentOrchestrator));
-            logger.LogInformation("Saying hello.");
-            var outputs = new List<string>();
-
-            // Replace name and input with values relevant for your Durable Functions Activity
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Tokyo"));
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Seattle"));
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "London"));
-
+            ILogger logger = context.CreateReplaySafeLogger("AgentOrchestrator");
+            var reqData = context.GetInput<AgentRequestDto>();
+            
             AgentResponseDto response = new AgentResponseDto
             {
-                Content =  (outputs == null || outputs.Count == 0) ? string.Empty : string.Join("/", outputs)
+                Content = await context.CallActivityAsync<string>(nameof(AskChatGPT), reqData.Messages.First().Content)
             };
+
             return response;
         }
 
-        [Function(nameof(SayHello))]
-        public static string SayHello([ActivityTrigger] string name, FunctionContext executionContext)
+        [Function(nameof(AskChatGPT))]
+        public async Task<string> AskChatGPT([ActivityTrigger] string prompt, FunctionContext executionContext)
         {
             ILogger logger = executionContext.GetLogger("SayHello");
-            logger.LogInformation("Saying hello to {name}.", name);
-            return $"Hello {name}!";
+            logger.LogInformation("Saying hello to {name}.", prompt);
+             var chatClient = _openAIClient.GetChatClient(_configuration.OpenAIDeploy);
+            logger.LogInformation($"{_openAIClient}");
+            var chatResult = await chatClient.CompleteChatAsync(
+                new UserChatMessage(prompt)
+            );
+
+            return chatResult.Value.Content.First().Text;
         }
     }
 }

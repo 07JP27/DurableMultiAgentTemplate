@@ -1,6 +1,6 @@
 ---
-name: OrchestratorPrompt
-description: OrchestratorAgent用のプロンプト
+name: OrchestratorSynthesizerPrompt
+description: OrchestratorAgent用の各エージェントの結果を集約して最終回答を生成するプロンプト
 model:
   api: chat
 ---
