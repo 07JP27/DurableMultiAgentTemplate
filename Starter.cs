@@ -8,14 +8,9 @@ using System.Text.Json;
 
 namespace DurableMultiAgentTemplate
 {
-    public class Starter
+    public class Starter(ILogger<Starter> logger)
     {
-        private readonly ILogger<Starter> _logger;
-
-        public Starter(ILogger<Starter> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<Starter> _logger = logger;
 
         [Function("SyncStarter")]
          public async Task<HttpResponseData> SyncStarter(
