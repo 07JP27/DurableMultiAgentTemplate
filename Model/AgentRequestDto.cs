@@ -1,29 +1,19 @@
+using System.Text.Json.Serialization;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate
 {
     public class AgentRequestDto
     {
+        [JsonPropertyName("messages")]
         public List<AgentRequestMessageItem> Messages { get; set; }= default!;
-
-        public ChatMessage[] ConvertToChatMessageArray()
-        {
-            return Messages.Select<AgentRequestMessageItem, ChatMessage>(m =>
-            {
-                return m.Role switch
-                {
-                    "system" => new SystemChatMessage (m.Content),
-                    "user" => new UserChatMessage (m.Content),
-                    "assistant" => new AssistantChatMessage (m.Content),
-                    _ => throw new InvalidOperationException($"Unknown role: {m.Role}")
-                };
-            }).ToArray();
-        }
     }
 
     public class AgentRequestMessageItem
     {
+        [JsonPropertyName("role")]
         public string Role { get; set; } = string.Empty;
+        [JsonPropertyName("content")]
         public string Content { get; set; } = string.Empty;
     }
 }

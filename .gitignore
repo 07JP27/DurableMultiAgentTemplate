@@ -4,3 +4,4 @@ __blobstorage__/*
 __queuestorage__/*
 bin/*
 obj/*
+.DS_Store

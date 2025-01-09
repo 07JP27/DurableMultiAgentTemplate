@@ -53,3 +53,6 @@ This client made with Streamlit. So you can run it with the following command:
 ```bash
 streamlit run client.py
 ```
+
+![](demo.gif)
+[The full-resolution video is here.](https://youtu.be/SACD4IyKQAI)

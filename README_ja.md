@@ -51,3 +51,6 @@ Starter関数のエンドポイントには同期と非同期の2種類があり
 ```bash
 streamlit run client.py
 ```
+
+![](demo.gif)
+[フル解像度の動画はこちら](https://youtu.be/SACD4IyKQAI)

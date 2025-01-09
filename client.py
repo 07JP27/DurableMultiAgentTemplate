@@ -41,8 +41,8 @@ if prompt := st.chat_input("ここに入力"):
         # APIにPOSTリクエストを送信
         response = requests.post(url, json={"messages": st.session_state.messages})
         response_data = response.json()
-        response_content = response_data["Content"]
-        called_agents  = ", ".join(response_data["CaledAgentNames"])
+        response_content = response_data["content"]
+        called_agents  = ", ".join(response_data["caledAgentNames"])
         
         message_placeholder.markdown(f"""
                                      {response_content}

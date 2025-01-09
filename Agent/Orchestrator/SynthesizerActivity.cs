@@ -21,7 +21,7 @@ namespace DurableMultiAgentTemplate
             var systemMessage = $"{systemMessageTemplate}¥n{string.Join("¥n", req.AgentCallResult)}";
 
             ChatMessage[] messages = {new SystemChatMessage(systemMessage)};
-            var allMessages = messages.Concat(req.AgentReques.ConvertToChatMessageArray()).ToArray();
+            var allMessages = messages.Concat(req.AgentReques.Messages.ConvertToChatMessageArray()).ToArray();
             
             var chatClient = _openAIClient.GetChatClient(_configuration.OpenAIDeploy);
             var chatResult = await chatClient.CompleteChatAsync(

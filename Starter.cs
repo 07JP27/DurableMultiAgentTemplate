@@ -34,7 +34,7 @@ namespace DurableMultiAgentTemplate
             OrchestrationMetadata metadata = await client.WaitForInstanceCompletionAsync(instanceId, getInputsAndOutputs: true);
 
             var res = HttpResponseData.CreateResponse(req);
-            await res.WriteAsJsonAsync(JsonSerializer.Deserialize<AgentResponseDto>(metadata.SerializedOutput));
+            await res.WriteAsJsonAsync(JsonSerializer.Deserialize<AgentResponseDto>(metadata.SerializedOutput ?? ""));
             return res;
         }
 
