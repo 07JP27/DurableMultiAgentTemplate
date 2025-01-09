@@ -19,17 +19,17 @@ sequenceDiagram
     participant WorkerAgentActivity
     participant SynthesizerActivity
 
-    Client->>Sarter: Web API request
-    Sarter->>DurableOrchestrator: Start 
-    DurableOrchestrator ->> AgentDeciderActivity: Decide agent to call
-    AgentDeciderActivity ->> DurableOrchestrator: Agent that should call
-    DurableOrchestrator -->> Sarter: If no agent to call, return plain text
-    DurableOrchestrator ->> WorkerAgentActivity: Invoke(Multiple and Parallel)
-    WorkerAgentActivity ->> DurableOrchestrator: Result
-    DurableOrchestrator ->> SynthesizerActivity: Synthesize result amn generate answer
-    SynthesizerActivity ->> DurableOrchestrator: Synthesized answer
-    DurableOrchestrator ->> Sarter: Answer
-    Sarter ->> Client: Web API respons
+    Client->>Sarter: Web APIリクエスト
+    Sarter->>DurableOrchestrator: 開始 
+    DurableOrchestrator ->> AgentDeciderActivity: 呼び出すAgentを決定
+    AgentDeciderActivity ->> DurableOrchestrator: 呼び出すべきAgent
+    DurableOrchestrator -->> Sarter: 呼び出すべきAgentがない場合、プレーンテキストを返す
+    DurableOrchestrator ->> WorkerAgentActivity: 呼び出し（複数および並行）
+    WorkerAgentActivity ->> DurableOrchestrator: 結果
+    DurableOrchestrator ->> SynthesizerActivity: 結果を合成し、回答を生成
+    SynthesizerActivity ->> DurableOrchestrator: 合成された回答
+    DurableOrchestrator ->> Sarter: 回答
+    Sarter ->> Client: Web APIレスポンス
 ```
 
 ## Agent サンプル
