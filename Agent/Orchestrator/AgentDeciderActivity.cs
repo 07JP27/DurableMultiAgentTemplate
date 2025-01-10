@@ -21,8 +21,10 @@ namespace DurableMultiAgentTemplate
             ILogger logger = executionContext.GetLogger("AgentDeciderActivity");
             logger.LogInformation("Run AgentDeciderActivity");
 
-            ChatMessage[] systemMessage = {new SystemChatMessage(AgentDeciderPrompt.SystemPrompt)};
-            var allMessages = systemMessage.Concat(messages).ToArray();
+            ChatMessage[] allMessages = [
+                new SystemChatMessage(AgentDeciderPrompt.SystemPrompt),
+                .. messages,
+            ];
             ChatCompletionOptions options = new()
             {
                 Tools = {
