@@ -17,7 +17,7 @@ namespace DurableMultiAgentTemplate
                         "description": "行き先に求める希望の条件"
                     }
                 },
-                "required": [ "term" ]
+                "required": [ "searchTerm" ]
             }
             """)
         );
