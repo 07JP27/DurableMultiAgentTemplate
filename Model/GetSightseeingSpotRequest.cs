@@ -1,7 +1,6 @@
-namespace DurableMultiAgentTemplate.Model
+namespace DurableMultiAgentTemplate.Model;
+
+public class GetSightseeingSpotRequest
 {
-    public class GetSightseeingSpotRequest
-    {
-        public string Location { get; set; } = string.Empty;
-    }
+    public string Location { get; set; } = string.Empty;
 }

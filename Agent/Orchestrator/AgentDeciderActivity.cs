@@ -8,62 +8,61 @@ using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 
 
-namespace DurableMultiAgentTemplate.Agent.Orchestrator
+namespace DurableMultiAgentTemplate.Agent.Orchestrator;
+
+public class AgentDeciderActivity(AzureOpenAIClient openAIClient, AppConfiguration configuration)
 {
-    public class AgentDeciderActivity(AzureOpenAIClient openAIClient, AppConfiguration configuration)
+    private readonly AzureOpenAIClient _openAIClient = openAIClient;
+    private readonly AppConfiguration _configuration = configuration;
+
+    [Function(AgentActivityName.AgentDeciderActivity)]
+    public async Task<AgentDeciderResult> Run([ActivityTrigger] AgentRequestDto reqData, FunctionContext executionContext)
     {
-        private readonly AzureOpenAIClient _openAIClient = openAIClient;
-        private readonly AppConfiguration _configuration = configuration;
+        var messages = reqData.Messages.ConvertToChatMessageArray();
+        ILogger logger = executionContext.GetLogger("AgentDeciderActivity");
+        logger.LogInformation("Run AgentDeciderActivity");
 
-        [Function(AgentActivityName.AgentDeciderActivity)]
-        public async Task<AgentDeciderResult> Run([ActivityTrigger] AgentRequestDto reqData, FunctionContext executionContext)
+        ChatMessage[] allMessages = [
+            new SystemChatMessage(AgentDeciderPrompt.SystemPrompt),
+            .. messages,
+        ];
+        ChatCompletionOptions options = new()
         {
-            var messages = reqData.Messages.ConvertToChatMessageArray();
-            ILogger logger = executionContext.GetLogger("AgentDeciderActivity");
-            logger.LogInformation("Run AgentDeciderActivity");
+            Tools = {
+                AgentDefinition.GetDestinationSuggestAgent,
+                AgentDefinition.GetClimateAgent,
+                AgentDefinition.GetSightseeingSpotAgent,
+                AgentDefinition.GetHotelAgent,
+                AgentDefinition.SubmitReservationAgent
+            }
+        };
 
-            ChatMessage[] allMessages = [
-                new SystemChatMessage(AgentDeciderPrompt.SystemPrompt),
-                .. messages,
-            ];
-            ChatCompletionOptions options = new()
+        var chatClient = _openAIClient.GetChatClient(_configuration.OpenAIDeploy);
+        var chatResult = await chatClient.CompleteChatAsync(
+            allMessages,
+            options
+        );
+
+        if (chatResult.Value.FinishReason == ChatFinishReason.ToolCalls)
+        {
+            var result = new AgentDeciderResult
             {
-                Tools = {
-                    AgentDefinition.GetDestinationSuggestAgent,
-                    AgentDefinition.GetClimateAgent,
-                    AgentDefinition.GetSightseeingSpotAgent,
-                    AgentDefinition.GetHotelAgent,
-                    AgentDefinition.SubmitReservationAgent
-                }
+                IsAgentCall = true,
+                AgentCalls = chatResult.Value.ToolCalls.Select(toolCall => new AgentCall
+                {
+                    AgentName = toolCall.FunctionName,
+                    Arguments = JsonDocument.Parse(toolCall.FunctionArguments)
+                }).ToArray()
             };
-
-            var chatClient = _openAIClient.GetChatClient(_configuration.OpenAIDeploy);
-            var chatResult = await chatClient.CompleteChatAsync(
-                allMessages,
-                options
-            );
-
-            if (chatResult.Value.FinishReason == ChatFinishReason.ToolCalls)
+            return result;
+        }
+        else
+        {
+            return new AgentDeciderResult
             {
-                var result = new AgentDeciderResult
-                {
-                    IsAgentCall = true,
-                    AgentCalls = chatResult.Value.ToolCalls.Select(toolCall => new AgentCall
-                    {
-                        AgentName = toolCall.FunctionName,
-                        Arguments = JsonDocument.Parse(toolCall.FunctionArguments)
-                    }).ToArray()
-                };
-                return result;
-            }
-            else
-            {
-                return new AgentDeciderResult
-                {
-                    IsAgentCall = false,
-                    Content = chatResult.Value.Content.First().Text
-                };
-            }
+                IsAgentCall = false,
+                Content = chatResult.Value.Content.First().Text
+            };
         }
     }
 }

@@ -7,75 +7,74 @@ using System.Text.Json;
 using DurableMultiAgentTemplate.Agent.Orchestrator;
 using DurableMultiAgentTemplate.Model;
 
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate;
+
+public class Starter(ILogger<Starter> logger)
 {
-    public class Starter(ILogger<Starter> logger)
+    private readonly ILogger<Starter> _logger = logger;
+
+    [Function("SyncStarter")]
+     public async Task<HttpResponseData> SyncStarter(
+        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route="invoke/sync")] HttpRequestData req,
+        [DurableClient] DurableTaskClient client)
     {
-        private readonly ILogger<Starter> _logger = logger;
+        _logger.LogInformation("Sync HTTP trigger function processed a request.");
+        var reqData = await GetRequestData(req);
 
-        [Function("SyncStarter")]
-         public async Task<HttpResponseData> SyncStarter(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route="invoke/sync")] HttpRequestData req,
-            [DurableClient] DurableTaskClient client)
+        if (reqData == null)
         {
-            _logger.LogInformation("Sync HTTP trigger function processed a request.");
-            var reqData = await GetRequestData(req);
-
-            if (reqData == null)
-            {
-                var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-                await badRequestResponse.WriteStringAsync("Please pass a prompt in the request body");
-                return badRequestResponse;
-            }
-            
-            string instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(AgentOrchestrator), reqData);
-
-            _logger.LogInformation($"Started orchestration with ID = '{instanceId}'.");
-
-            OrchestrationMetadata metadata = await client.WaitForInstanceCompletionAsync(instanceId, getInputsAndOutputs: true);
-
-            var res = HttpResponseData.CreateResponse(req);
-            await res.WriteAsJsonAsync(JsonSerializer.Deserialize<AgentResponseDto>(metadata.SerializedOutput ?? ""));
-            return res;
+            var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+            await badRequestResponse.WriteStringAsync("Please pass a prompt in the request body");
+            return badRequestResponse;
         }
+        
+        string instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(AgentOrchestrator), reqData);
 
-        [Function("AsyncStarter")]
-        public async Task<HttpResponseData> AsyncStarter(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route="invoke/async")] HttpRequestData req,
-            [DurableClient] DurableTaskClient client)
+        _logger.LogInformation($"Started orchestration with ID = '{instanceId}'.");
+
+        OrchestrationMetadata metadata = await client.WaitForInstanceCompletionAsync(instanceId, getInputsAndOutputs: true);
+
+        var res = HttpResponseData.CreateResponse(req);
+        await res.WriteAsJsonAsync(JsonSerializer.Deserialize<AgentResponseDto>(metadata.SerializedOutput ?? ""));
+        return res;
+    }
+
+    [Function("AsyncStarter")]
+    public async Task<HttpResponseData> AsyncStarter(
+        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route="invoke/async")] HttpRequestData req,
+        [DurableClient] DurableTaskClient client)
+    {
+        _logger.LogInformation("Async HTTP trigger function processed a request.");
+        var reqData = await GetRequestData(req);
+
+        if (reqData == null)
         {
-            _logger.LogInformation("Async HTTP trigger function processed a request.");
-            var reqData = await GetRequestData(req);
-
-            if (reqData == null)
-            {
-                var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-                await badRequestResponse.WriteStringAsync("Please pass a prompt in the request body");
-                return badRequestResponse;
-            }
-            
-            string instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(AgentOrchestrator), reqData);
-
-            _logger.LogInformation($"Started orchestration with ID = '{instanceId}'.");
-
-            return await client.CreateCheckStatusResponseAsync(req, instanceId);
+            var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+            await badRequestResponse.WriteStringAsync("Please pass a prompt in the request body");
+            return badRequestResponse;
         }
+        
+        string instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(AgentOrchestrator), reqData);
 
-        private async Task<AgentRequestDto?> GetRequestData(HttpRequestData req)
+        _logger.LogInformation($"Started orchestration with ID = '{instanceId}'.");
+
+        return await client.CreateCheckStatusResponseAsync(req, instanceId);
+    }
+
+    private async Task<AgentRequestDto?> GetRequestData(HttpRequestData req)
+    {
+        var requestBody = await req.ReadAsStringAsync();
+        
+        if (string.IsNullOrEmpty(requestBody)) return null;
+
+        var options = new JsonSerializerOptions
         {
-            var requestBody = await req.ReadAsStringAsync();
-            
-            if (string.IsNullOrEmpty(requestBody)) return null;
+            PropertyNameCaseInsensitive = true
+        };
+        var reqData = JsonSerializer.Deserialize<AgentRequestDto>(requestBody, options);
 
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-            var reqData = JsonSerializer.Deserialize<AgentRequestDto>(requestBody, options);
-
-            if (reqData == null) return null;
-            if (reqData.Messages == null || !reqData.Messages.Any()) return null;
-            return reqData;
-        }
+        if (reqData == null) return null;
+        if (reqData.Messages == null || !reqData.Messages.Any()) return null;
+        return reqData;
     }
 }

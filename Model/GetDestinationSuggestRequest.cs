@@ -1,7 +1,6 @@
-namespace DurableMultiAgentTemplate.Model
+namespace DurableMultiAgentTemplate.Model;
+
+public class GetDestinationSuggestRequest
 {
-    public class GetDestinationSuggestRequest
-    {
-        public string SearchTerm { get; set; } = string.Empty;
-    }
+    public string SearchTerm { get; set; } = string.Empty;
 }
