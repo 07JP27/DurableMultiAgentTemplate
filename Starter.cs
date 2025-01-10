@@ -14,7 +14,7 @@ namespace DurableMultiAgentTemplate
 
         [Function("SyncStarter")]
          public async Task<HttpResponseData> SyncStarter(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route="invoke/sync")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Function,"post", Route="invoke/sync")] HttpRequestData req,
             [DurableClient] DurableTaskClient client)
         {
             _logger.LogInformation("Sync HTTP trigger function processed a request.");
@@ -40,7 +40,7 @@ namespace DurableMultiAgentTemplate
 
         [Function("AsyncStarter")]
         public async Task<HttpResponseData> AsyncStarter(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route="invoke/async")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Function,"post", Route="invoke/async")] HttpRequestData req,
             [DurableClient] DurableTaskClient client)
         {
             _logger.LogInformation("Async HTTP trigger function processed a request.");

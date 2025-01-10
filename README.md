@@ -43,6 +43,9 @@ The sample Agents defined in the template are as follows:
 - GetHotelAgent：Get the hotel information of the destination
 - SubmitReservationAgent：Submit the reservation of the hotel
 
+Please modify the implementation of each agent, which currently uses fixed values, to include RAG, actions, and other processes, thereby creating agents that meet the requirements.
+Each agent can utilize OpenAI Client and application configuration values provided by the DI container.
+
 ## Endpoints
 There are two types of endpoints: synchronous and asynchronous. If the agent's processing takes a long time, it is recommended to use the asynchronous endpoint.
 For more information about the asynchronous pattern in Durable Functions, [see here](https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview?tabs=in-process%2Cnodejs-v3%2Cv1-model&pivots=csharp#async-http).

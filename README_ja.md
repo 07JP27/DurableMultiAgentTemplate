@@ -42,6 +42,9 @@ sequenceDiagram
 - GetHotelAgent：目的地のホテル情報を取得  
 - SubmitReservationAgent：ホテルの予約を送信  
 
+固定値になっている各Agentの実装をを改変してRAGやAction、その他処理を実装することで要件にあったAgentを作成してください。
+各AgentではDIコンテナからOpenAI Clientやアプリケーション構成値などが利用可能です。
+
 ## エンドポイント
 Starter関数のエンドポイントには同期と非同期の2種類があります。エージェントの処理に時間がかかる場合は、非同期エンドポイントを使用することをお勧めします。Durable Functionsの非同期パターンの詳細については[こちら](https://learn.microsoft.com/ja-jp/azure/azure-functions/durable/durable-functions-overview?tabs=in-process%2Cnodejs-v3%2Cv1-model&pivots=csharp#async-http)。
 
