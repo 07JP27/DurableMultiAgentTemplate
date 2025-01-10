@@ -1,9 +1,9 @@
-using System.ComponentModel;
+ï»¿using System.ComponentModel;
 
 namespace DurableMultiAgentTemplate.Model;
 
 public class GetClimateRequest
 {
-    [Description("êŠ‚Ì–¼‘OB—á: ƒ{ƒXƒgƒ“, “Œ‹Aƒtƒ‰ƒ“ƒX")]
+    [Description("å ´æ‰€ã®åå‰ã€‚ä¾‹: ãƒœã‚¹ãƒˆãƒ³, æ±äº¬ã€ãƒ•ãƒ©ãƒ³ã‚¹")]
     public required string Location { get; set; } = string.Empty;
 }
