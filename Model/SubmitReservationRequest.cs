@@ -1,15 +1,15 @@
-using System.ComponentModel;
+ï»¿using System.ComponentModel;
 
 namespace DurableMultiAgentTemplate.Model;
 
 public class SubmitReservationRequest
 {
-    [Description("s‚«æ‚Ìƒzƒeƒ‹‚Ì–¼‘OB")]
+    [Description("è¡Œãå…ˆã®ãƒ›ãƒ†ãƒ«ã®åå‰ã€‚")]
     public required string Destination { get; set; } = string.Empty;
-    [Description("ƒ`ƒFƒbƒNƒCƒ““úBYYYY/MM/DDŒ`®B")]
+    [Description("ãƒã‚§ãƒƒã‚¯ã‚¤ãƒ³æ—¥ã€‚YYYY/MM/DDå½¢å¼ã€‚")]
     public required string CheckIn { get; set; } = string.Empty;
-    [Description("ƒ`ƒFƒbƒNƒAƒEƒg“úBYYYY/MM/DDŒ`®B")]
+    [Description("ãƒã‚§ãƒƒã‚¯ã‚¢ã‚¦ãƒˆæ—¥ã€‚YYYY/MM/DDå½¢å¼ã€‚")]
     public required string CheckOut { get; set; } = string.Empty;
-    [Description("h”‘l”B")]
+    [Description("å®¿æ³Šäººæ•°ã€‚")]
     public required int GuestsCount { get; set; }
 }
