@@ -1,3 +1,5 @@
+using DurableMultiAgentTemplate.Json;
+using DurableMultiAgentTemplate.Model;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent;
@@ -8,53 +10,18 @@ internal class AgentDefinition
     public static readonly ChatTool GetDestinationSuggestAgent = ChatTool.CreateFunctionTool(
         functionName: AgentActivityName.GetDestinationSuggestAgent,
         functionDescription: "希望の行き先に求める条件を自然言語で与えると、おすすめの旅行先を提案します。",
-        functionParameters: BinaryData.FromString("""
-        {
-            "type": "object",
-            "properties": {
-                "searchTerm": {
-                    "type": "string",
-                    "description": "行き先に求める希望の条件"
-                }
-            },
-            "required": [ "term" ]
-        }
-        """)
-    );
+        functionParameters: JsonSchemaGenerator.GenerateSchemaAsBinaryData(SourceGenerationContext.Default.GetDestinationSuggestRequest));
 
     public static readonly ChatTool GetClimateAgent = ChatTool.CreateFunctionTool(
         functionName: AgentActivityName.GetClimateAgent,
         functionDescription: "指定された場所の気候を取得します。",
-        functionParameters: BinaryData.FromString("""
-        {
-            "type": "object",
-            "properties": {
-                "location": {
-                    "type": "string",
-                    "description": "場所の名前。例: ボストン, 東京、フランス"
-                }
-            },
-            "required": [ "location" ]
-        }
-        """)
-    );
+        functionParameters: JsonSchemaGenerator.GenerateSchemaAsBinaryData(SourceGenerationContext.Default.GetClimateRequest));
 
     public static readonly ChatTool GetSightseeingSpotAgent = ChatTool.CreateFunctionTool(
         functionName: AgentActivityName.GetSightseeingSpotAgent,
         functionDescription: "指定された場所の観光名所を取得します。",
-        functionParameters: BinaryData.FromString("""
-        {
-            "type": "object",
-            "properties": {
-                "location": {
-                    "type": "string",
-                    "description": "場所の名前。例: ボストン, 東京、フランス"
-                }
-            },
-            "required": [ "location" ]
-        }
-        """)
-    );
+        functionParameters: JsonSchemaGenerator.GenerateSchemaAsBinaryData(SourceGenerationContext.Default.GetSightseeingSpotRequest));
+
     public static readonly ChatTool GetHotelAgent = ChatTool.CreateFunctionTool(
         functionName: AgentActivityName.GetHotelAgent,
         functionDescription: "指定された場所のホテルを取得します。",
