@@ -1,6 +1,4 @@
-using System;
 using Azure.AI.OpenAI;
-using Azure.Storage.Queues.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;

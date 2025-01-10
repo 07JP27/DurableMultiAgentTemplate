@@ -1,5 +1,3 @@
-using OpenAI.Chat;
-
 namespace DurableMultiAgentTemplate
 {
     public class GetSightseeingSpotRequest

@@ -1,12 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask;
-using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Logging;
-using Azure.AI.OpenAI;
-using Microsoft.Extensions.Configuration;
-using OpenAI.Chat;
-using System.Text.Json;
 
 namespace DurableMultiAgentTemplate
 {
