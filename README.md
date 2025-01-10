@@ -25,9 +25,9 @@ sequenceDiagram
     DurableOrchestrator ->> AgentDeciderActivity: Decide agent to call
     AgentDeciderActivity ->> DurableOrchestrator: Agent that should call
     DurableOrchestrator -->> Sarter: If no agent to call, return plain text
-    DurableOrchestrator ->> WorkerAgentActivity: Invoke(Multiple and Parallel)
+    DurableOrchestrator ->> WorkerAgentActivity: Invoke(Multiple & Parallel)
     WorkerAgentActivity ->> DurableOrchestrator: Result
-    DurableOrchestrator ->> SynthesizerActivity: Synthesize result amn generate answer
+    DurableOrchestrator ->> SynthesizerActivity: Synthesize result & generate answer
     SynthesizerActivity ->> DurableOrchestrator: Synthesized answer
     DurableOrchestrator ->> Sarter: Answer
     Sarter ->> Client: Web API respons
