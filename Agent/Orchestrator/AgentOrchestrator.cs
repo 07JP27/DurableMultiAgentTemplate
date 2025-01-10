@@ -14,7 +14,7 @@ public class AgentOrchestrator()
         ILogger logger = context.CreateReplaySafeLogger("AgentOrchestrator");
         var reqData = context.GetInput<AgentRequestDto>();
 
-        if (reqData == null) throw new ArgumentNullException(nameof(reqData), "Request data cannot be null");
+        ArgumentNullException.ThrowIfNull(reqData);
 
         // AgentDecider呼び出し（呼び出すAgentの決定）
         var AgentDeciderResult = await context.CallActivityAsync<AgentDeciderResult>(AgentActivityName.AgentDeciderActivity, reqData);
@@ -29,7 +29,7 @@ public class AgentOrchestrator()
         }
 
         // Agent呼び出し
-        AgentResponseDto response = new AgentResponseDto();
+        AgentResponseDto response = new();
         logger.LogInformation("Agent call happened");
         var parallelAgentCall = new List<Task<string>>();
         foreach (var agentCall in AgentDeciderResult.AgentCalls)
