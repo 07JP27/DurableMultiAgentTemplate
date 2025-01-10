@@ -5,3 +5,4 @@ __queuestorage__/*
 bin/*
 obj/*
 .DS_Store
+.vs/*
