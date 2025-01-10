@@ -1,11 +1,11 @@
-using DurableMultiAgentTemplate.Model;
+﻿using DurableMultiAgentTemplate.Model;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Extension;
 
 public static class AgentRequestMessageItemExtension
 {
-    public static ChatMessage[] ConvertToChatMessageArray(this List<AgentRequestMessageItem> messages)
+    public static IEnumerable<ChatMessage> ConvertToChatMessageArray(this IEnumerable<AgentRequestMessageItem> messages)
     {
         return messages.Select<AgentRequestMessageItem, ChatMessage>(m =>
         {
@@ -16,6 +16,6 @@ public static class AgentRequestMessageItemExtension
                 "assistant" => new AssistantChatMessage(m.Content),
                 _ => throw new InvalidOperationException($"Unknown role: {m.Role}")
             };
-        }).ToArray();
+        });
     }
 }
