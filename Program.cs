@@ -1,3 +1,4 @@
+using Azure.AI.OpenAI;
 using Azure.Core;
 using Azure.Identity;
 using Microsoft.Azure.Functions.Worker.Builder;
@@ -5,7 +6,6 @@ using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Azure.AI.OpenAI;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 

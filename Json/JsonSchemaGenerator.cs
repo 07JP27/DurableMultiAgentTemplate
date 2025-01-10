@@ -1,4 +1,4 @@
-using System.ComponentModel;
+ï»¿using System.ComponentModel;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -10,16 +10,15 @@ namespace DurableMultiAgentTemplate.Json;
 
 
 /// <summary>
-/// JsonSchema ‚ğ¶¬‚·‚éB
-/// ƒNƒ‰ƒX’è‹`‚É Description ‘®«‚ğw’è‚·‚é‚±‚Æ‚Å JsonSchema ‚É‚à description ‚ğ’Ç‰Á‚·‚éB
-/// 
+/// JsonSchema ã‚’ç”Ÿæˆã™ã‚‹ã€‚
+/// ã‚¯ãƒ©ã‚¹å®šç¾©ã« Description å±æ€§ã‚’æŒ‡å®šã™ã‚‹ã“ã¨ã§ JsonSchema ã«ã‚‚ description ã‚’è¿½åŠ ã™ã‚‹ã€‚
 /// </summary>
 internal static class JsonSchemaGenerator
 {
     private static readonly JsonSchemaExporterOptions _jsonSchemaExporterOptions = new()
     {
         TreatNullObliviousAsNonNullable = true,
-        // Description ‚ğ’Ç‰Á‚·‚é
+        // Description ã‚’è¿½åŠ ã™ã‚‹
         TransformSchemaNode = (context, schema) =>
         {
             var attributeProvider = context.PropertyInfo is not null ?
@@ -45,7 +44,7 @@ internal static class JsonSchemaGenerator
         Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
     };
 
-    public static string GenerateSchema(JsonTypeInfo type) => 
+    public static string GenerateSchema(JsonTypeInfo type) =>
         JsonSchemaExporter.GetJsonSchemaAsNode(type, _jsonSchemaExporterOptions).ToJsonString(_jsonSerializerOptions);
     public static BinaryData GenerateSchemaAsBinaryData(JsonTypeInfo type) =>
         BinaryData.FromString(GenerateSchema(type));

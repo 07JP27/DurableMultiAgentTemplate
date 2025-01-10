@@ -1,5 +1,4 @@
 using Azure.AI.OpenAI;
-using DurableMultiAgentTemplate.Agent;
 using DurableMultiAgentTemplate.Extension;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
