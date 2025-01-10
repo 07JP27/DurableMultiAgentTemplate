@@ -1,9 +1,9 @@
-using OpenAI.Chat;
+﻿using System.ComponentModel;
 
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Model;
+
+public class GetDestinationSuggestRequest
 {
-    public class GetDestinationSuggestRequest
-    {
-        public string SearchTerm { get; set; } = string.Empty;
-    }
+    [Description("行き先に求める希望の条件")]
+    public required string SearchTerm { get; set; } = string.Empty;
 }

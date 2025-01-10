@@ -1,9 +1,9 @@
-using OpenAI.Chat;
+﻿using System.ComponentModel;
 
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Model;
+
+public class GetHotelRequest
 {
-    public class GetHotelRequest
-    {
-        public string Location { get; set; } = string.Empty;
-    }
+    [Description("場所の名前。例: ボストン, 東京、フランス")]
+    public required string Location { get; set; } = string.Empty;
 }
