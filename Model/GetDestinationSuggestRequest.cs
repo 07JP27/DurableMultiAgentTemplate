@@ -1,6 +1,9 @@
+using System.ComponentModel;
+
 namespace DurableMultiAgentTemplate.Model;
 
 public class GetDestinationSuggestRequest
 {
-    public string SearchTerm { get; set; } = string.Empty;
+    [Description("s‚«æ‚É‹‚ß‚éŠó–]‚ÌğŒ")]
+    public required string SearchTerm { get; set; } = string.Empty;
 }
