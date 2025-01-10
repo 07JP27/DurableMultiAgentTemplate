@@ -1,7 +1,9 @@
 using Azure.AI.OpenAI;
+using DurableMultiAgentTemplate.Agent;
+using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Agent.GetSightseeingSpotAgent
 {
     public class GetSightseeingSpotActivity(AzureOpenAIClient openAIClient, AppConfiguration configuration)
     {

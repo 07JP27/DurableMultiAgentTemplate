@@ -1,8 +1,9 @@
+using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.DurableTask;
 using Microsoft.Extensions.Logging;
 
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Agent.Orchestrator
 {
     public class AgentOrchestrator()
     {
@@ -12,13 +13,13 @@ namespace DurableMultiAgentTemplate
         {
             ILogger logger = context.CreateReplaySafeLogger("AgentOrchestrator");
             var reqData = context.GetInput<AgentRequestDto>();
-            
+
             if (reqData == null) throw new ArgumentNullException(nameof(reqData), "Request data cannot be null");
 
             // AgentDecider呼び出し（呼び出すAgentの決定）
             var AgentDeciderResult = await context.CallActivityAsync<AgentDeciderResult>(AgentActivityName.AgentDeciderActivity, reqData);
 
-            if(!AgentDeciderResult.IsAgentCall)
+            if (!AgentDeciderResult.IsAgentCall)
             {
                 logger.LogInformation("No agent call happened");
                 return new AgentResponseDto
@@ -46,7 +47,7 @@ namespace DurableMultiAgentTemplate
                 AgentCallResult = parallelAgentCall.Select(x => x.Result).ToList(),
                 AgentReques = reqData
             };
-            
+
             response.Content = await context.CallActivityAsync<string>(AgentActivityName.SynthesizerActivity, synthesizerRequest);
 
             return response;

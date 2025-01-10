@@ -1,7 +1,9 @@
 using Azure.AI.OpenAI;
+using DurableMultiAgentTemplate.Agent;
+using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent
 {
     public class SubmitReservationActivity(AzureOpenAIClient openAIClient, AppConfiguration configuration)
     {

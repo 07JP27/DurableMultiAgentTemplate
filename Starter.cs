@@ -4,6 +4,8 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.DurableTask.Client;
 using System.Text.Json;
+using DurableMultiAgentTemplate.Agent.Orchestrator;
+using DurableMultiAgentTemplate.Model;
 
 namespace DurableMultiAgentTemplate
 {

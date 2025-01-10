@@ -1,6 +1,7 @@
+using DurableMultiAgentTemplate.Model;
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Extension
 {
     public static class AgentRequestMessageItemExtension
     {
@@ -10,9 +11,9 @@ namespace DurableMultiAgentTemplate
             {
                 return m.Role switch
                 {
-                    "system" => new SystemChatMessage (m.Content),
-                    "user" => new UserChatMessage (m.Content),
-                    "assistant" => new AssistantChatMessage (m.Content),
+                    "system" => new SystemChatMessage(m.Content),
+                    "user" => new UserChatMessage(m.Content),
+                    "assistant" => new AssistantChatMessage(m.Content),
                     _ => throw new InvalidOperationException($"Unknown role: {m.Role}")
                 };
             }).ToArray();

@@ -1,11 +1,14 @@
 using System.Text.Json;
 using Azure.AI.OpenAI;
+using DurableMultiAgentTemplate.Agent;
+using DurableMultiAgentTemplate.Extension;
+using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 
 
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Agent.Orchestrator
 {
     public class AgentDeciderActivity(AzureOpenAIClient openAIClient, AppConfiguration configuration)
     {
@@ -33,7 +36,7 @@ namespace DurableMultiAgentTemplate
                     AgentDefinition.SubmitReservationAgent
                 }
             };
-            
+
             var chatClient = _openAIClient.GetChatClient(_configuration.OpenAIDeploy);
             var chatResult = await chatClient.CompleteChatAsync(
                 allMessages,

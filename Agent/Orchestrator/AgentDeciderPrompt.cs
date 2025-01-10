@@ -1,4 +1,4 @@
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Agent.Orchestrator
 {
     internal static class AgentDeciderPrompt
     {

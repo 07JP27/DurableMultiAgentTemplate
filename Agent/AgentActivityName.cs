@@ -1,11 +1,11 @@
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Agent
 {
     internal static class AgentActivityName
     {
         // Orchestrator Agent functions
         public const string AgentDeciderActivity = nameof(AgentDeciderActivity);
         public const string SynthesizerActivity = nameof(SynthesizerActivity);
-        
+
         // Each Agent
         public const string GetDestinationSuggestAgent = nameof(GetDestinationSuggestAgent);
         public const string GetClimateAgent = nameof(GetClimateAgent);

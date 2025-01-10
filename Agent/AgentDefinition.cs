@@ -1,6 +1,6 @@
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Agent
 {
     //https://learn.microsoft.com/ja-jp/azure/ai-services/openai/how-to/dotnet-migration?tabs=stable
     internal class AgentDefinition

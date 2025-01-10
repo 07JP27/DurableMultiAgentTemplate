@@ -1,4 +1,4 @@
-namespace DurableMultiAgentTemplate
+namespace DurableMultiAgentTemplate.Model
 {
     public class GetHotelRequest
     {
