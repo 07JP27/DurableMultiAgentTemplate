@@ -25,9 +25,9 @@ sequenceDiagram
     DurableOrchestrator ->> AgentDeciderActivity: Decide agent to call
     AgentDeciderActivity ->> DurableOrchestrator: Agent that should call
     DurableOrchestrator -->> Sarter: If no agent to call, return plain text
-    DurableOrchestrator ->> WorkerAgentActivity: Invoke(Multiple and Parallel)
+    DurableOrchestrator ->> WorkerAgentActivity: Invoke(Multiple & Parallel)
     WorkerAgentActivity ->> DurableOrchestrator: Result
-    DurableOrchestrator ->> SynthesizerActivity: Synthesize result amn generate answer
+    DurableOrchestrator ->> SynthesizerActivity: Synthesize result & generate answer
     SynthesizerActivity ->> DurableOrchestrator: Synthesized answer
     DurableOrchestrator ->> Sarter: Answer
     Sarter ->> Client: Web API respons
@@ -42,6 +42,9 @@ The sample Agents defined in the template are as follows:
 - GetSightseeingSpotAgent：Get the sightseeing spot of the destination
 - GetHotelAgent：Get the hotel information of the destination
 - SubmitReservationAgent：Submit the reservation of the hotel
+
+Please modify the implementation of each agent, which currently uses fixed values, to include RAG, actions, and other processes, thereby creating agents that meet the requirements.
+Each agent can utilize OpenAI Client and application configuration values provided by the DI container.
 
 ## Endpoints
 There are two types of endpoints: synchronous and asynchronous. If the agent's processing takes a long time, it is recommended to use the asynchronous endpoint.

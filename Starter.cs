@@ -13,13 +13,13 @@ public class Starter(ILogger<Starter> logger)
 {
     private readonly ILogger<Starter> _logger = logger;
 
-    [Function("SyncStarter")]
-     public async Task<HttpResponseData> SyncStarter(
-        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route="invoke/sync")] HttpRequestData req,
-        [DurableClient] DurableTaskClient client)
-    {
-        _logger.LogInformation("Sync HTTP trigger function processed a request.");
-        var reqData = await GetRequestData(req);
+        [Function("SyncStarter")]
+         public async Task<HttpResponseData> SyncStarter(
+            [HttpTrigger(AuthorizationLevel.Function,"post", Route="invoke/sync")] HttpRequestData req,
+            [DurableClient] DurableTaskClient client)
+        {
+            _logger.LogInformation("Sync HTTP trigger function processed a request.");
+            var reqData = await GetRequestData(req);
 
         if (reqData == null)
         {
@@ -39,13 +39,13 @@ public class Starter(ILogger<Starter> logger)
         return res;
     }
 
-    [Function("AsyncStarter")]
-    public async Task<HttpResponseData> AsyncStarter(
-        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route="invoke/async")] HttpRequestData req,
-        [DurableClient] DurableTaskClient client)
-    {
-        _logger.LogInformation("Async HTTP trigger function processed a request.");
-        var reqData = await GetRequestData(req);
+        [Function("AsyncStarter")]
+        public async Task<HttpResponseData> AsyncStarter(
+            [HttpTrigger(AuthorizationLevel.Function,"post", Route="invoke/async")] HttpRequestData req,
+            [DurableClient] DurableTaskClient client)
+        {
+            _logger.LogInformation("Async HTTP trigger function processed a request.");
+            var reqData = await GetRequestData(req);
 
         if (reqData == null)
         {
