@@ -42,7 +42,7 @@ if prompt := st.chat_input("ここに入力"):
         response = requests.post(url, json={"messages": st.session_state.messages})
         response_data = response.json()
         response_content = response_data["content"]
-        called_agents  = ", ".join(response_data["caledAgentNames"])
+        called_agents  = ", ".join(response_data["calledAgentNames"])
         
         message_placeholder.markdown(f"""
                                      {response_content}

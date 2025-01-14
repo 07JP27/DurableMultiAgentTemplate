@@ -6,7 +6,7 @@ public class AgentRequestDto
 {
     public List<AgentRequestMessageItem> Messages { get; set; } = default!;
     
-    public bool RequireSupplementInfo { get; set; } = false;
+    public bool RequireAdditionalInfo { get; set; } = false;
 }
 
 public class AgentRequestMessageItem

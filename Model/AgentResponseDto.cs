@@ -6,6 +6,6 @@ public class AgentResponseDto
 {
     public string Content { get; set; } = string.Empty;
 
-    public List<string> CaledAgentNames { get; set; } = new List<string>();
+    public List<string> CalledAgentNames { get; set; } = new List<string>();
 
 }

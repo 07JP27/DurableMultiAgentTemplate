@@ -29,12 +29,10 @@ public class AgentOrchestrator()
         }
 
         // Agent呼び出し
-        AgentResponseDto response = new();
         logger.LogInformation("Agent call happened");
         var parallelAgentCall = new List<Task<string>>();
         foreach (var agentCall in AgentDeciderResult.AgentCalls)
         {
-            response.CaledAgentNames.Add(agentCall.AgentName);
             var args = agentCall.Arguments;
             parallelAgentCall.Add(context.CallActivityAsync<string>(agentCall.AgentName, args));
         }
@@ -45,11 +43,19 @@ public class AgentOrchestrator()
         SynthesizerRequest synthesizerRequest = new()
         {
             AgentCallResult = parallelAgentCall.Select(x => x.Result).ToList(),
-            AgentReques = reqData
+            AgentReques = reqData,
+            CalledAgentNames = AgentDeciderResult.AgentCalls.Select(x => x.AgentName).ToList()
         };
 
-        response.Content = await context.CallActivityAsync<string>(AgentActivityName.SynthesizerActivity, synthesizerRequest);
-
-        return response;
+        if (reqData.RequireAdditionalInfo)
+        {
+            var res= await context.CallActivityAsync<AgentResponseWithAdditionalInfoDto>(AgentActivityName.SynthesizerWithAdditionalInfoActivity, synthesizerRequest);
+            return res;
+        }
+        else
+        {
+            var res = await context.CallActivityAsync<AgentResponseDto>(AgentActivityName.SynthesizerActivity, synthesizerRequest);
+            return res;
+        }
     }
 }

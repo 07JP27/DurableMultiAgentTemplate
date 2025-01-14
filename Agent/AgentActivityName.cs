@@ -5,6 +5,7 @@ internal static class AgentActivityName
     // Orchestrator Agent functions
     public const string AgentDeciderActivity = nameof(AgentDeciderActivity);
     public const string SynthesizerActivity = nameof(SynthesizerActivity);
+    public const string SynthesizerWithAdditionalInfoActivity = nameof(SynthesizerWithAdditionalInfoActivity);
 
     // Each Agent
     public const string GetDestinationSuggestAgent = nameof(GetDestinationSuggestAgent);

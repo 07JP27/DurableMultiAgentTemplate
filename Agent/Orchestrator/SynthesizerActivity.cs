@@ -14,7 +14,7 @@ public class SynthesizerActivity(AzureOpenAIClient openAIClient, IOptions<AppCon
     private readonly AppConfiguration _configuration = configuration.Value;
 
     [Function(AgentActivityName.SynthesizerActivity)]
-    public async Task<string> Run([ActivityTrigger] SynthesizerRequest req, FunctionContext executionContext)
+    public async Task<AgentResponseDto> Run([ActivityTrigger] SynthesizerRequest req, FunctionContext executionContext)
     {
         ILogger logger = executionContext.GetLogger("SynthesizerActivity");
         logger.LogInformation("Run SynthesizerActivity");
@@ -31,6 +31,12 @@ public class SynthesizerActivity(AzureOpenAIClient openAIClient, IOptions<AppCon
             allMessages
         );
 
-        return chatResult.Value.Content.First().Text;
+        var res = new AgentResponseDto
+        {
+            Content = chatResult.Value.Content.First().Text,
+            CalledAgentNames = req.CalledAgentNames
+        };
+
+        return res;
     }
 }
