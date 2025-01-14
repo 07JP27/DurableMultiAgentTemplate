@@ -35,7 +35,7 @@ public class Starter(ILogger<Starter> logger)
         OrchestrationMetadata metadata = await client.WaitForInstanceCompletionAsync(instanceId, getInputsAndOutputs: true);
 
         var res = HttpResponseData.CreateResponse(req);
-        await res.WriteAsJsonAsync(JsonSerializer.Deserialize<AgentResponseDto>(metadata.SerializedOutput ?? ""));
+        await res.WriteStringAsync(metadata.SerializedOutput ?? "");
         return res;
     }
 

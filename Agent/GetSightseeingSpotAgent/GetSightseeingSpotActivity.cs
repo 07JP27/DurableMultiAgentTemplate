@@ -1,13 +1,14 @@
 using Azure.AI.OpenAI;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Options;
 
 namespace DurableMultiAgentTemplate.Agent.GetSightseeingSpotAgent;
 
-public class GetSightseeingSpotActivity(AzureOpenAIClient openAIClient, AppConfiguration configuration)
+public class GetSightseeingSpotActivity(AzureOpenAIClient openAIClient, IOptions<AppConfiguration> configuration)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration;
+    private readonly AppConfiguration _configuration = configuration.Value;
 
     [Function(AgentActivityName.GetSightseeingSpotAgent)]
     public string Run([ActivityTrigger] GetSightseeingSpotRequest req, FunctionContext executionContext)

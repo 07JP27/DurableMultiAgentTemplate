@@ -1,13 +1,14 @@
 using Azure.AI.OpenAI;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Options;
 
 namespace DurableMultiAgentTemplate.Agent.GetDestinationSuggestAgent;
 
-public class GetDestinationSuggestActivity(AzureOpenAIClient openAIClient, AppConfiguration configuration)
+public class GetDestinationSuggestActivity(AzureOpenAIClient openAIClient, IOptions<AppConfiguration> configuration)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration;
+    private readonly AppConfiguration _configuration = configuration.Value;
 
     [Function(AgentActivityName.GetDestinationSuggestAgent)]
     public string Run([ActivityTrigger] GetDestinationSuggestRequest req, FunctionContext executionContext)

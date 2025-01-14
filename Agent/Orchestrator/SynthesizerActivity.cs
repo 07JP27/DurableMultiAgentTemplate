@@ -3,14 +3,15 @@ using DurableMultiAgentTemplate.Extension;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 
-public class SynthesizerActivity(AzureOpenAIClient openAIClient, AppConfiguration configuration)
+public class SynthesizerActivity(AzureOpenAIClient openAIClient, IOptions<AppConfiguration> configuration)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration;
+    private readonly AppConfiguration _configuration = configuration.Value;
 
     [Function(AgentActivityName.SynthesizerActivity)]
     public async Task<string> Run([ActivityTrigger] SynthesizerRequest req, FunctionContext executionContext)
