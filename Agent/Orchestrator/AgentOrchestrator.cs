@@ -19,13 +19,18 @@ public class AgentOrchestrator()
         // AgentDecider呼び出し（呼び出すAgentの決定）
         var AgentDeciderResult = await context.CallActivityAsync<AgentDeciderResult>(AgentActivityName.AgentDeciderActivity, reqData);
 
+        // AgentDeciderでエージェントを呼び出さない場合には、そのまま返す
         if (!AgentDeciderResult.IsAgentCall)
         {
             logger.LogInformation("No agent call happened");
-            return new AgentResponseDto
+            if (reqData.RequireAdditionalInfo)
             {
-                Content = AgentDeciderResult.Content
-            };
+                return new AgentResponseWithAdditionalInfoDto{Content = AgentDeciderResult.Content};
+            }
+            else
+            {
+                return new AgentResponseDto{Content = AgentDeciderResult.Content};
+            }
         }
 
         // Agent呼び出し
@@ -46,7 +51,7 @@ public class AgentOrchestrator()
             AgentReques = reqData,
             CalledAgentNames = AgentDeciderResult.AgentCalls.Select(x => x.AgentName).ToList()
         };
-
+        
         if (reqData.RequireAdditionalInfo)
         {
             var res= await context.CallActivityAsync<AgentResponseWithAdditionalInfoDto>(AgentActivityName.SynthesizerWithAdditionalInfoActivity, synthesizerRequest);

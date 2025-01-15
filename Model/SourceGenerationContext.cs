@@ -8,7 +8,7 @@ namespace DurableMultiAgentTemplate.Model;
 [JsonSerializable(typeof(GetHotelRequest))]
 [JsonSerializable(typeof(GetSightseeingSpotRequest))]
 [JsonSerializable(typeof(SubmitReservationRequest))]
-[JsonSerializable(typeof(AdditionalInfo))]
+[JsonSerializable(typeof(IAdditionalInfo))]
 [JsonSerializable(typeof(AdditionalMarkdownInfo))]
 [JsonSerializable(typeof(AdditionalLinkInfo))]
 [JsonSerializable(typeof(AgentResponseWithAdditionalInfoFormat))]

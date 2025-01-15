@@ -5,29 +5,28 @@ namespace DurableMultiAgentTemplate.Model;
 
 public class AgentResponseWithAdditionalInfoDto:AgentResponseDto
 {
-    public List<AdditionalInfo> AdditionalInfo { get; set; } = new List<AdditionalInfo>();
+    public List<IAdditionalInfo> AdditionalInfo { get; set; } = new List<IAdditionalInfo>();
 }
 
 public class AgentResponseWithAdditionalInfoFormat
 {
     public string Content { get; set; } = "";
-    public List<AdditionalInfo> AdditionalInfo { get; set; } = new List<AdditionalInfo>();
+    public List<IAdditionalInfo> AdditionalInfo { get; set; } = new List<IAdditionalInfo>();
 }
 
-[JsonDerivedType(typeof(AdditionalMarkdownInfo), typeDiscriminator: "markwodn")]
+[JsonDerivedType(typeof(AdditionalMarkdownInfo), typeDiscriminator: "mardown")]
 [JsonDerivedType(typeof(AdditionalLinkInfo), typeDiscriminator: "link")]
-public class AdditionalInfo
+public interface IAdditionalInfo
 {
-    public string Title { get; set; } = "";
 }
 
-class AdditionalMarkdownInfo : AdditionalInfo
+class AdditionalMarkdownInfo : IAdditionalInfo
 {
-    [Description("Markdown形式のテキスト")]
+    [Description("Markdown形式の補足情報")]
     public string MarkdownText { get; set; } = "";
 }
 
-class AdditionalLinkInfo : AdditionalInfo
+class AdditionalLinkInfo : IAdditionalInfo
 {
     [Description("リンクのラベルとして表示されるテキスト")]
     public string LinkText { get; set; } = "";
