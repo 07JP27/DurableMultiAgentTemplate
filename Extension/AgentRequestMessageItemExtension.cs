@@ -11,10 +11,9 @@ public static class AgentRequestMessageItemExtension
         {
             return m.Role switch
             {
-                "system" => new SystemChatMessage(m.Content),
                 "user" => new UserChatMessage(m.Content),
                 "assistant" => new AssistantChatMessage(m.Content),
-                _ => throw new InvalidOperationException($"Unknown role: {m.Role}")
+                _ => throw new InvalidOperationException($"You can not set role: {m.Role}")
             };
         });
     }
