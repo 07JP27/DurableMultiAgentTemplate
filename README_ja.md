@@ -45,9 +45,6 @@ sequenceDiagram
 固定値になっている各Agentの実装をを改変してRAGやAction、その他処理を実装することで要件にあったAgentを作成してください。
 各AgentではDIコンテナからOpenAI Clientやアプリケーション構成値などが利用可能です。
 
-## エンドポイント
-Starter関数のエンドポイントには同期と非同期の2種類があります。エージェントの処理に時間がかかる場合は、非同期エンドポイントを使用することをお勧めします。Durable Functionsの非同期パターンの詳細については[こちら](https://learn.microsoft.com/ja-jp/azure/azure-functions/durable/durable-functions-overview?tabs=in-process%2Cnodejs-v3%2Cv1-model&pivots=csharp#async-http)。
-
 ## テストのためのクライアント
 [client.py](client.py) を使用して、Orchestrator-Workers パターンをテストできます。  
 このクライアントは Streamlit で作成されていますので、次のコマンドで実行できます：
@@ -55,5 +52,62 @@ Starter関数のエンドポイントには同期と非同期の2種類があり
 streamlit run client.py
 ```
 
+## APIリクエスト
+### エンドポイント
+Starter関数のエンドポイントには同期と非同期の2種類があります。エージェントの処理に時間がかかる場合は、非同期エンドポイントを使用することをお勧めします。Durable Functionsの非同期パターンの詳細については[こちら](https://learn.microsoft.com/ja-jp/azure/azure-functions/durable/durable-functions-overview?tabs=in-process%2Cnodejs-v3%2Cv1-model&pivots=csharp#async-http)。
+- 同期エンドポイント：`http://{your base url}/api/invoke/sync`
+- 非同期エンドポイント：`http://{your base url}/api/invoke/async`
+
+### リクエストボディ
+リクエストボディは、次のようになります。
+```json
+{
+	"messages": [
+		{
+			"role": "user",
+			"content": "おすすめの旅行先を見つけて欲しい"
+		},
+		{
+			"role": "assistant",
+			"content": "旅行先についての希望の条件を教えてください。例えば、ビーチがある場所、歴史的な観光地が多い場所、自然が豊かな場所など、ご希望に応じておすすめの旅行先を提案します。"
+		},
+		{
+			"role": "user",
+			"content": "歴史的な観光地が多い場所かな〜"
+		}
+	],
+	"requireAdditionalInfo": true
+}
+```
+
+### レスポンス
+レスポンスは次のようになります。
+```json
+{
+	"additionalInfo": [
+		{
+			"$type": "mardown",
+			"markdownText": "### おすすめの歴史的観光地が多い旅行先\n\n#### 国内\n1. **沖縄本島**  \n   - 透明度の高いビーチ、首里城、美ら海水族館など観光名所が豊富。  \n   - 冬でも暖かく、リラックスした雰囲気を楽しめる。\n\n2. **石垣島・宮古島**  \n   - 南国らしい美しい自然が広がり、ダイビングやシュノーケリングが人気。  \n   - 島ならではの郷土料理も楽しめる。\n\n3. **鹿児島・奄美大島**  \n   - 奄美の黒糖焼酎や島唄、特有の自然環境を満喫。  \n   - 亜熱帯の雰囲気を楽しめる。"
+		}
+	],
+	"content": "歴史的な観光地が多い場所としては以下の旅行先がおすすめです。\n\n1. **沖縄本島** - 首里城をはじめ、美ら海水族館など歴史と観光が融合したスポットがあります。\n2. **鹿児島・奄美大島** - 島唄や亜熱帯の雰囲気が楽しめます。\n3. **石垣島・宮古島** - 島独特の郷土料理と自然景観が魅力です。\n\n詳しくは補足情報を参照してください。",
+	"calledAgentNames": [
+		"GetDestinationSuggestAgent"
+	]
+}
+```
+
 ![](demo.gif)
 [フル解像度の動画はこちら](https://youtu.be/SACD4IyKQAI)
+
+## 補足情報の要求
+一般にエージェントからの返答(特にRAGを含む場合)は文章量が長くなり、チャット体験を阻害する要因になることがあります。
+そのため、ストック型の補足情報とフロー型のチャットを分離し、チャット体験を向上できます。
+このテンプレートではリクエストの際に`requireAdditionalInfo`を`true`に設定すると、補足情報を要求することができます。
+補足情報はレスポンスの`additionalInfo`に格納されチャットの返答とは別に返されます。
+テストのためのクライアントコード内の`REQUIRE_ADDITIONAL_INFO`フラグを切り替えることでこの機能を体験できます。
+![](demo_additional.gif)
+
+この機能は副次的にチャット履歴のmessages配列のトークン量を削減し、LLMの動作を軽快にする効果もあります。
+ただし、シナリオによってはmessages配列のコンテキストが欠落し、エージェントの返答が不自然になることがあります。
+そのような場合には必要に応じて補足情報の内容をmessagesにマージしてエージェントにリクエストすることも検討してください。
