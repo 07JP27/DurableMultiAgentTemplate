@@ -9,7 +9,7 @@ public class AgentResponseWithAdditionalInfoFormat
     public List<IAdditionalInfo> AdditionalInfo { get; set; } = new List<IAdditionalInfo>();
 }
 
-[JsonDerivedType(typeof(AdditionalMarkdownInfo), typeDiscriminator: "mardown")]
+[JsonDerivedType(typeof(AdditionalMarkdownInfo), typeDiscriminator: "markdown")]
 [JsonDerivedType(typeof(AdditionalLinkInfo), typeDiscriminator: "link")]
 public interface IAdditionalInfo
 {
