@@ -9,7 +9,7 @@ This repository is a template project for implementing the Orchestrator-Workers 
 ref: [Anthropic-Building effective agents](https://www.anthropic.com/research/building-effective-agents)
 
 ## Sequence Diagram
-Case of synchronous endpoint.
+Case of synchronous endpoint:
 
 ```mermaid
 sequenceDiagram

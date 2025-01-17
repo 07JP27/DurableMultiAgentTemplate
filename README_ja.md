@@ -8,7 +8,7 @@
 ref: [Anthropic-Building effective agents](https://www.anthropic.com/research/building-effective-agents)
 
 ## シーケンス図
-同期エンドポイントの場合h
+同期エンドポイントの場合:
 
 ```mermaid
 sequenceDiagram
