@@ -2,7 +2,7 @@
 
 namespace DurableMultiAgentTemplate.Model;
 
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, PropertyNameCaseInsensitive = true)]
 [JsonSerializable(typeof(GetClimateRequest))]
 [JsonSerializable(typeof(GetDestinationSuggestRequest))]
 [JsonSerializable(typeof(GetHotelRequest))]

@@ -43,11 +43,9 @@ public class SynthesizerWithAdditionalInfoActivity(AzureOpenAIClient openAIClien
         );
         var rawRes = chatResult.Value.Content.First();
 
-        AgentResponseWithAdditionalInfoFormat res = JsonSerializer.Deserialize<AgentResponseWithAdditionalInfoFormat>(
-            rawRes.Text, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+        AgentResponseWithAdditionalInfoFormat res = JsonSerializer.Deserialize(
+            rawRes.Text, 
+            SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat);
 
         return new AgentResponseWithAdditionalInfoDto
         {
