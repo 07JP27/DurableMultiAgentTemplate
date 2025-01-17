@@ -19,22 +19,25 @@ public class AgentOrchestrator()
         // AgentDecider呼び出し（呼び出すAgentの決定）
         var AgentDeciderResult = await context.CallActivityAsync<AgentDeciderResult>(AgentActivityName.AgentDeciderActivity, reqData);
 
+        // AgentDeciderでエージェントを呼び出さない場合には、そのまま返す
         if (!AgentDeciderResult.IsAgentCall)
         {
             logger.LogInformation("No agent call happened");
-            return new AgentResponseDto
+            if (reqData.RequireAdditionalInfo)
             {
-                Content = AgentDeciderResult.Content
-            };
+                return new AgentResponseWithAdditionalInfoDto{Content = AgentDeciderResult.Content};
+            }
+            else
+            {
+                return new AgentResponseDto{Content = AgentDeciderResult.Content};
+            }
         }
 
         // Agent呼び出し
-        AgentResponseDto response = new();
         logger.LogInformation("Agent call happened");
         var parallelAgentCall = new List<Task<string>>();
         foreach (var agentCall in AgentDeciderResult.AgentCalls)
         {
-            response.CaledAgentNames.Add(agentCall.AgentName);
             var args = agentCall.Arguments;
             parallelAgentCall.Add(context.CallActivityAsync<string>(agentCall.AgentName, args));
         }
@@ -45,11 +48,19 @@ public class AgentOrchestrator()
         SynthesizerRequest synthesizerRequest = new()
         {
             AgentCallResult = parallelAgentCall.Select(x => x.Result).ToList(),
-            AgentReques = reqData
+            AgentReques = reqData,
+            CalledAgentNames = AgentDeciderResult.AgentCalls.Select(x => x.AgentName).ToList()
         };
-
-        response.Content = await context.CallActivityAsync<string>(AgentActivityName.SynthesizerActivity, synthesizerRequest);
-
-        return response;
+        
+        if (reqData.RequireAdditionalInfo)
+        {
+            var res= await context.CallActivityAsync<AgentResponseWithAdditionalInfoDto>(AgentActivityName.SynthesizerWithAdditionalInfoActivity, synthesizerRequest);
+            return res;
+        }
+        else
+        {
+            var res = await context.CallActivityAsync<AgentResponseDto>(AgentActivityName.SynthesizerActivity, synthesizerRequest);
+            return res;
+        }
     }
 }
