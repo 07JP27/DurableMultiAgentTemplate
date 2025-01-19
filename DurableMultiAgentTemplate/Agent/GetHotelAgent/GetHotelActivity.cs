@@ -1,4 +1,4 @@
-using Azure.AI.OpenAI;
+﻿using Azure.AI.OpenAI;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Options;
@@ -11,7 +11,7 @@ public class GetHotelActivity(AzureOpenAIClient openAIClient, IOptions<AppConfig
     private readonly AppConfiguration _configuration = configuration.Value;
 
     [Function(AgentActivityName.GetHotelAgent)]
-    public string Run([ActivityTrigger] GetSightseeingSpotRequest req, FunctionContext executionContext)
+    public string Run([ActivityTrigger] GetHotelRequest req, FunctionContext executionContext)
     {
         // This is sample code. Replace this with your own logic.
         var result = $"""
