@@ -1,11 +1,14 @@
-using Azure.AI.OpenAI;
+﻿using Azure.AI.OpenAI;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace DurableMultiAgentTemplate.Agent.GetDestinationSuggestAgent;
 
-public class GetDestinationSuggestActivity(AzureOpenAIClient openAIClient, IOptions<AppConfiguration> configuration)
+public class GetDestinationSuggestActivity(AzureOpenAIClient openAIClient,
+    IOptions<AppConfiguration> configuration,
+    ILogger<GetDestinationSuggestActivity> logger)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
     private readonly AppConfiguration _configuration = configuration.Value;
@@ -13,6 +16,12 @@ public class GetDestinationSuggestActivity(AzureOpenAIClient openAIClient, IOpti
     [Function(AgentActivityName.GetDestinationSuggestAgent)]
     public string Run([ActivityTrigger] GetDestinationSuggestRequest req, FunctionContext executionContext)
     {
+        if (Random.Shared.Next(0, 10) < 3)
+        {
+            logger.LogInformation("Failed to get destination suggestions");
+            throw new InvalidOperationException("Failed to get destination suggestions");
+        }
+
         // This is sample code. Replace this with your own logic.
         var result = $"""
         {req.SearchTerm}の条件でおすすめの旅行先を提案します。好みに応じて選んでください。
