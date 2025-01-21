@@ -1,11 +1,14 @@
 ﻿using Azure.AI.OpenAI;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace DurableMultiAgentTemplate.Agent.GetHotelAgent;
 
-public class GetHotelActivity(AzureOpenAIClient openAIClient, IOptions<AppConfiguration> configuration)
+public class GetHotelActivity(AzureOpenAIClient openAIClient, 
+    IOptions<AppConfiguration> configuration, 
+    ILogger<GetHotelActivity> logger)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
     private readonly AppConfiguration _configuration = configuration.Value;
@@ -13,6 +16,12 @@ public class GetHotelActivity(AzureOpenAIClient openAIClient, IOptions<AppConfig
     [Function(AgentActivityName.GetHotelAgent)]
     public string Run([ActivityTrigger] GetHotelRequest req, FunctionContext executionContext)
     {
+        if (Random.Shared.Next(0, 10) < 3)
+        {
+            logger.LogInformation("Failed to get hotel information");
+            throw new InvalidOperationException("Failed to get hotel information");
+        }
+
         // This is sample code. Replace this with your own logic.
         var result = $"""
         {req.Location}に以下の４件のホテルがあります。

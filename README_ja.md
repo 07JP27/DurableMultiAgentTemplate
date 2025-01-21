@@ -45,6 +45,17 @@ sequenceDiagram
 固定値になっている各Agentの実装をを改変してRAGやAction、その他処理を実装することで要件にあったAgentを作成してください。
 各AgentではDIコンテナからOpenAI Clientやアプリケーション構成値などが利用可能です。
 
+Durable Functionsのリトライ機能を実証するために、各AgentにはLLMなどの外部サービス呼び出しの失敗をエミュレートするコードが記述されています。
+Agent Activityはランダムに30%の確率で実行が失敗します。
+実際にAgentを実装する際にサンプルAgentをベースにする場合はコードから以下の部分を削除してください。
+```cs
+if(Random.Shared.Next(0, 10) < 3)
+{
+	logger.LogInformation("Failed to get climate information");
+	throw new InvalidOperationException("Failed to get climate information");
+}
+```
+
 ## テストのためのクライアント
 [client.py](client.py) を使用して、Orchestrator-Workers パターンをテストできます。  
 このクライアントは Streamlit で作成されていますので、次のコマンドで実行できます：

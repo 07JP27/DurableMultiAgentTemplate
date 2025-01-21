@@ -1,11 +1,14 @@
-using Azure.AI.OpenAI;
+﻿using Azure.AI.OpenAI;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace DurableMultiAgentTemplate.Agent.GetClimateAgent;
 
-public class GetClimateActivity(AzureOpenAIClient openAIClient, IOptions<AppConfiguration> configuration)
+public class GetClimateActivity(AzureOpenAIClient openAIClient, 
+    IOptions<AppConfiguration> configuration,
+    ILogger<GetClimateActivity> logger)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
     private readonly AppConfiguration _configuration = configuration.Value;
@@ -13,6 +16,12 @@ public class GetClimateActivity(AzureOpenAIClient openAIClient, IOptions<AppConf
     [Function(AgentActivityName.GetClimateAgent)]
     public string Run([ActivityTrigger] GetClimateRequest req, FunctionContext executionContext)
     {
+        if(Random.Shared.Next(0, 10) < 3)
+        {
+            logger.LogInformation("Failed to get climate information");
+            throw new InvalidOperationException("Failed to get climate information");
+        }
+
         // This is sample code. Replace this with your own logic.
         var result = $"""
         {req.Location}の気候は年間を通じて暖かく、**熱帯モンスーン気候**に分類されます。大きく分けて**乾季**と**雨季**があり、それぞれ異なる特徴があります。
