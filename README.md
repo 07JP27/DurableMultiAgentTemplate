@@ -46,9 +46,9 @@ The sample Agents defined in the template are as follows:
 Please modify the implementation of each agent, which currently uses fixed values, to include RAG, actions, and other processes, thereby creating agents that meet the requirements.
 Each agent can utilize OpenAI Client and application configuration values provided by the DI container.
 
-Each Agent has code written to emulate LLM call failures to demonstrate the retry functionality of Durable Functions.
-Agent Activity fails with a 30% probability on random occasions.
-When implementing an actual Agent based on the sample Agent, please remove the following sections from the code.
+To demonstrate the retry functionality of Durable Functions, each Agent includes code that emulates failures in external service calls, such as those to an LLM.
+Agent Activities fail randomly with a 30% probability during execution.
+When implementing an actual Agent based on the sample Agent, please remove the following parts from the code.
 ```cs
 if(Random.Shared.Next(0, 10) < 3)
 {
