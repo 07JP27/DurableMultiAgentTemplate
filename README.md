@@ -46,6 +46,17 @@ The sample Agents defined in the template are as follows:
 Please modify the implementation of each agent, which currently uses fixed values, to include RAG, actions, and other processes, thereby creating agents that meet the requirements.
 Each agent can utilize OpenAI Client and application configuration values provided by the DI container.
 
+Each Agent has code written to emulate LLM call failures to demonstrate the retry functionality of Durable Functions.
+Agent Activity fails with a 30% probability on random occasions.
+When implementing an actual Agent based on the sample Agent, please remove the following sections from the code.
+```cs
+if(Random.Shared.Next(0, 10) < 3)
+{
+	logger.LogInformation("Failed to get climate information");
+	throw new InvalidOperationException("Failed to get climate information");
+}
+```
+
 ## Client to test
 You can use [client.py](client.py) to test the Orchestrator-Workers pattern.
 This client made with Streamlit. So you can run it with the following command:
