@@ -57,14 +57,44 @@ if(Random.Shared.Next(0, 10) < 3)
 }
 ```
 
-## Client to test
+## How to run
+
+1. Update `localsettings.json` at `DurableMultiAgentTemplate` project with your AOAI resource and deployment model name.
+2. Run the project.
+
+## Client to test (.NET)
+
+You can check the operation on a simple chat app in .NET as follows:
+
+https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
+
+### Visual Studio 2022
+
+1. Open the solution file `DurableMultiAgentTemplate.sln` in Visual Studio 2022.
+2. Select `Multi agent test` from the startup project.
+   - In this step, both the Durable Functions and .NET client projects will be executed simultaneously.
+3. Press `F5` to run the projects.
+   - If you encounter an error, please check the `localsettings.json` file in the `DurableMultiAgentTemplate` project.
+
+### Visual Studio Code
+
+You can run it with the following command:
+
+```bash
+dotnet run --project .\DurableMultiAgentTemplate\DurableMultiAgentTemplate.csproj
+dotnet run --project .\DurableMultiAgentTemplate.Client\DurableMultiAgentTemplate.Client.csproj
+```
+
+After running the project, you can access the client at `http://localhost:{your port number}`.
+
+## Client to test (Python client)
 You can use [client.py](client.py) to test the Orchestrator-Workers pattern.
-This client made with Streamlit. So you can run it with the following command:
+This client made with Streamlit. So you can run it with the following command at the Client folder:
 ```bash
 streamlit run client.py
 ```
 
-![](demo.gif)
+![](Assets/demo.gif)
 [The full-resolution video is here.](https://youtu.be/SACD4IyKQAI)
 
 ## API
@@ -120,6 +150,6 @@ In general, responses from agents, especially when they include retrieval-augmen
 In this template, you can request additional information by setting `requireAdditionalInfo` to `true` when making a request. The additional information will be returned separately from the chat response and stored in the `additionalInfo` field.
 
 By toggling the `REQUIRE_ADDITIONAL_INFO` flag in the client code for testing, you can experience this functionality in action. 
-![](demo_additional.gif)
+![](Assets/demo_additional.gif)
 
 This feature also reduces the token count of the `messages` array in the chat history, making the LLM's performance lighter. However, in some cases, the lack of context in the `messages` array might result in unnatural agent responses. In such cases, you may consider merging the additional information back into the `messages` array and requesting the agent's response accordingly.

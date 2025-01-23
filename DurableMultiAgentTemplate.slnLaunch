@@ -1,6 +1,6 @@
 [
   {
-    "Name": "DurableMultiAgentをテスト",
+    "Name": "Multi agent test",
     "Projects": [
       {
         "Path": "DurableMultiAgentTemplate\\DurableMultiAgentTemplate.csproj",
