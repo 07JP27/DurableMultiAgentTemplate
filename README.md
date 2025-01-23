@@ -59,26 +59,26 @@ if(Random.Shared.Next(0, 10) < 3)
 
 ## How to run
 
-1. Update `localsettings.json` at `DurableMultiAgentTemplate` project with your AOAI resource and deployment model name.
+1. Update `localsettings.json` in the `DurableMultiAgentTemplate` project with your AOAI resource and deployment model name.
 2. Run the project.
 
 ## Client to test (.NET)
 
-You can check the operation on a simple chat app in .NET as follows:
+You can test the operation using a simple chat app in .NET as follows:
 
 https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 
 ### Visual Studio 2022
 
 1. Open the solution file `DurableMultiAgentTemplate.sln` in Visual Studio 2022.
-2. Select `Multi agent test` from the startup project.
-   - In this step, both the Durable Functions and .NET client projects will be executed simultaneously.
+2. Select `Multi agent test` as the startup project.
+   - This will run both the Durable Functions and .NET client projects simultaneously.
 3. Press `F5` to run the projects.
    - If you encounter an error, please check the `localsettings.json` file in the `DurableMultiAgentTemplate` project.
 
 ### Visual Studio Code
 
-You can run it with the following command:
+You can run it with the following commands:
 
 ```bash
 dotnet run --project .\DurableMultiAgentTemplate\DurableMultiAgentTemplate.csproj
