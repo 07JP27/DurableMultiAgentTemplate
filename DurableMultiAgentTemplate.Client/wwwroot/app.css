@@ -12,6 +12,15 @@ body {
     background: var(--neutral-fill-layer-rest);
 }
 
+.textfield {
+    font-family: var(--body-font);
+    font-size: var(--type-ramp-base-font-size);
+    line-height: var(--type-ramp-base-line-height);
+    font-weight: var(--font-weight);
+    color: var(--neutral-foreground-rest);
+    background: var(--neutral-fill-layer-rest);
+}
+
 .navmenu-icon {
     display: none;
 }

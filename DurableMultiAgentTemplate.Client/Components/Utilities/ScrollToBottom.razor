@@ -1,0 +1,70 @@
+﻿@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public ScrollToBottomContext Context { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public string ScrollHostId { get; set; } = null!;
+
+    private string _scrollHostId = null!;
+
+    private IJSObjectReference? _scrollsModule;
+    private IJSObjectReference? _scrollHost;
+
+    protected override void OnParametersSet()
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(ScrollHostId);
+
+        if (string.IsNullOrEmpty(_scrollHostId))
+        {
+            _scrollHostId = ScrollHostId;
+        }
+        else if (_scrollHostId != ScrollHostId)
+        {
+            throw new ArgumentException("ScrollHostId must not be changed.", nameof(ScrollHostId));
+        }
+    }
+
+    protected override bool ShouldRender() => Context.IsRequestScrollToBottom;
+
+    private async ValueTask ScrollToBottomAsync()
+    {
+        if (_scrollsModule == null || _scrollHost == null) return;
+        await _scrollsModule.InvokeVoidAsync("scrollToBottom", _scrollHost);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _scrollsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./scripts/scrolls.js");
+            _scrollHost = await JS.InvokeAsync<IJSObjectReference>("document.getElementById", ScrollHostId);
+        }
+        else
+        {
+            if (Context.IsRequestScrollToBottom)
+            {
+                await ScrollToBottomAsync();
+                Context.Reset();
+            }
+        }
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (_scrollsModule != null)
+        {
+            try { await _scrollsModule.DisposeAsync(); } catch { }
+        }
+
+        if (_scrollHost != null)
+        {
+            try { await _scrollHost.DisposeAsync(); } catch { }
+        }
+    }
+
+}

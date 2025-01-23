@@ -1,4 +1,5 @@
-using DurableMultiAgentTemplate.Client.Components;
+﻿using DurableMultiAgentTemplate.Client.Components;
+using DurableMultiAgentTemplate.Client.Services;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddFluentUIComponents();
+
+builder.Services.AddHttpClient<AgentChatService>(httpClient =>
+{
+    httpClient.BaseAddress = new("http://localhost:7133/api/");
+});
 
 var app = builder.Build();
 

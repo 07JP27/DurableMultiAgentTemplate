@@ -1,0 +1,62 @@
+﻿@using DurableMultiAgentTemplate.Client.Model
+@using DurableMultiAgentTemplate.Model
+@using Markdig
+
+@if (Messages != null && Messages.Count > 0)
+{
+    <FluentGrid>
+        @foreach (var message in Messages)
+        {
+            @if (message is UserChatMessage userChatMessage)
+            {
+                <FluentGridItem Justify="JustifyContent.FlexStart" xs="12">
+                    <FluentGrid Style="width: 100%;">
+                        <FluentGridItem Style="width: 24px">
+                            <FluentEmoji Width="16px" Value="@(new Microsoft.FluentUI.AspNetCore.Components.Emojis.SmileysEmotion.Color.Default.SlightlySmilingFace())" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="11">
+                            <FluentLabel Typo="Typography.Body"> @userChatMessage.Message</FluentLabel>
+                        </FluentGridItem>
+                    </FluentGrid>
+                </FluentGridItem>
+
+            }
+            else if (message is AgentChatMessage agentChatMessage)
+            {
+                <FluentGridItem Justify="JustifyContent.FlexStart" xs="12">
+                    <FluentGrid Style="width: 100%;">
+                        <FluentGridItem Style="width: 24px">
+                            <FluentEmoji Width="16px" Value="@(new Microsoft.FluentUI.AspNetCore.Components.Emojis.SmileysEmotion.Color.Default.Robot())" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="11">
+                            <div>
+                                @((MarkupString)Markdown.ToHtml(agentChatMessage.Message.Content))
+                            </div>
+                            <div>
+                                使用されたエージェント: @string.Join(", ", agentChatMessage.Message.CalledAgentNames)
+                            </div>
+                        </FluentGridItem>
+                    </FluentGrid>
+                </FluentGridItem>
+            }
+            else if (message is InfoChatMessage infoChatMessage)
+            {
+                <FluentGridItem Justify="JustifyContent.Center" xs="12">
+                    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
+                        @if (infoChatMessage.IsShowProgress)
+                        {
+                            <FluentProgressRing />
+                        }
+                        <FluentLabel Typo="Typography.Body">@infoChatMessage.Info</FluentLabel>
+                    </FluentStack>
+                </FluentGridItem>
+            }
+        }
+    </FluentGrid>
+}
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public List<ChatMessage>? Messages { get; set; }
+}

@@ -1,0 +1,15 @@
+﻿.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.thread {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.input {
+    padding: 5px;
+}
