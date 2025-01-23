@@ -62,6 +62,8 @@ if(Random.Shared.Next(0, 10) < 3)
 1. Update `localsettings.json` in the `DurableMultiAgentTemplate` project with your AOAI resource and deployment model name.
 2. Run the project.
 
+You can use either the .NET or Python client to test the project.
+
 ## Client to test (.NET)
 
 You can test the operation using a simple chat app in .NET as follows:
