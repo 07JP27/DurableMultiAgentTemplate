@@ -1,6 +1,6 @@
 [
   {
-    "Name": "新しいプロファイル",
+    "Name": "DurableMultiAgentをテスト",
     "Projects": [
       {
         "Path": "DurableMultiAgentTemplate\\DurableMultiAgentTemplate.csproj",

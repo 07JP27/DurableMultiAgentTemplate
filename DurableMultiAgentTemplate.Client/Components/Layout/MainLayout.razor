@@ -1,5 +1,8 @@
 ﻿@inherits LayoutComponentBase
 
+<FluentDesignTheme @bind-Mode="@Mode" @bind-OfficeColor="@OfficeColor" StorageName="theme" />
+
+
 <div class="content">
 	@Body
 </div>
@@ -9,3 +12,9 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code
+{
+    public DesignThemeModes Mode { get; set; }
+    public OfficeColor? OfficeColor { get; set; }
+}
