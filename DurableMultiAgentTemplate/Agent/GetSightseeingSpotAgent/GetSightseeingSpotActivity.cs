@@ -97,7 +97,7 @@ public class GetSightseeingSpotActivity(AzureOpenAIClient openAIClient,
 
         ### 6. **近隣の島**
         #### **ヌサペニダ島**
-        - {req.Location}ら船でアクセス可能な離島。
+        - {req.Location}から船でアクセス可能な離島。
         - クリスタルベイやケリンキンビーチの絶景が有名。
 
         #### **レンボンガン島**
