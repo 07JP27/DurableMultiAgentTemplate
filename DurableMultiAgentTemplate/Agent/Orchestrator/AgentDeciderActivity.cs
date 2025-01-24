@@ -45,7 +45,7 @@ public class AgentDeciderActivity(AzureOpenAIClient openAIClient, IOptions<AppCo
 
         if (chatResult.Value.FinishReason == ChatFinishReason.ToolCalls)
         {
-            var result = new AgentDeciderResult
+            return new AgentDeciderResult
             {
                 IsAgentCall = true,
                 AgentCalls = chatResult.Value.ToolCalls.Select(toolCall => new AgentCall
@@ -54,15 +54,19 @@ public class AgentDeciderActivity(AzureOpenAIClient openAIClient, IOptions<AppCo
                     Arguments = JsonDocument.Parse(toolCall.FunctionArguments)
                 }).ToArray()
             };
-            return result;
         }
         else
         {
-            return new AgentDeciderResult
+            if (chatResult.Value.FinishReason == ChatFinishReason.Stop)
             {
-                IsAgentCall = false,
-                Content = chatResult.Value.Content.First().Text
-            };
+                return new AgentDeciderResult
+                {
+                    IsAgentCall = false,
+                    Content = chatResult.Value.Content.First().Text
+                };
+            }
         }
+        
+        throw new InvalidOperationException("Invalid OpenAI response");
     }
 }
