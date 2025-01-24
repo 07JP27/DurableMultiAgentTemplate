@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "Multi agent test",
+    "Projects": [
+      {
+        "Path": "DurableMultiAgentTemplate\\DurableMultiAgentTemplate.csproj",
+        "Action": "Start",
+        "DebugTarget": "DurableMultiAgentTemplate"
+      },
+      {
+        "Path": "DurableMultiAgentTemplate.Client\\DurableMultiAgentTemplate.Client.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
+      }
+    ]
+  }
+]

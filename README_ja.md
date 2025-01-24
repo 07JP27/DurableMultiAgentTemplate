@@ -56,12 +56,45 @@ if(Random.Shared.Next(0, 10) < 3)
 }
 ```
 
-## テストのためのクライアント
+## 実行方法
+
+1. `DurableMultiAgentTemplate` プロジェクトの `localsettings.json` を更新し、AOAI リソースとデプロイメントモデル名を設定します。
+2. プロジェクトを実行します。
+
+プロジェクトのテストには .NET クライアントまたは Python クライアントのどちらかを使用できます。
+
+## テストのためのクライアント (.NET)
+
+.NET のシンプルなチャットアプリを使用して動作をテストできます：
+
+https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
+
+### Visual Studio 2022
+
+1. Visual Studio 2022 でソリューションファイル `DurableMultiAgentTemplate.sln` を開きます。
+2. スタートアッププロジェクトとして `Multi agent test` を選択します。
+   - これにより、Durable Functions プロジェクトと .NET クライアントプロジェクトの両方が同時に実行されます。
+3. `F5` を押してプロジェクトを実行します。
+   - エラーが発生した場合は、`DurableMultiAgentTemplate` プロジェクトの `localsettings.json` ファイルを確認してください。
+
+### Visual Studio Code
+
+以下のコマンドで実行できます：
+
+```bash
+dotnet run --project .\DurableMultiAgentTemplate\DurableMultiAgentTemplate.csproj
+dotnet run --project .\DurableMultiAgentTemplate.Client\DurableMultiAgentTemplate.Client.csproj
+```
+
+プロジェクトを実行した後、`http://localhost:{your port number}` でクライアントにアクセスできます。
+
+## テストのためのクライアント (Python)
 [client.py](client.py) を使用して、Orchestrator-Workers パターンをテストできます。  
 このクライアントは Streamlit で作成されていますので、次のコマンドで実行できます：
 ```bash
 streamlit run client.py
 ```
+
 
 ## APIリクエスト
 ### エンドポイント

@@ -1,4 +1,4 @@
-using System.Text.Encodings.Web;
+﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 using Azure.AI.OpenAI;
@@ -23,7 +23,7 @@ builder.Services
         {
             clientBuilder.AddClient<AzureOpenAIClient, AzureOpenAIClientOptions>(options =>
             {
-                var endpoint = configuration["AppConfig:OpenAIEndpoint"];
+                var endpoint = builder.Configuration["AppConfig:OpenAIEndpoint"];
                 if (string.IsNullOrEmpty(endpoint)) throw new InvalidOperationException("AppConfig:OpenAIEndpoint is required.");
 
                 TokenCredential credential = builder.Environment.IsDevelopment() ?

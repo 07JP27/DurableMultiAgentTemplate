@@ -1,0 +1,28 @@
+﻿@using DurableMultiAgentTemplate.Model
+@using Markdig
+<div style="width: 100%; height: 100%;">
+    <h3>追加情報</h3>
+
+    <FluentStack Orientation="Orientation.Vertical">
+        @foreach (var additionalInfo in AdditionalInfo ?? [])
+        {
+            @if (additionalInfo is AdditionalMarkdownInfo markdownInfo)
+            {
+                <div>
+                    @((MarkupString)Markdown.ToHtml(markdownInfo.MarkdownText))
+                </div>
+            }
+            else if (additionalInfo is AdditionalLinkInfo linkInfo)
+            {
+                <div>
+                    <a href="@linkInfo.Uri" target="_blank">@linkInfo.LinkText</a>
+                </div>
+            }
+            <FluentDivider Style="width: 100%;" />
+        }
+    </FluentStack>
+</div>
+@code {
+    [Parameter]
+    public List<IAdditionalInfo>? AdditionalInfo { get; set; }
+}

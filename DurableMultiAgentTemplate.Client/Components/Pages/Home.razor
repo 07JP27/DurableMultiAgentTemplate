@@ -1,0 +1,52 @@
+﻿@page "/"
+@using DurableMultiAgentTemplate.Client.Components.Chat
+@using DurableMultiAgentTemplate.Client.Components.Utilities
+@using DurableMultiAgentTemplate.Client.Model
+@using DurableMultiAgentTemplate.Model
+@using Markdig
+
+<PageTitle>Simple agent client</PageTitle>
+
+<SectionContent SectionName="ToolBar">
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.End">
+        <FluentCheckbox @bind-Value="_chatInput.RequireAdditionalInfo" Label="Additional Info" Disabled="@(_messages.Count != 0)" />
+        <FluentButton OnClick="Reset" Disabled="_executionTracker.IsInProgress">Clear History</FluentButton>
+    </FluentStack>
+</SectionContent>
+
+<ScrollToBottom ScrollHostId="thread" Context="_scrollToBottomContext" />
+
+<FluentStack Orientation="Orientation.Horizontal" Style="width:100%; height: 100%;">
+    @if (_chatInput.RequireAdditionalInfo)
+    {
+        <div class="content" style="width: 450px; height: 100%; padding: 10px;">
+            <div class="container">
+                <div id="additional-info-thread" class="thread">
+                    <AdditionalInfoList AdditionalInfo="_additionalInfo" />
+                </div>
+            </div>
+        </div>
+        <FluentDivider Orientation="Orientation.Vertical" Style="height: 100%;" />
+    }
+    <div class="content">
+        <div class="container">
+            <div id="thread" class="thread">
+                <ChatThread Messages="_messages" />
+            </div>
+            <div class="input">
+                <FluentEditForm Model="_chatInput" OnSubmit="SendMessageAsync">
+                    <FluentGrid>
+                        <FluentGridItem xs="11">
+                            <InputText @bind-Value="_chatInput.Message" Placeholder="Type a message"
+                                       style="width: 100%;"
+                                       class="textfield" />
+                        </FluentGridItem>
+                        <FluentGridItem Justify="JustifyContent.FlexEnd" Gap="10" xs="1">
+                            <FluentButton Disabled="_executionTracker.IsInProgress" Type="ButtonType.Submit" Style="width:100%;">Send</FluentButton>
+                        </FluentGridItem>
+                    </FluentGrid>
+                </FluentEditForm>
+            </div>
+        </div>
+    </div>
+</FluentStack>
