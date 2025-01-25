@@ -31,7 +31,7 @@ public class GetSightseeingSpotActivity(AzureOpenAIClient openAIClient,
         ### 1. **寺院**
         #### **タナロット寺院（Pura Tanah Lot）**
         - 海の上に建つ寺院で、夕日とともに見える景色が絶景。
-        - バリ島を代表する観光名所の一つ。
+        - {req.Location}を代表する観光名所の一つ。
 
         #### **ウルワツ寺院（Pura Luhur Uluwatu）**
         - 崖の上に位置する寺院。インド洋を見渡す絶景スポット。
@@ -75,17 +75,17 @@ public class GetSightseeingSpotActivity(AzureOpenAIClient openAIClient,
 
         ### 4. **文化体験**
         #### **ウブド王宮（Ubud Palace）**
-        - 伝統的な建築が美しい王宮で、バリ舞踊のパフォーマンスが行われる。
+        - 伝統的な建築が美しい王宮で、舞踊のパフォーマンスが行われる。
         - ウブド市場も近くにあり、ショッピングにも最適。
 
-        #### **バリ伝統舞踊**
+        #### **伝統舞踊**
         - ケチャダンスやレゴンダンスなど、寺院や専用会場で観賞できる。
-        - バリの神話や伝説が題材となった迫力あるパフォーマンス。
+        - 神話や伝説が題材となった迫力あるパフォーマンス。
 
         ---
 
         ### 5. **アクティビティ**
-        #### **バリサファリ＆マリンパーク**
+        #### **サファリ＆マリンパーク**
         - 動物園や水族館が融合したエンターテイメント施設。
         - サファリツアーやアニマルショーが楽しめる。
 
@@ -97,7 +97,7 @@ public class GetSightseeingSpotActivity(AzureOpenAIClient openAIClient,
 
         ### 6. **近隣の島**
         #### **ヌサペニダ島**
-        - バリ島から船でアクセス可能な離島。
+        - {req.Location}から船でアクセス可能な離島。
         - クリスタルベイやケリンキンビーチの絶景が有名。
 
         #### **レンボンガン島**
@@ -106,7 +106,7 @@ public class GetSightseeingSpotActivity(AzureOpenAIClient openAIClient,
 
         ---
 
-        バリ島は多様な楽しみ方ができるため、目的に応じて行き先を選んでみてください！
+        {req.Location}は多様な楽しみ方ができるため、目的に応じて行き先を選んでみてください！
         """;
 
         return result;
