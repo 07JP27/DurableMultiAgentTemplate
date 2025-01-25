@@ -41,17 +41,23 @@ public class SynthesizerWithAdditionalInfoActivity(AzureOpenAIClient openAIClien
             allMessages,
             options
         );
-        var rawRes = chatResult.Value.Content.First();
 
-        AgentResponseWithAdditionalInfoFormat res = JsonSerializer.Deserialize(
-            rawRes.Text, 
-            SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat);
-
-        return new AgentResponseWithAdditionalInfoDto
+        if (chatResult.Value.FinishReason == ChatFinishReason.Stop)
         {
-            Content = res.Content,
-            AdditionalInfo = res.AdditionalInfo,
-            CalledAgentNames = req.CalledAgentNames,
-        };
+            AgentResponseWithAdditionalInfoFormat? res = JsonSerializer.Deserialize(
+                chatResult.Value.Content.First().Text,
+                SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat);
+
+            if (res == null) throw new InvalidOperationException("Failed to deserialize the result");
+
+            return new AgentResponseWithAdditionalInfoDto
+            {
+                Content = res.Content ?? throw new InvalidOperationException("Content is null"),
+                AdditionalInfo = res.AdditionalInfo ?? throw new InvalidOperationException("AdditionalInfo is null"),
+                CalledAgentNames = req.CalledAgentNames,
+            };
+        }
+
+        throw new InvalidOperationException("Failed to synthesize the result");
     }
 }

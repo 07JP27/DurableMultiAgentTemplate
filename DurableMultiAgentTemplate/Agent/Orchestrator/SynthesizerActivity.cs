@@ -31,12 +31,15 @@ public class SynthesizerActivity(AzureOpenAIClient openAIClient, IOptions<AppCon
             allMessages
         );
 
-        var res = new AgentResponseDto
+        if (chatResult.Value.FinishReason == ChatFinishReason.Stop)
         {
-            Content = chatResult.Value.Content.First().Text,
-            CalledAgentNames = req.CalledAgentNames
-        };
+            return new AgentResponseDto
+            {
+                Content = chatResult.Value.Content.First().Text,
+                CalledAgentNames = req.CalledAgentNames
+            };
+        }
 
-        return res;
+        throw new InvalidOperationException("Failed to synthesize the result");
     }
 }
