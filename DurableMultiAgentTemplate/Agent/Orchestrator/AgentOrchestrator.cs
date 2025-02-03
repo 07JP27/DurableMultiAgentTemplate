@@ -24,26 +24,26 @@ public class AgentOrchestrator()
         ArgumentNullException.ThrowIfNull(reqData);
 
         // AgentDecider呼び出し（呼び出すAgentの決定）
-        var AgentDeciderResult = await context.CallActivityAsync<AgentDeciderResult>(AgentActivityName.AgentDeciderActivity, reqData, DefaultTaskOptions);
+        var agentDeciderResult = await context.CallActivityAsync<AgentDeciderResult>(AgentActivityName.AgentDeciderActivity, reqData, DefaultTaskOptions);
 
         // AgentDeciderでエージェントを呼び出さない場合には、そのまま返す
-        if (!AgentDeciderResult.IsAgentCall)
+        if (!agentDeciderResult.IsAgentCall)
         {
             logger.LogInformation("No agent call happened");
             if (reqData.RequireAdditionalInfo)
             {
-                return new AgentResponseWithAdditionalInfoDto{Content = AgentDeciderResult.Content};
+                return new AgentResponseWithAdditionalInfoDto{Content = agentDeciderResult.Content};
             }
             else
             {
-                return new AgentResponseDto{Content = AgentDeciderResult.Content};
+                return new AgentResponseDto{Content = agentDeciderResult.Content};
             }
         }
 
         // Agent呼び出し
         logger.LogInformation("Agent call happened");
         var parallelAgentCall = new List<Task<string>>();
-        foreach (var agentCall in AgentDeciderResult.AgentCalls)
+        foreach (var agentCall in agentDeciderResult.AgentCalls)
         {
             var args = agentCall.Arguments;
             parallelAgentCall.Add(context.CallActivityAsync<string>(agentCall.AgentName, args, DefaultTaskOptions));
