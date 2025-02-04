@@ -56,7 +56,7 @@ public class AgentOrchestrator()
         {
             AgentCallResult = parallelAgentCall.Select(x => x.Result).ToList(),
             AgentReques = reqData,
-            CalledAgentNames = AgentDeciderResult.AgentCalls.Select(x => x.AgentName).ToList()
+            CalledAgentNames = agentDeciderResult.AgentCalls.Select(x => x.AgentName).ToList()
         };
         
         if (reqData.RequireAdditionalInfo)
