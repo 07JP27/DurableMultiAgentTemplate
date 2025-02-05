@@ -37,7 +37,7 @@ public class AgentChatService(HttpClient httpClient)
         }
 
         // If the cancellation token is requested, terminate the agent response.
-        await httpClient.PostAsync(invokeAsyncResult.TerminatePostUri, null);
+        await httpClient.PostAsync(invokeAsyncResult.TerminatePostUri, null, CancellationToken.None);
         throw new TaskCanceledException("The agent response is not ready.");
     }
 
