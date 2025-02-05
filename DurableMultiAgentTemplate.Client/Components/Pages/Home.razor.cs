@@ -3,12 +3,13 @@ using DurableMultiAgentTemplate.Client.Model;
 using DurableMultiAgentTemplate.Client.Services;
 using DurableMultiAgentTemplate.Client.Utilities;
 using DurableMultiAgentTemplate.Model;
-using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace DurableMultiAgentTemplate.Client.Components.Pages;
 
 public partial class Home(AgentChatService agentChatService, ILogger<Home> logger)
 {
+    private const int _chatTimeoutMs = 20000;
+
     private readonly ScrollToBottomContext _scrollToBottomContext = new();
     private readonly ExecutionTracker _executionTracker = new();
     private readonly ChatInput _chatInput = new();
@@ -17,6 +18,14 @@ public partial class Home(AgentChatService agentChatService, ILogger<Home> logge
 
     private async Task SendMessageAsync()
     {
+        void handleError(string originalInputMessage, string errorMessage)
+        {
+            _chatInput.Message = originalInputMessage;
+            _messages.RemoveAt(_messages.Count - 1);
+            _messages.Add(new InfoChatMessage($"Failed to send message: {errorMessage}", false));
+            _scrollToBottomContext.RequestScrollToBottom();
+        }
+
         if (_executionTracker.IsInProgress) return;
         using var _ = _executionTracker.Start();
         if (string.IsNullOrWhiteSpace(_chatInput.Message)) return;
@@ -29,7 +38,9 @@ public partial class Home(AgentChatService agentChatService, ILogger<Home> logge
 
         try
         {
-            var response = await agentChatService.GetAgentResponseAsync(new AgentRequestDto
+            // Send the message to the agent
+            using CancellationTokenSource cancellationTokenSource = new();
+            var getAgentResponseTask = agentChatService.GetAgentResponseAsync(new AgentRequestDto
             {
                 Messages = _messages.Where(x => x.IsRequestTarget).Select(x => x switch
                 {
@@ -47,7 +58,20 @@ public partial class Home(AgentChatService agentChatService, ILogger<Home> logge
                 })
                 .ToList(),
                 RequireAdditionalInfo = _chatInput.RequireAdditionalInfo,
-            });
+            }, cancellationTokenSource.Token);
+
+            // Wait for the agent response or timeout
+            var winner = await Task.WhenAny(getAgentResponseTask, Task.Delay(_chatTimeoutMs));
+            if (winner != getAgentResponseTask)
+            {
+                // Timeout
+                cancellationTokenSource.Cancel();
+                handleError(message,"The request timed out. Please try again.");
+                return;
+            }
+
+            // Process the agent response
+            var response = await getAgentResponseTask;
             _messages.RemoveAt(_messages.Count - 1);
             _messages.Add(new AgentChatMessage(response));
 
@@ -62,10 +86,7 @@ public partial class Home(AgentChatService agentChatService, ILogger<Home> logge
         catch (Exception e)
         {
             logger.LogError(e, "Failed to send message: {Message}", message);
-            _chatInput.Message = message;
-            _messages.RemoveAt(_messages.Count - 1);
-            _messages.Add(new InfoChatMessage($"Failed to send message: {e.Message}", false));
-            _scrollToBottomContext.RequestScrollToBottom();
+            handleError(message,$"Failed to send message: {e.Message}");
         }
     }
 
