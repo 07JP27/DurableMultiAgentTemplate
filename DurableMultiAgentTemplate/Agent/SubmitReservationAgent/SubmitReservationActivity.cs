@@ -5,10 +5,10 @@ using Microsoft.Extensions.Options;
 
 namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
 
-public class SubmitReservationActivity(AzureOpenAIClient openAIClient, IOptions<AppConfiguration> configuration)
+public class SubmitReservationActivity(AzureOpenAIClient openAIClient, IOptions<AppConfig> configuration)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration.Value;
+    private readonly AppConfig _configuration = configuration.Value;
 
     [Function(AgentActivityName.SubmitReservationAgent)]
     public string Run([ActivityTrigger] SubmitReservationRequest req, FunctionContext executionContext)

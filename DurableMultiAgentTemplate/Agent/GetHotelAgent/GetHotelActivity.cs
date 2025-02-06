@@ -7,11 +7,11 @@ using Microsoft.Extensions.Options;
 namespace DurableMultiAgentTemplate.Agent.GetHotelAgent;
 
 public class GetHotelActivity(AzureOpenAIClient openAIClient, 
-    IOptions<AppConfiguration> configuration, 
+    IOptions<AppConfig> configuration, 
     ILogger<GetHotelActivity> logger)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration.Value;
+    private readonly AppConfig _configuration = configuration.Value;
 
     [Function(AgentActivityName.GetHotelAgent)]
     public string Run([ActivityTrigger] GetHotelRequest req, FunctionContext executionContext)

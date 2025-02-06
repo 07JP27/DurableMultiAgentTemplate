@@ -7,11 +7,11 @@ using Microsoft.Extensions.Options;
 namespace DurableMultiAgentTemplate.Agent.GetSightseeingSpotAgent;
 
 public class GetSightseeingSpotActivity(AzureOpenAIClient openAIClient, 
-    IOptions<AppConfiguration> configuration,
+    IOptions<AppConfig> configuration,
     ILogger<GetSightseeingSpotActivity> logger)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration.Value;
+    private readonly AppConfig _configuration = configuration.Value;
 
     [Function(AgentActivityName.GetSightseeingSpotAgent)]
     public string Run([ActivityTrigger] GetSightseeingSpotRequest req, FunctionContext executionContext)

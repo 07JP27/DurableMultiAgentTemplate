@@ -1,4 +1,5 @@
-using System.Text.Json;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Azure.AI.OpenAI;
 using DurableMultiAgentTemplate.Extension;
 using DurableMultiAgentTemplate.Json;
@@ -10,11 +11,8 @@ using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 
-public class SynthesizerWithAdditionalInfoActivity(AzureOpenAIClient openAIClient, IOptions<AppConfiguration> configuration)
+public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient)
 {
-    private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration.Value;
-
     [Function(AgentActivityName.SynthesizerWithAdditionalInfoActivity)]
     public async Task<AgentResponseWithAdditionalInfoDto> Run([ActivityTrigger] SynthesizerRequest req, FunctionContext executionContext)
     {
@@ -35,7 +33,6 @@ public class SynthesizerWithAdditionalInfoActivity(AzureOpenAIClient openAIClien
             JsonSchemaGenerator.GenerateSchemaAsBinaryData(SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat))
         };
 
-        var chatClient = _openAIClient.GetChatClient(_configuration.OpenAIDeploy);
         var chatResult = await chatClient.CompleteChatAsync(
             allMessages,
             options

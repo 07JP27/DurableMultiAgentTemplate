@@ -7,11 +7,11 @@ using Microsoft.Extensions.Options;
 namespace DurableMultiAgentTemplate.Agent.GetDestinationSuggestAgent;
 
 public class GetDestinationSuggestActivity(AzureOpenAIClient openAIClient,
-    IOptions<AppConfiguration> configuration,
+    IOptions<AppConfig> configuration,
     ILogger<GetDestinationSuggestActivity> logger)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration.Value;
+    private readonly AppConfig _configuration = configuration.Value;
 
     [Function(AgentActivityName.GetDestinationSuggestAgent)]
     public string Run([ActivityTrigger] GetDestinationSuggestRequest req, FunctionContext executionContext)

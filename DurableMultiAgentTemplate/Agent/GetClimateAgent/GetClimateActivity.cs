@@ -7,11 +7,11 @@ using Microsoft.Extensions.Options;
 namespace DurableMultiAgentTemplate.Agent.GetClimateAgent;
 
 public class GetClimateActivity(AzureOpenAIClient openAIClient, 
-    IOptions<AppConfiguration> configuration,
+    IOptions<AppConfig> configuration,
     ILogger<GetClimateActivity> logger)
 {
     private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration.Value;
+    private readonly AppConfig _configuration = configuration.Value;
 
     [Function(AgentActivityName.GetClimateAgent)]
     public string Run([ActivityTrigger] GetClimateRequest req, FunctionContext executionContext)
