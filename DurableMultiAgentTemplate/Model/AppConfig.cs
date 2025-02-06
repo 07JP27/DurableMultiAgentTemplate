@@ -10,7 +10,8 @@ public class OpenAIConfig
 {
     public required string Endpoint { get; init; }
     public string? ApiKey { get; init; }
-    public required string Deploy { get; init; }
+    public required string ChatModelDeployName { get; init; }
+    public required string EmbeddingModelDeployName { get; init; }
 }
 
 public class CosmosDbConfig

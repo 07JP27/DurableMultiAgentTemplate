@@ -54,8 +54,16 @@ builder.Services
 builder.Services.AddSingleton(sp =>
 {
     var appConfiguration = sp.GetRequiredService<IOptions<AppConfig>>().Value;
+    _ = appConfiguration.OpenAI.ChatModelDeployName ?? throw new InvalidOperationException("AppConfig:OpenAI:ChatModelDeployName is required.");
     var openAIClient = sp.GetRequiredService<AzureOpenAIClient>();
-    return openAIClient.GetChatClient(appConfiguration.OpenAI.Deploy);
+    return openAIClient.GetChatClient(appConfiguration.OpenAI.ChatModelDeployName);
+});
+builder.Services.AddSingleton(sp =>
+{ 
+    var appConfiguration = sp.GetRequiredService<IOptions<AppConfig>>().Value;
+    _ = appConfiguration.OpenAI.EmbeddingModelDeployName ?? throw new InvalidOperationException("AppConfig:OpenAI:EmbeddingModelDeployName is required.");
+    var openAIClient = sp.GetRequiredService<AzureOpenAIClient>();
+    return openAIClient.GetEmbeddingClient(appConfiguration.OpenAI.EmbeddingModelDeployName);
 });
 
 builder.Services.Configure<JsonSerializerOptions>(jsonSerializerOptions =>
