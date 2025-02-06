@@ -8,7 +8,7 @@ namespace DurableMultiAgentTemplate.Client.Components.Pages;
 
 public partial class Home(AgentChatService agentChatService, ILogger<Home> logger)
 {
-    private const int _chatTimeoutMs = 20000;
+    private const int _chatTimeoutMs = 60000;
 
     private readonly ScrollToBottomContext _scrollToBottomContext = new();
     private readonly ExecutionTracker _executionTracker = new();
