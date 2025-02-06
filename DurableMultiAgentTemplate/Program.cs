@@ -43,7 +43,7 @@ builder.Services
 
                 return string.IsNullOrWhiteSpace(appConfig.CosmosDb.ApiKey) ?
                     new CosmosClient(appConfig.CosmosDb.Endpoint, credential, options) :
-                    new CosmosClient(appConfig.CosmosDb.Endpoint, new AzureKeyCredential(appConfig.CosmosDb.ApiKey), options);
+                    new CosmosClient(appConfig.CosmosDb.Endpoint, appConfig.CosmosDb.ApiKey, options);
             }).ConfigureOptions(builder.Configuration.GetSection("AppConfig:CosmosDb"));
 
             clientBuilder.UseCredential(builder.Environment.IsDevelopment() ?
