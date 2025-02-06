@@ -1,9 +1,12 @@
 {
-    "IsEncrypted": false,
-    "Values": {
-        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-        "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-        "AppConfig:OpenAIEndpoint": "https://{your endpoint}.openai.azure.com/",
-        "AppConfig:OpenAIDeploy": "deploy"
-    }
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "AppConfig:OpenAI:Endpoint": "https://<your AOAI resource name>.openai.azure.com/",
+    "AppConfig:OpenAI:Deploy": "deploy",
+    "AppConfig:OpenAI:ApiKey": "",
+    "AppConfig:CosmosDb:Endpoint": "your cosmosdb endopoint",
+    "AppConfig:CosmosDb:ApiKey": ""
+  }
 }
