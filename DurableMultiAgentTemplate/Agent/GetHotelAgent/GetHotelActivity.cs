@@ -3,16 +3,13 @@ using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.GetHotelAgent;
 
-public class GetHotelActivity(AzureOpenAIClient openAIClient, 
-    IOptions<AppConfig> configuration, 
+public class GetHotelActivity(ChatClient chatClient, 
     ILogger<GetHotelActivity> logger)
 {
-    private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfig _configuration = configuration.Value;
-
     [Function(AgentActivityName.GetHotelAgent)]
     public string Run([ActivityTrigger] GetHotelRequest req, FunctionContext executionContext)
     {

@@ -10,11 +10,8 @@ using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 
-public class AgentDeciderActivity(AzureOpenAIClient openAIClient, IOptions<AppConfig> configuration)
+public class AgentDeciderActivity(ChatClient chatClient)
 {
-    private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfig _configuration = configuration.Value;
-
     [Function(AgentActivityName.AgentDeciderActivity)]
     public async Task<AgentDeciderResult> Run([ActivityTrigger] AgentRequestDto reqData, FunctionContext executionContext)
     {
@@ -37,7 +34,6 @@ public class AgentDeciderActivity(AzureOpenAIClient openAIClient, IOptions<AppCo
             }
         };
 
-        var chatClient = _openAIClient.GetChatClient(_configuration.OpenAI.Deploy);
         var chatResult = await chatClient.CompleteChatAsync(
             allMessages,
             options

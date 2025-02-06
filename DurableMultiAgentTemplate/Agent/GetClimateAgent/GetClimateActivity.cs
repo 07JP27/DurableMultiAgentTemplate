@@ -3,16 +3,13 @@ using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.GetClimateAgent;
 
-public class GetClimateActivity(AzureOpenAIClient openAIClient, 
-    IOptions<AppConfig> configuration,
+public class GetClimateActivity(ChatClient chatClient, 
     ILogger<GetClimateActivity> logger)
 {
-    private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfig _configuration = configuration.Value;
-
     [Function(AgentActivityName.GetClimateAgent)]
     public string Run([ActivityTrigger] GetClimateRequest req, FunctionContext executionContext)
     {
