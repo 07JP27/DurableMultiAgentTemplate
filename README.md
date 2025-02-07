@@ -51,8 +51,8 @@ When implementing an actual Agent based on the sample Agent, please remove the f
 ```cs
 if(Random.Shared.Next(0, 10) < 3)
 {
-	logger.LogInformation("Failed to get climate information");
-	throw new InvalidOperationException("Failed to get climate information");
+    logger.LogInformation("Failed to get climate information");
+    throw new InvalidOperationException("Failed to get climate information");
 }
 ```
 
@@ -61,13 +61,13 @@ if(Random.Shared.Next(0, 10) < 3)
    - Azure OpenAI Service with a deployed chat completions model (embedding model deployment is optional)
    - Azure Cosmos DB (optional, if used)
 
-1. Update the `localsettings.json` of the `DurableMultiAgentTemplate` project with your resource information below:   
+1. Update the `local.settings.json` of the `DurableMultiAgentTemplate` project with your resource information below:   
    - Azure OpenAI endpoint and deployment name  
    - Azure Cosmos DB endpoint (optional if not used)  
      
    You can choose between API key or Entra ID authentication for each service:  
-   - If using an API key: Include the API key in the `localsettings.json` file.  
-   - If using Entra ID authentication: Authenticate using the `az login` command with Azure CLI. Leave the API key blank in the `localsettings.json` file. Note that **the authenticated user must have RBAC permissions for each service.**
+   - If using an API key: Include the API key in the `local.settings.json` file.  
+   - If using Entra ID authentication: Authenticate using the `az login` command with Azure CLI. Leave the API key blank in the `local.settings.json` file. Note that **the authenticated user must have RBAC permissions for each service.**
 
 2. Run the project.
 
@@ -86,7 +86,7 @@ https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 2. Select `Multi agent test` as the startup project.
    - This will run both the Durable Functions and .NET client projects simultaneously.
 3. Press `F5` to run the projects.
-   - If you encounter an error, please check the `localsettings.json` file in the `DurableMultiAgentTemplate` project.
+   - If you encounter an error, please check the `local.settings.json` file in the `DurableMultiAgentTemplate` project.
 
 ### Visual Studio Code
 

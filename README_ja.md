@@ -61,13 +61,13 @@ if(Random.Shared.Next(0, 10) < 3)
 	- Azure OpenAI Serviceとチャット補完モデルのデプロイ（埋め込みモデルのデプロイは任意）
 	- Azure Cosmos DB（使用しない場合は省略可能）
 
-1. `DurableMultiAgentTemplate` プロジェクトの `localsettings.json` を更新し、ご自身の以下のリソースの情報を設定します。
+1. `DurableMultiAgentTemplate` プロジェクトの `local.settings.json` を更新し、ご自身の以下のリソースの情報を設定します。
 	- Azure OpenAIのエンドポイントとデプロイ名
 	- Azure Cosmos DBのエンドポイント（使用しない場合は省略可能）
 
 	各サービスへの認証はAPIキーまたはEntra ID認証を選択できます。
-	- APIキーを使用する場合：`localsettings.json` ファイルにAPIキーを記述してください。
-	- Entra ID認証を使用する場合：Azure CLIを使用して`az login`コマンドで認証してください。`localsettings.json` ファイルAPIキーは空白にしてください。この際に、**認証したユーザーに各サービスのRBACが付与されている必要があることに注意してください。**
+	- APIキーを使用する場合：`local.settings.json` ファイルにAPIキーを記述してください。
+	- Entra ID認証を使用する場合：Azure CLIを使用して`az login`コマンドで認証してください。`local.settings.json` ファイルAPIキーは空白にしてください。この際に、**認証したユーザーに各サービスのRBACが付与されている必要があることに注意してください。**
 
 2. プロジェクトを実行します。
 
@@ -86,7 +86,7 @@ https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 2. スタートアッププロジェクトとして `Multi agent test` を選択します。
    - これにより、Durable Functions プロジェクトと .NET クライアントプロジェクトの両方が同時に実行されます。
 3. `F5` を押してプロジェクトを実行します。
-   - エラーが発生した場合は、`DurableMultiAgentTemplate` プロジェクトの `localsettings.json` ファイルを確認してください。
+   - エラーが発生した場合は、`DurableMultiAgentTemplate` プロジェクトの `local.settings.json` ファイルを確認してください。
 
 #### Visual Studio Code での実行
 
