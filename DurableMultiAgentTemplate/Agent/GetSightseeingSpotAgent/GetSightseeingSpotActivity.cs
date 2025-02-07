@@ -3,16 +3,13 @@ using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.GetSightseeingSpotAgent;
 
-public class GetSightseeingSpotActivity(AzureOpenAIClient openAIClient, 
-    IOptions<AppConfiguration> configuration,
+public class GetSightseeingSpotActivity(ChatClient chatClient,
     ILogger<GetSightseeingSpotActivity> logger)
 {
-    private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration.Value;
-
     [Function(AgentActivityName.GetSightseeingSpotAgent)]
     public string Run([ActivityTrigger] GetSightseeingSpotRequest req, FunctionContext executionContext)
     {

@@ -1,15 +1,14 @@
-using Azure.AI.OpenAI;
+﻿using Azure.AI.OpenAI;
 using DurableMultiAgentTemplate.Model;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Options;
+using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
 
-public class SubmitReservationActivity(AzureOpenAIClient openAIClient, IOptions<AppConfiguration> configuration)
+public class SubmitReservationActivity(ChatClient chatClient, CosmosClient cosmosClient)
 {
-    private readonly AzureOpenAIClient _openAIClient = openAIClient;
-    private readonly AppConfiguration _configuration = configuration.Value;
-
     [Function(AgentActivityName.SubmitReservationAgent)]
     public string Run([ActivityTrigger] SubmitReservationRequest req, FunctionContext executionContext)
     {

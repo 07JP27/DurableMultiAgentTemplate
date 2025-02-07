@@ -4,7 +4,6 @@
 
 This repository is a template project for implementing the Orchestrator-Workers pattern introduced in Anthropic's blog "[Building effective agents](https://www.anthropic.com/research/building-effective-agents)" using Azure Durable Functions.
 
-
 ![](https://www-cdn.anthropic.com/images/4zrzovbb/website/8985fc683fae4780fb34eab1365ab78c7e51bc8e-2401x1000.png)
 ref: [Anthropic-Building effective agents](https://www.anthropic.com/research/building-effective-agents)
 
@@ -44,7 +43,7 @@ The sample Agents defined in the template are as follows:
 - SubmitReservationAgent：Submit the reservation of the hotel
 
 Please modify the implementation of each agent, which currently uses fixed values, to include RAG, actions, and other processes, thereby creating agents that meet the requirements.
-Each agent can utilize OpenAI Client and application configuration values provided by the DI container.
+Each agent can utilize OpenAI Client, Cosmos DB Client and application configuration values provided by the DI container.
 
 To demonstrate the retry functionality of Durable Functions, each Agent includes code that emulates failures in external service calls, such as those to an LLM.
 Agent Activities fail randomly with a 30% probability during execution.
@@ -52,19 +51,32 @@ When implementing an actual Agent based on the sample Agent, please remove the f
 ```cs
 if(Random.Shared.Next(0, 10) < 3)
 {
-	logger.LogInformation("Failed to get climate information");
-	throw new InvalidOperationException("Failed to get climate information");
+    logger.LogInformation("Failed to get climate information");
+    throw new InvalidOperationException("Failed to get climate information");
 }
 ```
 
-## How to run
+## Local Setup
+0. Before running, create the following resources:
+   - Azure OpenAI Service with a deployed chat completions model (embedding model deployment is optional)
+   - Azure Cosmos DB (optional, if used)
+      - Instead of Azure Cosmos DB, you can also use the Azure Cosmos DB Emulator. For more details, please refer to the documentation below.<br/>
+      [Develop locally using the Azure Cosmos DB emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/how-to-develop-emulator?tabs=windows%2Ccsharp&pivots=api-nosql)
 
-1. Update `localsettings.json` in the `DurableMultiAgentTemplate` project with your AOAI resource and deployment model name.
+1. Update the `local.settings.json` of the `DurableMultiAgentTemplate` project with your resource information below:   
+   - Azure OpenAI endpoint and deployment name  
+   - Azure Cosmos DB endpoint (optional if not used)  
+     
+   You can choose between API key or Entra ID authentication for each service:  
+   - If using an API key: Include the API key in the `local.settings.json` file.  
+   - If using Entra ID authentication: Authenticate using the `az login` command with Azure CLI. Leave the API key blank in the `local.settings.json` file. Note that **the authenticated user must have RBAC permissions for each service.**
+
 2. Run the project.
 
-You can use either the .NET or Python client to test the project.
+## How to run in your local environment
+You can use either the .NET Blazor client or the Python Streamlit client for testing the project.
 
-## Client to test (.NET)
+## .NET client app to test
 
 You can test the operation using a simple chat app in .NET as follows:
 
@@ -76,7 +88,7 @@ https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 2. Select `Multi agent test` as the startup project.
    - This will run both the Durable Functions and .NET client projects simultaneously.
 3. Press `F5` to run the projects.
-   - If you encounter an error, please check the `localsettings.json` file in the `DurableMultiAgentTemplate` project.
+   - If you encounter an error, please check the `local.settings.json` file in the `DurableMultiAgentTemplate` project.
 
 ### Visual Studio Code
 
@@ -89,17 +101,22 @@ dotnet run --project .\DurableMultiAgentTemplate.Client\DurableMultiAgentTemplat
 
 After running the project, you can access the client at `http://localhost:{your port number}`.
 
-## Client to test (Python client)
-You can use [client.py](client.py) to test the Orchestrator-Workers pattern.
-This client made with Streamlit. So you can run it with the following command at the Client folder:
-```bash
-streamlit run client.py
+## Python client
+You can test the Orchestrator-Workers pattern using [Client/client.py]. 
+It can be executed with the following command:    
+```bash  
+dotnet run --project .\DurableMultiAgentTemplate\DurableMultiAgentTemplate.csproj  
+```  
+
+The client is created with Streamlit, so it can be run using the following command:    
+```bash  
+streamlit run client.py  
 ```
 
 ![](Assets/demo.gif)
 [The full-resolution video is here.](https://youtu.be/SACD4IyKQAI)
 
-## API
+## API specifications hosted in the template
 ### Endpoints
 There are two types of endpoints: synchronous and asynchronous. If the agent's processing takes a long time, it is recommended to use the asynchronous endpoint.
 For more information about the asynchronous pattern in Durable Functions, [see here](https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview?tabs=in-process%2Cnodejs-v3%2Cv1-model&pivots=csharp#async-http).
@@ -146,6 +163,9 @@ The response will be below:
 }
 ```
 
+![](Assets/demo.gif)
+[The full-resolution video is here.](https://youtu.be/SACD4IyKQAI)
+
 ## Request for additional information
 In general, responses from agents, especially when they include retrieval-augmented generation (RAG), can become lengthy and negatively affect the chat experience. To improve this, separating static additional information from the flow of the chat can enhance the user experience.
 
@@ -154,4 +174,10 @@ In this template, you can request additional information by setting `requireAddi
 By toggling the `REQUIRE_ADDITIONAL_INFO` flag in the client code for testing, you can experience this functionality in action. 
 ![](Assets/demo_additional.gif)
 
-This feature also reduces the token count of the `messages` array in the chat history, making the LLM's performance lighter. However, in some cases, the lack of context in the `messages` array might result in unnatural agent responses. In such cases, you may consider merging the additional information back into the `messages` array and requesting the agent's response accordingly.
+This feature also reduces the token count of the `messages` array in the chat history, making the LLM's performance lighter. 
+However, in some cases, the lack of context in the `messages` array might result in unnatural agent responses. 
+In such cases, you may consider merging the additional information back into the `messages` array and requesting the agent's response accordingly.
+
+## Azure Environment Setup  
+TBW
+https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-isolated-create-first-csharp?pivots=code-editor-vscode#sign-in-to-azure
