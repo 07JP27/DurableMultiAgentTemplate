@@ -43,7 +43,7 @@ sequenceDiagram
 - SubmitReservationAgent：ホテルの予約を送信  
 
 固定値になっている各Agentの実装をを改変してRAGやAction、その他処理を実装することで要件にあったAgentを作成してください。
-各AgentではDIコンテナからOpenAI Clientやアプリケーション構成値などが利用可能です。
+各AgentではDIコンテナからOpenAI ClientやCosmos DB Client、アプリケーション構成値などが利用可能です。
 
 Durable Functionsのリトライ機能を実証するために、各AgentにはLLMなどの外部サービス呼び出しの失敗をエミュレートするコードが記述されています。
 Agent Activityはランダムに30%の確率で実行が失敗します。
@@ -56,20 +56,31 @@ if(Random.Shared.Next(0, 10) < 3)
 }
 ```
 
-## 実行方法
+## ローカルセットアップ方法
+0. 事前に以下のリソースを作成してください。
+	- Azure OpenAI Serviceとチャット補完モデルのデプロイ（埋め込みモデルのデプロイは任意）
+	- Azure Cosmos DB（使用しない場合は省略可能）
 
-1. `DurableMultiAgentTemplate` プロジェクトの `localsettings.json` を更新し、AOAI リソースとデプロイメントモデル名を設定します。
+1. `DurableMultiAgentTemplate` プロジェクトの `localsettings.json` を更新し、ご自身の以下のリソースの情報を設定します。
+	- Azure OpenAIのエンドポイントとデプロイ名
+	- Azure Cosmos DBのエンドポイント（使用しない場合は省略可能）
+
+	各サービスへの認証はAPIキーまたはEntra ID認証を選択できます。
+	- APIキーを使用する場合：`localsettings.json` ファイルにAPIキーを記述してください。
+	- Entra ID認証を使用する場合：Azure CLIを使用して`az login`コマンドで認証してください。`localsettings.json` ファイルAPIキーは空白にしてください。この際に、**認証したユーザーに各サービスのRBACが付与されている必要があることに注意してください。**
+
 2. プロジェクトを実行します。
 
-プロジェクトのテストには .NET クライアントまたは Python クライアントのどちらかを使用できます。
+## ローカル実行方法
+プロジェクトのテストには .NET Blazor クライアントまたは Python streamlit クライアントのどちらかを使用できます。
 
-## テストのためのクライアント (.NET)
+### .NETクライアント
 
 .NET のシンプルなチャットアプリを使用して動作をテストできます：
 
 https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 
-### Visual Studio 2022
+#### Visual Studio 2022 での実行
 
 1. Visual Studio 2022 でソリューションファイル `DurableMultiAgentTemplate.sln` を開きます。
 2. スタートアッププロジェクトとして `Multi agent test` を選択します。
@@ -77,7 +88,7 @@ https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 3. `F5` を押してプロジェクトを実行します。
    - エラーが発生した場合は、`DurableMultiAgentTemplate` プロジェクトの `localsettings.json` ファイルを確認してください。
 
-### Visual Studio Code
+#### Visual Studio Code での実行
 
 以下のコマンドで実行できます：
 
@@ -88,17 +99,26 @@ dotnet run --project .\DurableMultiAgentTemplate.Client\DurableMultiAgentTemplat
 
 プロジェクトを実行した後、`http://localhost:{your port number}` でクライアントにアクセスできます。
 
-## テストのためのクライアント (Python)
-[client.py](client.py) を使用して、Orchestrator-Workers パターンをテストできます。  
-このクライアントは Streamlit で作成されていますので、次のコマンドで実行できます：
+### Pythonクライアント
+[client.py](Client/client.py) を使用して、Orchestrator-Workers パターンをテストできます。
+次のコマンドで実行できます：
+```bash
+dotnet run --project .\DurableMultiAgentTemplate\DurableMultiAgentTemplate.csproj
+```
+
+クライアントは Streamlit で作成されているため、次のコマンドで実行できます：
 ```bash
 streamlit run client.py
 ```
 
+![](Assets/demo.gif)
+[The full-resolution video is here.](https://youtu.be/SACD4IyKQAI)
 
-## APIリクエスト
+## テンプレートでホストされるAPI仕様
 ### エンドポイント
-Starter関数のエンドポイントには同期と非同期の2種類があります。エージェントの処理に時間がかかる場合は、非同期エンドポイントを使用することをお勧めします。Durable Functionsの非同期パターンの詳細については[こちら](https://learn.microsoft.com/ja-jp/azure/azure-functions/durable/durable-functions-overview?tabs=in-process%2Cnodejs-v3%2Cv1-model&pivots=csharp#async-http)。
+Starter関数のエンドポイントには同期と非同期の2種類があります。エージェントの処理に時間がかかる場合は、非同期エンドポイントを使用することをお勧めします。
+Durable Functionsの非同期パターンの詳細については[こちら](https://learn.microsoft.com/ja-jp/azure/azure-functions/durable/durable-functions-overview?tabs=in-process%2Cnodejs-v3%2Cv1-model&pivots=csharp#async-http)。
+
 - 同期エンドポイント：`http://{your base url}/api/invoke/sync`
 - 非同期エンドポイント：`http://{your base url}/api/invoke/async`
 
@@ -141,7 +161,7 @@ Starter関数のエンドポイントには同期と非同期の2種類があり
 }
 ```
 
-![](demo.gif)
+![](Assets/demo.gif)
 [フル解像度の動画はこちら](https://youtu.be/SACD4IyKQAI)
 
 ## 補足情報の要求
@@ -150,8 +170,12 @@ Starter関数のエンドポイントには同期と非同期の2種類があり
 このテンプレートではリクエストの際に`requireAdditionalInfo`を`true`に設定すると、補足情報を要求することができます。
 補足情報はレスポンスの`additionalInfo`に格納されチャットの返答とは別に返されます。
 テストのためのクライアントコード内の`REQUIRE_ADDITIONAL_INFO`フラグを切り替えることでこの機能を体験できます。
-![](demo_additional.gif)
+![](Assets/demo_additional.gif)
 
 この機能は副次的にチャット履歴のmessages配列のトークン量を削減し、LLMの動作を軽快にする効果もあります。
 ただし、シナリオによってはmessages配列のコンテキストが欠落し、エージェントの返答が不自然になることがあります。
 そのような場合には必要に応じて補足情報の内容をmessagesにマージしてエージェントにリクエストすることも検討してください。
+
+## Azure環境のセットアップ
+TBW
+https://learn.microsoft.com/ja-jp/azure/azure-functions/durable/durable-functions-isolated-create-first-csharp?pivots=code-editor-vscode#sign-in-to-azure
