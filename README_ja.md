@@ -60,6 +60,8 @@ if(Random.Shared.Next(0, 10) < 3)
 0. 事前に以下のリソースを作成してください。
 	- Azure OpenAI Serviceとチャット補完モデルのデプロイ（埋め込みモデルのデプロイは任意）
 	- Azure Cosmos DB（使用しない場合は省略可能）
+       - Azure Cosmos DBの代わりに、Azure Cosmos DB Emulator（エミュレーター）を使用することもできます。詳細については、以下のドキュメントをご参照ください。  
+       [Azure Cosmos DB エミュレーターを使用したローカルでの開発](https://learn.microsoft.com/ja-jp/azure/cosmos-db/how-to-develop-emulator?tabs=windows%2Ccsharp&pivots=api-nosql)
 
 1. `DurableMultiAgentTemplate` プロジェクトの `local.settings.json` を更新し、ご自身の以下のリソースの情報を設定します。
 	- Azure OpenAIのエンドポイントとデプロイ名

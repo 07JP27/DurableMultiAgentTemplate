@@ -60,12 +60,12 @@ if(Random.Shared.Next(0, 10) < 3)
 0. Before running, create the following resources:
    - Azure OpenAI Service with a deployed chat completions model (embedding model deployment is optional)
    - Azure Cosmos DB (optional, if used)
+      - Instead of Azure Cosmos DB, you can also use the Azure Cosmos DB Emulator. For more details, please refer to the documentation below.<br/>
+      [Develop locally using the Azure Cosmos DB emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/how-to-develop-emulator?tabs=windows%2Ccsharp&pivots=api-nosql)
 
 1. Update the `local.settings.json` of the `DurableMultiAgentTemplate` project with your resource information below:   
    - Azure OpenAI endpoint and deployment name  
    - Azure Cosmos DB endpoint (optional if not used)  
-      - Instead of Azure Cosmos DB, you can also use the Azure Cosmos DB Emulator. For more details, please refer to the documentation below.<br/>
-      [Develop locally using the Azure Cosmos DB emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/how-to-develop-emulator?tabs=windows%2Ccsharp&pivots=api-nosql)
      
    You can choose between API key or Entra ID authentication for each service:  
    - If using an API key: Include the API key in the `local.settings.json` file.  
