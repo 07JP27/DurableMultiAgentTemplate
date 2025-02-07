@@ -4,9 +4,10 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
     "AppConfig:OpenAI:Endpoint": "https://<your AOAI resource name>.openai.azure.com/",
-    "AppConfig:OpenAI:Deploy": "deploy",
+    "AppConfig:OpenAI:ChatModelDeployName": "chat-model-deploy-name",
+    "AppConfig:OpenAI:EmbeddingModelDeployName": "embedding-model-deploy-name",
     "AppConfig:OpenAI:ApiKey": "",
-    "AppConfig:CosmosDb:Endpoint": "your cosmosdb endopoint",
+    "AppConfig:CosmosDb:Endpoint": "your cosmos endpoint",
     "AppConfig:CosmosDb:ApiKey": ""
   }
 }
