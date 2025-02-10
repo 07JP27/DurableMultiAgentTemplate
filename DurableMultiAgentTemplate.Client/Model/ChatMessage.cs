@@ -1,4 +1,4 @@
-﻿using DurableMultiAgentTemplate.Model;
+﻿using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Client.Model;
 

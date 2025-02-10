@@ -1,4 +1,4 @@
-namespace DurableMultiAgentTemplate.Model;
+namespace DurableMultiAgentTemplate.Shared.Model;
 
 public class AgentResponseWithAdditionalInfoDto:AgentResponseDto
 {

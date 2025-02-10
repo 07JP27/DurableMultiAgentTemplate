@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DurableMultiAgentTemplate",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DurableMultiAgentTemplate.Client", "DurableMultiAgentTemplate.Client\DurableMultiAgentTemplate.Client.csproj", "{9E0266B0-7EE0-4BDE-9CB8-BACB3B288E97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DurableMultiAgentTemplate.Shared", "DurableMultiAgentTemplate.Shared\DurableMultiAgentTemplate.Shared.csproj", "{0B4EAC83-68D5-476A-B7FD-084C1467F2D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9E0266B0-7EE0-4BDE-9CB8-BACB3B288E97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E0266B0-7EE0-4BDE-9CB8-BACB3B288E97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E0266B0-7EE0-4BDE-9CB8-BACB3B288E97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B4EAC83-68D5-476A-B7FD-084C1467F2D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B4EAC83-68D5-476A-B7FD-084C1467F2D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B4EAC83-68D5-476A-B7FD-084C1467F2D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B4EAC83-68D5-476A-B7FD-084C1467F2D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

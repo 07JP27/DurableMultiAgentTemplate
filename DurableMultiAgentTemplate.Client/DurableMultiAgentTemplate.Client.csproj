@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\DurableMultiAgentTemplate\Model\*.cs" LinkBase="Model" />
+    <Compile Include="..\DurableMultiAgentTemplate.Shared\Model\*.cs" LinkBase="Model" />
   </ItemGroup>
 
   <ItemGroup>

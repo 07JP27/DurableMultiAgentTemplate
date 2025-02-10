@@ -1,4 +1,6 @@
-namespace DurableMultiAgentTemplate.Model;
+using System.ComponentModel;
+
+namespace DurableMultiAgentTemplate.Shared.Model;
 
 public class AgentResponseDto
 {
