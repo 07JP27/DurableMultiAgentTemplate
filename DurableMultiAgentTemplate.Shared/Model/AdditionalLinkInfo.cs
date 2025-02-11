@@ -1,8 +1,8 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace DurableMultiAgentTemplate.Shared.Model;
 
-class AdditionalLinkInfo : IAdditionalInfo
+public class AdditionalLinkInfo : IAdditionalInfo
 {
     [Description("リンクのラベルとして表示されるテキスト")]
     public string LinkText { get; set; } = "";

@@ -24,6 +24,9 @@
     <PackageReference Include="Microsoft.Extensions.Azure" Version="1.9.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DurableMultiAgentTemplate.Shared\DurableMultiAgentTemplate.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -34,10 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\DurableMultiAgentTemplate.Shared\Model\*.cs" LinkBase="Model" />
   </ItemGroup>
 
   <Target Name="CopyGrpcNativeAssetsToOutDir" AfterTargets="Build">
