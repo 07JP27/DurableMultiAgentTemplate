@@ -1,6 +1,6 @@
-using System.ComponentModel;
+using DurableMultiAgentTemplate.Shared.Model;
 
-namespace DurableMultiAgentTemplate.Shared.Model;
+namespace DurableMultiAgentTemplate;
 
 public class AgentResponseWithAdditionalInfoFormat
 {

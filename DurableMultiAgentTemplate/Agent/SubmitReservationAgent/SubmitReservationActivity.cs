@@ -7,7 +7,7 @@ using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
 
-public class SubmitReservationActivity(ChatClient chatClient, CosmosClient cosmosClient)
+public class SubmitReservationActivity(ChatClient chatClient)//, CosmosClient cosmosClient)
 {
     [Function(AgentActivityName.SubmitReservationAgent)]
     public string Run([ActivityTrigger] SubmitReservationRequest req, FunctionContext executionContext)
