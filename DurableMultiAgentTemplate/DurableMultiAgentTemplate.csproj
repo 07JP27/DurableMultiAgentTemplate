@@ -24,6 +24,9 @@
     <PackageReference Include="Microsoft.Extensions.Azure" Version="1.9.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DurableMultiAgentTemplate.Shared\DurableMultiAgentTemplate.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -35,6 +38,7 @@
   <ItemGroup>
     <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
   </ItemGroup>
+
   <Target Name="CopyGrpcNativeAssetsToOutDir" AfterTargets="Build">
     <ItemGroup>
       <NativeAssetToCopy Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="$(OutDir)runtimes/osx-arm64/native/*" />

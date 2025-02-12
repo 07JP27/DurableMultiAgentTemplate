@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Model;
 

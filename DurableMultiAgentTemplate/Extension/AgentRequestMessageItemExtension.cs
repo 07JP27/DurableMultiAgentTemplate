@@ -1,5 +1,5 @@
-﻿using DurableMultiAgentTemplate.Model;
-using OpenAI.Chat;
+﻿using OpenAI.Chat;
+using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Extension;
 

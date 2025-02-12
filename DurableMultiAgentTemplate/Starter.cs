@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
 using DurableMultiAgentTemplate.Agent.Orchestrator;
-using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Logging;
+using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate;
 
