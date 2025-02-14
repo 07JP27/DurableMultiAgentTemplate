@@ -1,8 +1,6 @@
-﻿using Azure.AI.OpenAI;
-using DurableMultiAgentTemplate.Model;
+﻿using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.GetSightseeingSpotAgent;

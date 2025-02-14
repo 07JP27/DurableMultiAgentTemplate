@@ -1,10 +1,8 @@
 ﻿using System.Text.Json;
-using Azure.AI.OpenAI;
 using DurableMultiAgentTemplate.Extension;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using OpenAI.Chat;
 using DurableMultiAgentTemplate.Shared.Model;
 

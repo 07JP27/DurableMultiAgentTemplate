@@ -1,6 +1,4 @@
-using System.ComponentModel;
-
-namespace DurableMultiAgentTemplate.Shared.Model;
+﻿namespace DurableMultiAgentTemplate.Shared.Model;
 
 public class AgentRequestDto
 {

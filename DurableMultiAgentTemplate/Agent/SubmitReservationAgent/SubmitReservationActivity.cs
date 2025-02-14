@@ -1,8 +1,5 @@
-﻿using Azure.AI.OpenAI;
-using DurableMultiAgentTemplate.Model;
-using Microsoft.Azure.Cosmos;
+﻿using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Options;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
