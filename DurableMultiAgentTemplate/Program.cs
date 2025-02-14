@@ -3,10 +3,10 @@ using System.Text.Json;
 using System.Text.Unicode;
 using Azure;
 using Azure.AI.OpenAI;
-using Azure.Core;
 using Azure.Identity;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,9 +17,11 @@ var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.ConfigureFunctionsWebApplication();
 
-var configuration = builder.Configuration;
+// Application Insights
+builder.Services.AddApplicationInsightsTelemetryWorkerService();
+builder.Services.ConfigureFunctionsApplicationInsights();
 
-builder.Services.Configure<AppConfig>(configuration.GetSection("AppConfig"));
+builder.Services.Configure<AppConfig>(builder.Configuration.GetSection("AppConfig"));
 
 builder.Services
     .AddAzureClients(clientBuilder =>
