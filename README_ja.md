@@ -92,12 +92,9 @@ https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 
 #### Visual Studio Code での実行
 
-以下のコマンドで実行できます：
-
-```bash
-dotnet run --project .\DurableMultiAgentTemplate\DurableMultiAgentTemplate.csproj
-dotnet run --project .\DurableMultiAgentTemplate.Client\DurableMultiAgentTemplate.Client.csproj
-```
+1. Visual Studio Code のアクティビティバーから `実行とデバッグ` を選択します。
+2. ドロップダウンリストから、`C#: DurableMultiAgentTemplate Debug` を選択し、ドロップダウンリスト左の実行ボタンを押します。
+3. ドロップダウンリストから、`C#: DurableMultiAgentTemplate.Client Debug` を選択し、ドロップダウンリスト左の実行ボタンを押します。
 
 プロジェクトを実行した後、`http://localhost:{your port number}` でクライアントにアクセスできます。
 

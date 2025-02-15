@@ -92,12 +92,9 @@ https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 
 ### Visual Studio Code
 
-You can run it with the following commands:
-
-```bash
-dotnet run --project .\DurableMultiAgentTemplate\DurableMultiAgentTemplate.csproj
-dotnet run --project .\DurableMultiAgentTemplate.Client\DurableMultiAgentTemplate.Client.csproj
-```
+1. From the activity bar in Visual Studio Code, select Run and Debug.
+2. From the dropdown list, select `C#: DurableMultiAgentTemplate Debug` and press the run button to the left of the dropdown list.
+3. From the dropdown list, select `C#: DurableMultiAgentTemplate.Client Debug` and press the run button to the left of the dropdown list.
 
 After running the project, you can access the client at `http://localhost:{your port number}`.
 
