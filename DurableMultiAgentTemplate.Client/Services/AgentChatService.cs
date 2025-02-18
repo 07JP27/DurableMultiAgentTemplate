@@ -12,7 +12,7 @@ public class AgentChatService(HttpClient httpClient)
 
     public async Task<AgentResponseWithAdditionalInfoDto> GetAgentResponseAsync(AgentRequestDto agentRequestDto, CancellationToken cancellationToken)
     {
-        var response = await httpClient.PostAsJsonAsync("invoke/async", agentRequestDto, cancellationToken);
+        var response = await httpClient.PostAsJsonAsync("api/invoke/async", agentRequestDto, cancellationToken);
         response.EnsureSuccessStatusCode();
 
         var invokeAsyncResult = await response.Content.ReadFromJsonAsync<InvokeAsyncResult>(_jsonSerializerOptions, cancellationToken);
