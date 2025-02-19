@@ -22,7 +22,7 @@ public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient)
 
         ChatMessage[] allMessages = [
             new SystemChatMessage(systemMessage),
-            .. req.AgentReques.Messages.ConvertToChatMessageArray(),
+            .. req.AgentRequest.Messages.ConvertToChatMessageArray(),
         ];
 
         ChatCompletionOptions options = new()

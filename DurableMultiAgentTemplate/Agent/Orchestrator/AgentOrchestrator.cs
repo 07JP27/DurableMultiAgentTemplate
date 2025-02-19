@@ -56,7 +56,7 @@ public class AgentOrchestrator()
         SynthesizerRequest synthesizerRequest = new()
         {
             AgentCallResult = parallelAgentCall.Select(x => x.Result).ToList(),
-            AgentReques = reqData,
+            AgentRequest = reqData,
             CalledAgentNames = agentDeciderResult.AgentCalls.Select(x => x.AgentName).ToList()
         };
         
