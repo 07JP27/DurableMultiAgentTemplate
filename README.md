@@ -93,8 +93,13 @@ https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 ### Visual Studio Code
 
 1. From the activity bar in Visual Studio Code, select Run and Debug.
-2. From the dropdown list, select `C#: DurableMultiAgentTemplate Debug` and press the run button to the left of the dropdown list.
-3. From the dropdown list, select `C#: DurableMultiAgentTemplate.Client Debug` and press the run button to the left of the dropdown list.
+2. From the dropdown list, select `C#: Attach to DurableMultiAgentTemplate worker process` and press the run button to the left of the dropdown list.
+   - This will start the Functions host with the task `host start (functions)`.
+   - In the Functions host terminal, a log like `"{ "name":"dotnet-worker-startup", "workerProcessId" : 12345 }"` will be output. The workerProcessId is the ID of the process to which the debugger will attach.
+   - When the `prelaunchTask` dialog appears, select `Debug Anyway`.
+   - A list of processes to attach the debugger will be displayed. Select the process that was output in the Functions host log earlier.
+   - The debugger will attach and debugging will start.
+3. From the dropdown list, select `C#: Debug DurableMultiAgentTemplate.Client` and press the run button to the left of the dropdown list.
 
 After running the project, you can access the client at `http://localhost:{your port number}`.
 
