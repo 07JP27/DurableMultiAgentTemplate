@@ -5,16 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C#: DurableMultiAgentTemplate.Client Debug",
+      "name": "C#: Debug DurableMultiAgentTemplate.Client",
       "type": "dotnet",
       "request": "launch",
       "projectPath": "${workspaceFolder}/DurableMultiAgentTemplate.Client/DurableMultiAgentTemplate.Client.csproj"
     },
     {
-      "name": "C#: DurableMultiAgentTemplate Debug",
-      "type": "dotnet",
-      "request": "launch",
-      "projectPath": "${workspaceFolder}/DurableMultiAgentTemplate/DurableMultiAgentTemplate.csproj"
+      "name": "C#: Attach to DurableMultiAgentTemplate worker process",
+      "type": "coreclr",
+      "request": "attach",
+      "preLaunchTask": "host start (functions)"
     }
   ]
 }
