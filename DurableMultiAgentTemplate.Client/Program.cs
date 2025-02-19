@@ -1,4 +1,5 @@
 ﻿using DurableMultiAgentTemplate.Client.Components;
+using DurableMultiAgentTemplate.Client.Http;
 using DurableMultiAgentTemplate.Client.Services;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -9,10 +10,24 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddFluentUIComponents();
 
-builder.Services.AddHttpClient<AgentChatService>(httpClient =>
+// Service Discovery and Retry Policy
+builder.Services.AddServiceDiscovery();
+
+builder.Services.ConfigureHttpClientDefaults(https =>
 {
-    httpClient.BaseAddress = new("http://localhost:7133/api/");
+    https.AddStandardResilienceHandler();
+    https.AddServiceDiscovery();
 });
+
+// Azure Functions Authentication
+builder.Services.Configure<BackendOptions>(builder.Configuration.GetSection("Backend"));
+builder.Services.AddTransient<AzureFunctionsApiKeyAuthenticationHttpMessageHandler>();
+
+builder.Services.AddHttpClient<AgentChatService>(httpClient =>
+    {
+        httpClient.BaseAddress = new("https+http://backend");
+    })
+    .AddHttpMessageHandler<AzureFunctionsApiKeyAuthenticationHttpMessageHandler>();
 
 var app = builder.Build();
 
