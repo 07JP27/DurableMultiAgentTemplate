@@ -96,7 +96,7 @@ https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 2. ドロップダウンリストから、 `C#: Attach to DurableMultiAgentTemplate worker process` を選択し、ドロップダウンリスト左の実行ボタンを押します。
    - これにより、タスク `host start (functions)` でFunctionsホストが起動します。
    - Functionsホストのターミナルに、 `"{ "name":"dotnet-worker-startup", "workerProcessId" : 12345 }"` というログが出力されます。workerProcessIdが、デバッガーをアタッチするプロセスのIDです。
-   - `prelaunchTask` のダイアログが表示されたら、 `このままデバッグする` を選びます。
+   - `prelaunchTask` のダイアログが表示されたら、 `このままデバッグする（Debug Anyway）` を選びます。
    - デバッガーをアタッチするプロセスの一覧が表示されます。先ほどFunctionsホストのログに出力されたプロセスを選択してください。
    - デバッガーがアタッチされ、デバッグ実行が始まります。
 3. ドロップダウンリストから、 `C#: Debug DurableMultiAgentTemplate.Client` を選択し、ドロップダウンリスト左の実行ボタンを押します。
