@@ -8,10 +8,8 @@ using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate;
 
-public class Starter(ILogger<Starter> logger)
+public class Starter(ILogger<Starter> _logger)
 {
-    private readonly ILogger<Starter> _logger = logger;
-
     [Function("SyncStarter")]
     public async Task<HttpResponseData> SyncStarter(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "invoke/sync")] HttpRequestData req,
