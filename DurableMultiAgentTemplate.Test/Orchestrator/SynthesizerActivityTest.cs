@@ -69,7 +69,7 @@ public class SynthesizerActivityTest
         
         Assert.IsNotNull(agentResponseDto);
         Assert.IsNotEmpty(agentResponseDto.Content);
-        Assert.AreEqual(agentResponseDto.Content, expectedConetnt);
+        Assert.AreEqual(agentResponseDto.Content, expectedContent);
         Assert.AreEqual(synthesizerRequest.CalledAgentNames, agentResponseDto.CalledAgentNames);
     }
 }
