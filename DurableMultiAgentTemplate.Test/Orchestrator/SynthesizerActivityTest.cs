@@ -64,8 +64,7 @@ public class SynthesizerActivityTest
             CalledAgentNames = new List<string> { AgentActivityName.GetDestinationSuggestAgent }
         };
         
-        var mockFunctionContext = new Mock<FunctionContext>();
-        var agentResponseDto = await synthesizerActivity.Run(synthesizerRequest, mockFunctionContext.Object);
+        var agentResponseDto = await synthesizerActivity.Run(synthesizerRequest);
         
         Assert.IsNotNull(agentResponseDto);
         Assert.IsNotEmpty(agentResponseDto.Content);
