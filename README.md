@@ -1,5 +1,7 @@
 [日本語版はこちら](README_ja.md)
 
+![GitHub last commit](https://img.shields.io/github/last-commit/07JP27/DurableMultiAgentTemplate)
+![GitHub contributors](https://img.shields.io/github/contributors/07JP27/DurableMultiAgentTemplate)
 ![MIT](https://img.shields.io/badge/license-MIT-blue)
 ![GitHub watchers](https://img.shields.io/github/watchers/07JP27/DurableMultiAgentTemplate)
 ![GitHub forks](https://img.shields.io/github/forks/07JP27/DurableMultiAgentTemplate)
