@@ -10,7 +10,7 @@ namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
 public class SubmitReservationActivity(ChatClient chatClient)//, CosmosClient cosmosClient)
 {
     [Function(AgentActivityName.SubmitReservationAgent)]
-    public string Run([ActivityTrigger] SubmitReservationRequest req, FunctionContext executionContext)
+    public string Run([ActivityTrigger] SubmitReservationRequest req)
     {
         // This is sample code. Replace this with your own logic.
         var result = $"""

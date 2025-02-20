@@ -11,7 +11,7 @@ public class GetClimateActivity(ChatClient chatClient,
     ILogger<GetClimateActivity> logger)
 {
     [Function(AgentActivityName.GetClimateAgent)]
-    public string Run([ActivityTrigger] GetClimateRequest req, FunctionContext executionContext)
+    public string Run([ActivityTrigger] GetClimateRequest req)
     {
         if(Random.Shared.Next(0, 10) < 3)
         {

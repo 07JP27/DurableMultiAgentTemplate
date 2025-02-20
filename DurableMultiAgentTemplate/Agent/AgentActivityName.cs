@@ -1,6 +1,6 @@
 namespace DurableMultiAgentTemplate.Agent;
 
-internal static class AgentActivityName
+public static class AgentActivityName
 {
     // Orchestrator Agent functions
     public const string AgentDeciderActivity = nameof(AgentDeciderActivity);

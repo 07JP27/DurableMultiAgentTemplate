@@ -11,7 +11,7 @@ public class GetDestinationSuggestActivity(ChatClient chatClient,
     ILogger<GetDestinationSuggestActivity> logger)
 {
     [Function(AgentActivityName.GetDestinationSuggestAgent)]
-    public string Run([ActivityTrigger] GetDestinationSuggestRequest req, FunctionContext executionContext)
+    public string Run([ActivityTrigger] GetDestinationSuggestRequest req)
     {
         if (Random.Shared.Next(0, 10) < 3)
         {
