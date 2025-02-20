@@ -17,9 +17,9 @@ public class SynthesizerActivityTest
     [TestMethod]
     public async Task SynthesizerMethod()
     {
-        var expectedConetnt = "バリ島がおすすめです！";
+        var expectedContent = "バリ島がおすすめです！";
         var chatCompletion = OpenAIChatModelFactory.ChatCompletion(
-            content: new ChatMessageContent(expectedConetnt),
+            content: new ChatMessageContent(expectedContent),
             finishReason: ChatFinishReason.Stop
         );
         var pipelineResponseMock = Mock.Of<PipelineResponse>();
@@ -69,7 +69,7 @@ public class SynthesizerActivityTest
         
         Assert.IsNotNull(agentResponseDto);
         Assert.IsNotEmpty(agentResponseDto.Content);
-        Assert.AreEqual(agentResponseDto.Content, expectedConetnt);
+        Assert.AreEqual(agentResponseDto.Content, expectedContent);
         Assert.AreEqual(synthesizerRequest.CalledAgentNames, agentResponseDto.CalledAgentNames);
     }
 }
