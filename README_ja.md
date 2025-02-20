@@ -1,5 +1,6 @@
 [English version](README.md)
 
+[![build and test](https://github.com/07JP27/DurableMultiAgentTemplate/actions/workflows/UnitTest.yml/badge.svg)](https://github.com/07JP27/DurableMultiAgentTemplate/actions/workflows/UnitTest.yml)
 ![GitHub last commit](https://img.shields.io/github/last-commit/07JP27/DurableMultiAgentTemplate)
 ![GitHub contributors](https://img.shields.io/github/contributors/07JP27/DurableMultiAgentTemplate)
 ![MIT](https://img.shields.io/badge/license-MIT-blue)
