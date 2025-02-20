@@ -14,7 +14,7 @@ namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 public class AgentDeciderActivity(ChatClient chatClient, ILogger<AgentDeciderActivity> logger)
 {
     [Function(AgentActivityName.AgentDeciderActivity)]
-    public async Task<AgentDeciderResult> Run([ActivityTrigger] AgentRequestDto reqData, FunctionContext executionContext)
+    public async Task<AgentDeciderResult> Run([ActivityTrigger] AgentRequestDto reqData)
     {
         var messages = reqData.Messages.ConvertToChatMessageArray();
         logger.LogInformation("Run AgentDeciderActivity");

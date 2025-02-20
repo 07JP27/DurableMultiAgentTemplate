@@ -13,7 +13,7 @@ namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogger<SynthesizerWithAdditionalInfoActivity> logger)
 {
     [Function(AgentActivityName.SynthesizerWithAdditionalInfoActivity)]
-    public async Task<AgentResponseWithAdditionalInfoDto> Run([ActivityTrigger] SynthesizerRequest req, FunctionContext executionContext)
+    public async Task<AgentResponseWithAdditionalInfoDto> Run([ActivityTrigger] SynthesizerRequest req)
     {
         logger.LogInformation("Run SynthesizerActivity");
         var systemMessageTemplate = SynthesizerWithAdditionalInfoPrompt.SystemPrompt;

@@ -11,7 +11,7 @@ public class GetHotelActivity(ChatClient chatClient,
     ILogger<GetHotelActivity> logger)
 {
     [Function(AgentActivityName.GetHotelAgent)]
-    public string Run([ActivityTrigger] GetHotelRequest req, FunctionContext executionContext)
+    public string Run([ActivityTrigger] GetHotelRequest req)
     {
         if (Random.Shared.Next(0, 10) < 3)
         {

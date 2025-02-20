@@ -11,7 +11,7 @@ namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 public class SynthesizerActivity(ChatClient chatClient, ILogger<SynthesizerActivity> logger)
 {
     [Function(AgentActivityName.SynthesizerActivity)]
-    public async Task<AgentResponseDto> Run([ActivityTrigger] SynthesizerRequest req, FunctionContext executionContext)
+    public async Task<AgentResponseDto> Run([ActivityTrigger] SynthesizerRequest req)
     {
         logger.LogInformation("Run SynthesizerActivity");
         var systemMessageTemplate = SynthesizerPrompt.SystemPrompt;

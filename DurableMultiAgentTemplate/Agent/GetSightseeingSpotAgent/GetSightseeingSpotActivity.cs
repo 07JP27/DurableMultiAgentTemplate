@@ -11,7 +11,7 @@ public class GetSightseeingSpotActivity(ChatClient chatClient,
     ILogger<GetSightseeingSpotActivity> logger)
 {
     [Function(AgentActivityName.GetSightseeingSpotAgent)]
-    public string Run([ActivityTrigger] GetSightseeingSpotRequest req, FunctionContext executionContext)
+    public string Run([ActivityTrigger] GetSightseeingSpotRequest req)
     {
         if (Random.Shared.Next(0, 10) < 3)
         {
