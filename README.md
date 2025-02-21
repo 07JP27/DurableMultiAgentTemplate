@@ -1,5 +1,13 @@
 [日本語版はこちら](README_ja.md)
 
+[![build and test](https://github.com/07JP27/DurableMultiAgentTemplate/actions/workflows/UnitTest.yml/badge.svg)](https://github.com/07JP27/DurableMultiAgentTemplate/actions/workflows/UnitTest.yml)
+![GitHub last commit](https://img.shields.io/github/last-commit/07JP27/DurableMultiAgentTemplate)
+![GitHub contributors](https://img.shields.io/github/contributors/07JP27/DurableMultiAgentTemplate)
+![MIT](https://img.shields.io/badge/license-MIT-blue)
+![GitHub watchers](https://img.shields.io/github/watchers/07JP27/DurableMultiAgentTemplate)
+![GitHub forks](https://img.shields.io/github/forks/07JP27/DurableMultiAgentTemplate)
+![GitHub Repo stars](https://img.shields.io/github/stars/07JP27/DurableMultiAgentTemplate)
+
 # DurableFunctions template - Orchestrator-workers Multi-Agent 
 
 This repository is a template project for implementing the Orchestrator-Workers pattern introduced in Anthropic's blog "[Building effective agents](https://www.anthropic.com/research/building-effective-agents)" using Azure Durable Functions.

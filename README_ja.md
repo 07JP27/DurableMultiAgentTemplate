@@ -1,5 +1,13 @@
 [English version](README.md)
 
+[![build and test](https://github.com/07JP27/DurableMultiAgentTemplate/actions/workflows/UnitTest.yml/badge.svg)](https://github.com/07JP27/DurableMultiAgentTemplate/actions/workflows/UnitTest.yml)
+![GitHub last commit](https://img.shields.io/github/last-commit/07JP27/DurableMultiAgentTemplate)
+![GitHub contributors](https://img.shields.io/github/contributors/07JP27/DurableMultiAgentTemplate)
+![MIT](https://img.shields.io/badge/license-MIT-blue)
+![GitHub watchers](https://img.shields.io/github/watchers/07JP27/DurableMultiAgentTemplate)
+![GitHub forks](https://img.shields.io/github/forks/07JP27/DurableMultiAgentTemplate)
+![GitHub Repo stars](https://img.shields.io/github/stars/07JP27/DurableMultiAgentTemplate)
+
 # DurableFunctions template - Orchestrator-workers Multi-Agent 
 
 このリポジトリは、Azure Durable Functionsを使用して、Anthropicのブログ「[Building effective agents](https://www.anthropic.com/research/building-effective-agents)」で紹介されたオーケストレーター-ワーカーのパターンを実装するためのテンプレートプロジェクトです。

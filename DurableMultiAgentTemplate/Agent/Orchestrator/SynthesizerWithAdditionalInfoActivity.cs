@@ -10,12 +10,11 @@ using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 
-public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient)
+public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogger<SynthesizerWithAdditionalInfoActivity> logger)
 {
     [Function(AgentActivityName.SynthesizerWithAdditionalInfoActivity)]
-    public async Task<AgentResponseWithAdditionalInfoDto> Run([ActivityTrigger] SynthesizerRequest req, FunctionContext executionContext)
+    public async Task<AgentResponseWithAdditionalInfoDto> Run([ActivityTrigger] SynthesizerRequest req)
     {
-        ILogger logger = executionContext.GetLogger("SynthesizerActivity");
         logger.LogInformation("Run SynthesizerActivity");
         var systemMessageTemplate = SynthesizerWithAdditionalInfoPrompt.SystemPrompt;
         var systemMessage = $"{systemMessageTemplate}¥n{string.Join("¥n", req.AgentCallResult)}";
