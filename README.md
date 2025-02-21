@@ -79,7 +79,31 @@ if(Random.Shared.Next(0, 10) < 3)
    - If using an API key: Include the API key in the `local.settings.json` file.  
    - If using Entra ID authentication: Authenticate using the `az login` command with Azure CLI. Leave the API key blank in the `local.settings.json` file. Note that **the authenticated user must have RBAC permissions for each service.**
 
-2. Run the project.
+2. Install and launch a local storage account using azurite.
+
+Azurite is Microsoft’s open-source Azure Storage emulator, which starts the Blob and Queue storage required for Functions on your local machine.
+
+Install azurite:
+
+```shell
+npm install -g azurite
+```
+For more details, see:
+https://learn.microsoft.com/ja-jp/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage
+
+Start azurite with one of following commands.
+
+### Foreground (if you can run subsequent commands in another window):
+```shell
+azurite
+```
+
+### Background (if you need to run subsequent commands in the same window):
+```shell
+nohup azurite > azurite.log 2>&1 &
+```
+
+3. Run the project.
 
 ## How to run in your local environment
 You can use either the .NET Blazor client or the Python Streamlit client for testing the project.
@@ -100,7 +124,7 @@ https://github.com/user-attachments/assets/10425f9a-cd55-4f02-8cd1-6a1935df4db0
 
 ### Visual Studio Code
 
-1. From the activity bar in Visual Studio Code, select Run and Debug.
+1. From the activity bar in Visual Studio Code, select Run > Start Debugging.
 2. From the dropdown list, select `C#: Attach to DurableMultiAgentTemplate worker process` and press the run button to the left of the dropdown list.
    - This will start the Functions host with the task `host start (functions)`.
    - In the Functions host terminal, a log like `"{ "name":"dotnet-worker-startup", "workerProcessId" : 12345 }"` will be output. The workerProcessId is the ID of the process to which the debugger will attach.
