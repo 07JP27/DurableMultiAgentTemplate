@@ -71,8 +71,7 @@ if(Random.Shared.Next(0, 10) < 3)
 	- APIキーを使用する場合：`local.settings.json` ファイルにAPIキーを記述してください。
 	- Entra ID認証を使用する場合：Azure CLIを使用して`az login`コマンドで認証してください。`local.settings.json` ファイルAPIキーは空白にしてください。この際に、**認証したユーザーに各サービスのRBACが付与されている必要があることに注意してください。**
 
-2. azuriteによりローカルにストレージアカウントをインストールしし起動します。
-
+2. azuriteによりローカルにストレージアカウントをインストールし起動します。
 ``azurite``はAzuriteはMicrosoftが提供しているオープンソースのAzure Storageエミュレーターです。
 Functionsが起動するのに必要なBlobストレージやQueueストレージを本操作によりローカル端末上に立ち上げます。
 
