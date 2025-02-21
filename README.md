@@ -1,10 +1,5 @@
 [日本語版はこちら](README_ja.md)
 
-![MIT](https://img.shields.io/badge/license-MIT-blue)
-![GitHub watchers](https://img.shields.io/github/watchers/07JP27/DurableMultiAgentTemplate)
-![GitHub forks](https://img.shields.io/github/forks/07JP27/DurableMultiAgentTemplate)
-![GitHub Repo stars](https://img.shields.io/github/stars/07JP27/DurableMultiAgentTemplate)
-
 # DurableFunctions template - Orchestrator-workers Multi-Agent 
 
 This repository is a template project for implementing the Orchestrator-Workers pattern introduced in Anthropic's blog "[Building effective agents](https://www.anthropic.com/research/building-effective-agents)" using Azure Durable Functions.
@@ -76,25 +71,29 @@ if(Random.Shared.Next(0, 10) < 3)
    - If using an API key: Include the API key in the `local.settings.json` file.  
    - If using Entra ID authentication: Authenticate using the `az login` command with Azure CLI. Leave the API key blank in the `local.settings.json` file. Note that **the authenticated user must have RBAC permissions for each service.**
 
-2. Start a local storage account using Azurite
+2. Install and launch a local storage account using azurite.
 
-Execute the following command in a separate window from the main one:
-```shell
-azurite
-```
-Alternatively, run the following command to execute it in the background:
-```shell
-nohup azurite > azurite.log 2>&1 &
-```
+Azurite is Microsoft’s open-source Azure Storage emulator, which starts the Blob and Queue storage required for Functions on your local machine.
 
-If azurite is not installed, install it using the following command.
+Install azurite:
+
 ```shell
 npm install -g azurite
 ```
+For more details, see:
+https://learn.microsoft.com/ja-jp/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage
 
-For more details, please refer to the following page:
-https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage
+Start azurite with one of following commands.
 
+### Foreground (if you can run subsequent commands in another window):
+```shell
+azurite
+```
+
+### Background (if you need to run subsequent commands in the same window):
+```shell
+nohup azurite > azurite.log 2>&1 &
+```
 
 3. Run the project.
 

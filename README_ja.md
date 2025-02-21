@@ -1,10 +1,5 @@
 [English version](README.md)
 
-![MIT](https://img.shields.io/badge/license-MIT-blue)
-![GitHub watchers](https://img.shields.io/github/watchers/07JP27/DurableMultiAgentTemplate)
-![GitHub forks](https://img.shields.io/github/forks/07JP27/DurableMultiAgentTemplate)
-![GitHub Repo stars](https://img.shields.io/github/stars/07JP27/DurableMultiAgentTemplate)
-
 # DurableFunctions template - Orchestrator-workers Multi-Agent 
 
 このリポジトリは、Azure Durable Functionsを使用して、Anthropicのブログ「[Building effective agents](https://www.anthropic.com/research/building-effective-agents)」で紹介されたオーケストレーター-ワーカーのパターンを実装するためのテンプレートプロジェクトです。
@@ -76,25 +71,30 @@ if(Random.Shared.Next(0, 10) < 3)
 	- APIキーを使用する場合：`local.settings.json` ファイルにAPIキーを記述してください。
 	- Entra ID認証を使用する場合：Azure CLIを使用して`az login`コマンドで認証してください。`local.settings.json` ファイルAPIキーは空白にしてください。この際に、**認証したユーザーに各サービスのRBACが付与されている必要があることに注意してください。**
 
-2. azuriteをローカルにストレージアカウントを立ち上げます。
+2. azuriteによりローカルにストレージアカウントをインストールしし起動します。
 
-メインウィンドウとは別の窓で以下を実行します。
+``azurite``はAzuriteはMicrosoftが提供しているオープンソースのAzure Storageエミュレーターです。
+Functionsが起動するのに必要なBlobストレージやQueueストレージを本操作によりローカル端末上に立ち上げます。
+
+まずはAzuriteをインストールします。
+
+```
+npm install -g azurite
+```
+インストール方法の詳細については以下のページをご参照ください。
+https://learn.microsoft.com/ja-jp/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage
+
+その後、``azurite``を起動します。フォアグラウンドで起動してよい（後続の操作を別ウィンドウで実行できる場合には以下のコマンドを用います。
 ```shell
 azurite
 ```
-または、以下のコマンドを用いてバックグラウンド実行します
+
+同一ウィンドウで後続のコマンドを動作させる必要がある場合には以下のコマンドを用いてバックグラウンド実行します
 ```shell
 nohup azurite > azurite.log 2>&1 &
 ```
 
-もし ``azurite`` を未インストールの場合、以下のコマンドでインストールしてください。
-```
-npm install -g azurite
-```
-詳細については以下のページをご参照ください。
-https://learn.microsoft.com/ja-jp/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage
-
-3. プロジェクトを実行します。
+1. プロジェクトを実行します。
 
 ## ローカル実行方法
 プロジェクトのテストには .NET Blazor クライアントまたは Python streamlit クライアントのどちらかを使用できます。
