@@ -10,8 +10,11 @@ namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
 public class SubmitReservationActivity(ChatClient chatClient)//, CosmosClient cosmosClient)
 {
     [Function(AgentActivityName.SubmitReservationAgent)]
-    public string Run([ActivityTrigger] SubmitReservationRequest req)
+    public async Task<string> RunAsync([ActivityTrigger] SubmitReservationRequest req)
     {
+        // Simulate a delay
+        await Task.Delay(3000);
+
         // This is sample code. Replace this with your own logic.
         var result = $"""
         予約番号は {Guid.NewGuid()} です。

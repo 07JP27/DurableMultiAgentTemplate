@@ -1,4 +1,5 @@
-﻿using Azure.AI.OpenAI;
+﻿using System.Threading.Tasks;
+using Azure.AI.OpenAI;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,7 @@ public class GetHotelActivity(ChatClient chatClient,
     ILogger<GetHotelActivity> logger)
 {
     [Function(AgentActivityName.GetHotelAgent)]
-    public string Run([ActivityTrigger] GetHotelRequest req)
+    public async Task<string> Run([ActivityTrigger] GetHotelRequest req)
     {
         if (Random.Shared.Next(0, 10) < 3)
         {
@@ -19,6 +20,8 @@ public class GetHotelActivity(ChatClient chatClient,
             throw new InvalidOperationException("Failed to get hotel information");
         }
 
+        // Simulate a delay
+        await Task.Delay(3000);
         // This is sample code. Replace this with your own logic.
         var result = $"""
         {req.Location}に以下の４件のホテルがあります。

@@ -11,13 +11,16 @@ public class GetDestinationSuggestActivity(ChatClient chatClient,
     ILogger<GetDestinationSuggestActivity> logger)
 {
     [Function(AgentActivityName.GetDestinationSuggestAgent)]
-    public string Run([ActivityTrigger] GetDestinationSuggestRequest req)
+    public async Task<string> RunAsync([ActivityTrigger] GetDestinationSuggestRequest req)
     {
         if (Random.Shared.Next(0, 10) < 3)
         {
             logger.LogInformation("Failed to get destination suggestions");
             throw new InvalidOperationException("Failed to get destination suggestions");
         }
+
+        // Simulate a delay
+        await Task.Delay(3000);
 
         // This is sample code. Replace this with your own logic.
         var result = $"""

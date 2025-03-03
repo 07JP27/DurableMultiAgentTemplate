@@ -44,11 +44,10 @@ public class AgentDeciderActivity(ChatClient chatClient, ILogger<AgentDeciderAct
             return new AgentDeciderResult
             {
                 IsAgentCall = true,
-                AgentCalls = chatResult.Value.ToolCalls.Select(toolCall => new AgentCall
-                {
-                    AgentName = toolCall.FunctionName,
-                    Arguments = JsonDocument.Parse(toolCall.FunctionArguments)
-                }).ToArray()
+                AgentCalls = chatResult.Value
+                    .ToolCalls
+                    .Select(toolCall => new AgentCall(toolCall.FunctionName, JsonDocument.Parse(toolCall.FunctionArguments)))
+                    .ToList(),
             };
         }
         else
