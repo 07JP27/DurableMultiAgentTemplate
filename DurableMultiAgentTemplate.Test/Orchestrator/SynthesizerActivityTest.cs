@@ -1,5 +1,6 @@
 ﻿using System.ClientModel;
 using System.ClientModel.Primitives;
+using DurableMultiAgentTemplate.Agent;
 using DurableMultiAgentTemplate.Agent.Orchestrator;
 using DurableMultiAgentTemplate.Model;
 using DurableMultiAgentTemplate.Shared.Model;
@@ -61,7 +62,7 @@ public class SynthesizerActivityTest
             },
             CalledAgentNames = new List<string> { AgentActivityName.GetDestinationSuggestAgent }
         };
-        
+
         var agentResponseDto = await synthesizerActivity.Run(synthesizerRequest);
         
         Assert.IsNotNull(agentResponseDto);
