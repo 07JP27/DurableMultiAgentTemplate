@@ -1,13 +1,11 @@
-using System.ClientModel;
+﻿using System.ClientModel;
 using System.ClientModel.Primitives;
 using DurableMultiAgentTemplate.Agent.Orchestrator;
 using DurableMultiAgentTemplate.Model;
 using DurableMultiAgentTemplate.Shared.Model;
-using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Moq;
 using OpenAI.Chat;
-using DurableMultiAgentTemplate.Agent;
 
 namespace DurableMultiAgentTemplate.Tests.Orchestrator;
 

@@ -3,7 +3,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.DurableTask;
 using Microsoft.Extensions.Logging;
 using DurableMultiAgentTemplate.Shared.Model;
-using System.Text.Json.Nodes;
 
 namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 
