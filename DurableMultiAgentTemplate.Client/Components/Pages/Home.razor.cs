@@ -41,6 +41,25 @@ public partial class Home(AgentChatService agentChatService, ILogger<Home> logge
         {
             // Send the message to the agent
             using CancellationTokenSource cancellationTokenSource = new();
+            var progress = new Progress<AgentOrchestratorStatus>(status =>
+            {
+                static string createStatusMessage(AgentOrchestratorStatus status)
+                {
+                    return status.Step switch
+                    {
+                        AgentOrchestratorStep.AgentDeciderActivity => "Agent is deciding the next action...",
+                        AgentOrchestratorStep.WorkerAgentActivity => $"Processing the task with {string.Join(", ", status.AgentCalls.Select(x => x.AgentName))}...",
+                        AgentOrchestratorStep.SynthesizerActivity => "Synthesizing the final response...",
+                        _ => "Waiting for agent response...",
+                    };
+                }
+
+                _messages.RemoveAt(_messages.Count - 1);
+                _messages.Add(new InfoChatMessage(createStatusMessage(status), true));
+                _scrollToBottomContext.RequestScrollToBottom();
+                StateHasChanged();
+            });
+
             var getAgentResponseTask = agentChatService.GetAgentResponseAsync(new AgentRequestDto
             {
                 Messages = _messages.Where(x => x.IsRequestTarget).Select(x => x switch
@@ -59,7 +78,9 @@ public partial class Home(AgentChatService agentChatService, ILogger<Home> logge
                 })
                 .ToList(),
                 RequireAdditionalInfo = _chatInput.RequireAdditionalInfo,
-            }, cancellationTokenSource.Token);
+            }, 
+            progress,
+            cancellationTokenSource.Token);
 
             // Wait for the agent response or timeout
             var winner = await Task.WhenAny(getAgentResponseTask, Task.Delay(_chatTimeoutMs));

@@ -24,6 +24,8 @@ public class AgentOrchestrator()
 
         ArgumentNullException.ThrowIfNull(reqData);
 
+        context.SetCustomStatus(new AgentOrchestratorStatus(AgentOrchestratorStep.AgentDeciderActivity,
+            [new AgentCall(AgentActivityName.AgentDeciderActivity, reqData)]));
         // AgentDecider呼び出し（呼び出すAgentの決定）
         var agentDeciderResult = await context.CallActivityAsync<AgentDeciderResult>(AgentActivityName.AgentDeciderActivity, reqData, DefaultTaskOptions);
 
@@ -43,11 +45,12 @@ public class AgentOrchestrator()
 
         // Agent呼び出し
         logger.LogInformation("Agent call happened");
+        context.SetCustomStatus(
+            new AgentOrchestratorStatus(AgentOrchestratorStep.WorkerAgentActivity, agentDeciderResult.AgentCalls));
         var parallelAgentCall = new List<Task<string>>();
         foreach (var agentCall in agentDeciderResult.AgentCalls)
         {
-            var args = agentCall.Arguments;
-            parallelAgentCall.Add(context.CallActivityAsync<string>(agentCall.AgentName, args, DefaultTaskOptions));
+            parallelAgentCall.Add(context.CallActivityAsync<string>(agentCall.AgentName, agentCall.Arguments, DefaultTaskOptions));
         }
 
         await Task.WhenAll(parallelAgentCall);
@@ -60,15 +63,15 @@ public class AgentOrchestrator()
             CalledAgentNames = agentDeciderResult.AgentCalls.Select(x => x.AgentName).ToList()
         };
         
+        context.SetCustomStatus(new AgentOrchestratorStatus(AgentOrchestratorStep.SynthesizerActivity,
+            [new AgentCall(AgentActivityName.SynthesizerActivity, synthesizerRequest)]));
         if (reqData.RequireAdditionalInfo)
         {
-            var res= await context.CallActivityAsync<AgentResponseWithAdditionalInfoDto>(AgentActivityName.SynthesizerWithAdditionalInfoActivity, synthesizerRequest, DefaultTaskOptions);
-            return res;
+            return await context.CallActivityAsync<AgentResponseWithAdditionalInfoDto>(AgentActivityName.SynthesizerWithAdditionalInfoActivity, synthesizerRequest, DefaultTaskOptions);
         }
         else
         {
-            var res = await context.CallActivityAsync<AgentResponseDto>(AgentActivityName.SynthesizerActivity, synthesizerRequest, DefaultTaskOptions);
-            return res;
+            return await context.CallActivityAsync<AgentResponseDto>(AgentActivityName.SynthesizerActivity, synthesizerRequest, DefaultTaskOptions);
         }
     }
 }

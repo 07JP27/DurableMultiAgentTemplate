@@ -3,7 +3,6 @@ using System.Text.Json;
 using System.Text.Unicode;
 using Azure;
 using Azure.AI.OpenAI;
-using Azure.Core;
 using Azure.Identity;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Cosmos;

@@ -1,8 +1,6 @@
-﻿using Azure.AI.OpenAI;
-using DurableMultiAgentTemplate.Model;
+﻿using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.GetSightseeingSpotAgent;
@@ -11,13 +9,16 @@ public class GetSightseeingSpotActivity(ChatClient chatClient,
     ILogger<GetSightseeingSpotActivity> logger)
 {
     [Function(AgentActivityName.GetSightseeingSpotAgent)]
-    public string Run([ActivityTrigger] GetSightseeingSpotRequest req)
+    public async Task<string> RunAsync([ActivityTrigger] GetSightseeingSpotRequest req)
     {
         if (Random.Shared.Next(0, 10) < 3)
         {
             logger.LogInformation("Failed to get sightseeing spot information");
             throw new InvalidOperationException("Failed to get sightseeing spot information");
         }
+
+        // Simulate a delay
+        await Task.Delay(3000);
 
         // This is sample code. Replace this with your own logic.
         var result = $"""

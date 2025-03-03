@@ -1,8 +1,6 @@
-﻿using Azure.AI.OpenAI;
-using DurableMultiAgentTemplate.Model;
+﻿using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.GetClimateAgent;
@@ -11,13 +9,16 @@ public class GetClimateActivity(ChatClient chatClient,
     ILogger<GetClimateActivity> logger)
 {
     [Function(AgentActivityName.GetClimateAgent)]
-    public string Run([ActivityTrigger] GetClimateRequest req)
+    public async Task<string> RunAsync([ActivityTrigger] GetClimateRequest req)
     {
         if(Random.Shared.Next(0, 10) < 3)
         {
             logger.LogInformation("Failed to get climate information");
             throw new InvalidOperationException("Failed to get climate information");
         }
+
+        // Simulate a delay
+        await Task.Delay(3000);
 
         // This is sample code. Replace this with your own logic.
         var result = $"""

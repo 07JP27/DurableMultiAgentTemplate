@@ -1,3 +1,5 @@
+﻿using DurableMultiAgentTemplate.Shared.Model;
+
 namespace DurableMultiAgentTemplate.Model;
 
 public class AgentDeciderResult
@@ -6,10 +8,4 @@ public class AgentDeciderResult
     public string Content { get; set; } = string.Empty;
     public IList<AgentCall> AgentCalls { get; set; } = default!;
 
-}
-
-public class AgentCall
-{
-    public string AgentName { get; set; } = string.Empty;
-    public object Arguments { get; set; } = string.Empty;
 }

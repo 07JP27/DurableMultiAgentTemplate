@@ -1,13 +1,12 @@
-using System.ClientModel;
+﻿using System.ClientModel;
 using System.ClientModel.Primitives;
+using DurableMultiAgentTemplate.Agent;
 using DurableMultiAgentTemplate.Agent.Orchestrator;
 using DurableMultiAgentTemplate.Model;
 using DurableMultiAgentTemplate.Shared.Model;
-using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Moq;
 using OpenAI.Chat;
-using DurableMultiAgentTemplate.Agent;
 
 namespace DurableMultiAgentTemplate.Tests.Orchestrator;
 
@@ -63,7 +62,7 @@ public class SynthesizerActivityTest
             },
             CalledAgentNames = new List<string> { AgentActivityName.GetDestinationSuggestAgent }
         };
-        
+
         var agentResponseDto = await synthesizerActivity.Run(synthesizerRequest);
         
         Assert.IsNotNull(agentResponseDto);
