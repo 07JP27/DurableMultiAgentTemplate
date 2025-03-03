@@ -53,6 +53,12 @@ sequenceDiagram
 固定値になっている各Agentの実装をを改変してRAGやAction、その他処理を実装することで要件にあったAgentを作成してください。
 各AgentではDIコンテナからOpenAI ClientやCosmos DB Client、アプリケーション構成値などが利用可能です。
 
+各AgentのActivityメソッドは、LLMの推論時間をエミュレートするために以下のように待機時間が実装されています。
+実際にAgentを実装する際にサンプルAgentをベースにする場合はコードから以下の部分を削除してください。
+```cs
+await Task.Delay(3000);
+```
+
 Durable Functionsのリトライ機能を実証するために、各AgentにはLLMなどの外部サービス呼び出しの失敗をエミュレートするコードが記述されています。
 Agent Activityはランダムに30%の確率で実行が失敗します。
 実際にAgentを実装する際にサンプルAgentをベースにする場合はコードから以下の部分を削除してください。

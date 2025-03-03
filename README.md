@@ -53,6 +53,12 @@ The sample Agents defined in the template are as follows:
 Please modify the implementation of each agent, which currently uses fixed values, to include RAG, actions, and other processes, thereby creating agents that meet the requirements.
 Each agent can utilize OpenAI Client, Cosmos DB Client and application configuration values provided by the DI container.
 
+Each agent's Activity method implements wait time as follows to emulate the LLM's completion time.
+When implementing an actual Agent based on the sample Agent, please remove the following parts from the code.
+```cs
+await Task.Delay(3000);
+```
+
 To demonstrate the retry functionality of Durable Functions, each Agent includes code that emulates failures in external service calls, such as those to an LLM.
 Agent Activities fail randomly with a 30% probability during execution.
 When implementing an actual Agent based on the sample Agent, please remove the following parts from the code.
