@@ -19,7 +19,7 @@ public class SynthesizerActivity(ChatClient chatClient)
 
         ChatMessage[] allMessages = [
             new SystemChatMessage(systemMessage),
-            .. req.AgentReques.Messages.ConvertToChatMessageArray(),
+            .. req.AgentRequest.Messages.ConvertToChatMessageArray(),
         ];
 
         var chatResult = await chatClient.CompleteChatAsync(
