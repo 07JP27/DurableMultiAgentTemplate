@@ -1,4 +1,10 @@
 ﻿using System.Text.Json.Serialization;
+using DurableMultiAgentTemplate.Agent.GetClimateAgent;
+using DurableMultiAgentTemplate.Agent.GetDestinationSuggestAgent;
+using DurableMultiAgentTemplate.Agent.GetHotelAgent;
+using DurableMultiAgentTemplate.Agent.GetSightseeingSpotAgent;
+using DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
+using DurableMultiAgentTemplate.Agent.Synthesizer;
 using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Model;

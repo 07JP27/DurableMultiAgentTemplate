@@ -1,6 +1,6 @@
 using DurableMultiAgentTemplate.Shared.Model;
 
-namespace DurableMultiAgentTemplate.Model;
+namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
 public class SynthesizerRequest
 {
