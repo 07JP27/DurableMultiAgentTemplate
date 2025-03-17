@@ -38,24 +38,24 @@ public class AgentDeciderActivity(ChatClient chatClient, ILogger<AgentDeciderAct
 
         if (chatResult.Value.FinishReason == ChatFinishReason.ToolCalls)
         {
-            return new AgentDeciderResult
-            {
-                IsAgentCall = true,
-                AgentCalls = chatResult.Value
+            return new AgentDeciderResult(
+                IsAgentCall: true,
+                Content: "",
+                AgentCalls: [.. chatResult.Value
                     .ToolCalls
                     .Select(toolCall => new AgentCall(toolCall.FunctionName, JsonDocument.Parse(toolCall.FunctionArguments)))
-                    .ToList(),
-            };
+                ]
+            );
         }
         else
         {
             if (chatResult.Value.FinishReason == ChatFinishReason.Stop)
             {
-                return new AgentDeciderResult
-                {
-                    IsAgentCall = false,
-                    Content = chatResult.Value.Content.First().Text
-                };
+                return new AgentDeciderResult(
+                    IsAgentCall: false,
+                    Content: chatResult.Value.Content.First().Text,
+                    AgentCalls: []
+                );
             }
         }
         

@@ -58,12 +58,11 @@ public class AgentOrchestrator()
         await Task.WhenAll(parallelAgentCall);
 
         // Synthesizer呼び出し（回答集約）
-        SynthesizerRequest synthesizerRequest = new()
-        {
-            AgentCallResult = [.. parallelAgentCall.Select(x => x.Result)],
-            AgentRequest = reqData,
-            CalledAgentNames = [.. agentDeciderResult.AgentCalls.Select(x => x.AgentName)]
-        };
+        SynthesizerRequest synthesizerRequest = new(
+            AgentCallResult: [.. parallelAgentCall.Select(x => x.Result)],
+            AgentRequest: reqData,
+            CalledAgentNames: [.. agentDeciderResult.AgentCalls.Select(x => x.AgentName)]
+        );
         
         context.SetCustomStatus(new AgentOrchestratorStatus(AgentOrchestratorStep.SynthesizerActivity,
             [new AgentCall(AgentActivityName.SynthesizerActivity, synthesizerRequest)]));
