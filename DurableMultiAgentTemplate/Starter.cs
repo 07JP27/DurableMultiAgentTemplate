@@ -8,14 +8,19 @@ using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate;
 
-public class Starter(ILogger<Starter> _logger)
+public class Starter(ILogger<Starter> logger)
 {
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     [Function("SyncStarter")]
     public async Task<HttpResponseData> SyncStarter(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "invoke/sync")] HttpRequestData req,
         [DurableClient] DurableTaskClient client)
     {
-        _logger.LogInformation("Sync HTTP trigger function processed a request.");
+        logger.LogInformation("Sync HTTP trigger function processed a request.");
         var reqData = await GetRequestData(req);
 
         if (reqData == null)
@@ -25,11 +30,11 @@ public class Starter(ILogger<Starter> _logger)
             return badRequestResponse;
         }
 
-        string instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(AgentOrchestrator), reqData);
+        var instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(AgentOrchestrator), reqData);
 
-        _logger.LogInformation($"Started orchestration with ID = '{instanceId}'.");
+        logger.LogInformation("Started orchestration with ID = '{instanceId}'.", instanceId);
 
-        OrchestrationMetadata metadata = await client.WaitForInstanceCompletionAsync(instanceId, getInputsAndOutputs: true);
+        var metadata = await client.WaitForInstanceCompletionAsync(instanceId, getInputsAndOutputs: true);
 
         var res = HttpResponseData.CreateResponse(req);
         await res.WriteStringAsync(metadata.SerializedOutput ?? "");
@@ -41,7 +46,7 @@ public class Starter(ILogger<Starter> _logger)
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "invoke/async")] HttpRequestData req,
         [DurableClient] DurableTaskClient client)
     {
-        _logger.LogInformation("Async HTTP trigger function processed a request.");
+        logger.LogInformation("Async HTTP trigger function processed a request.");
         var reqData = await GetRequestData(req);
 
         if (reqData == null)
@@ -51,9 +56,9 @@ public class Starter(ILogger<Starter> _logger)
             return badRequestResponse;
         }
 
-        string instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(AgentOrchestrator), reqData);
+        var instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(AgentOrchestrator), reqData);
 
-        _logger.LogInformation($"Started orchestration with ID = '{instanceId}'.");
+        logger.LogInformation("Started orchestration with ID = '{instanceId}'.", instanceId);
 
         return await client.CreateCheckStatusResponseAsync(req, instanceId);
     }
@@ -64,14 +69,10 @@ public class Starter(ILogger<Starter> _logger)
 
         if (string.IsNullOrEmpty(requestBody)) return null;
 
-        var options = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        };
-        var reqData = JsonSerializer.Deserialize<AgentRequestDto>(requestBody, options);
+        var reqData = JsonSerializer.Deserialize<AgentRequestDto>(requestBody, _jsonSerializerOptions);
 
         if (reqData == null) return null;
-        if (reqData.Messages == null || !reqData.Messages.Any()) return null;
+        if (reqData.Messages == null || reqData.Messages.Count == 0) return null;
         return reqData;
     }
 }

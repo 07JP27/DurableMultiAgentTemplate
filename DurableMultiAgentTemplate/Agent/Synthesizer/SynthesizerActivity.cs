@@ -27,11 +27,9 @@ public class SynthesizerActivity(ChatClient chatClient, ILogger<SynthesizerActiv
 
         if (chatResult.Value.FinishReason == ChatFinishReason.Stop)
         {
-            return new AgentResponseDto
-            {
-                Content = chatResult.Value.Content.First().Text,
-                CalledAgentNames = req.CalledAgentNames
-            };
+            return new AgentResponseDto(
+                chatResult.Value.Content.First().Text,
+                req.CalledAgentNames);
         }
 
         throw new InvalidOperationException("Failed to synthesize the result");

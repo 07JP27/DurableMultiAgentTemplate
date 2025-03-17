@@ -21,7 +21,7 @@ public class AgentOrchestrator()
     public async Task<AgentResponseDto> RunOrchestrator(
         [OrchestrationTrigger] TaskOrchestrationContext context)
     {
-        ILogger logger = context.CreateReplaySafeLogger("AgentOrchestrator");
+        var logger = context.CreateReplaySafeLogger("AgentOrchestrator");
         var reqData = context.GetInput<AgentRequestDto>();
 
         ArgumentNullException.ThrowIfNull(reqData);
@@ -37,11 +37,11 @@ public class AgentOrchestrator()
             logger.LogInformation("No agent call happened");
             if (reqData.RequireAdditionalInfo)
             {
-                return new AgentResponseWithAdditionalInfoDto{Content = agentDeciderResult.Content};
+                return new AgentResponseWithAdditionalInfoDto(agentDeciderResult.Content);
             }
             else
             {
-                return new AgentResponseDto{Content = agentDeciderResult.Content};
+                return new AgentResponseDto(agentDeciderResult.Content);
             }
         }
 
@@ -58,12 +58,11 @@ public class AgentOrchestrator()
         await Task.WhenAll(parallelAgentCall);
 
         // Synthesizer呼び出し（回答集約）
-        SynthesizerRequest synthesizerRequest = new()
-        {
-            AgentCallResult = parallelAgentCall.Select(x => x.Result).ToList(),
-            AgentRequest = reqData,
-            CalledAgentNames = agentDeciderResult.AgentCalls.Select(x => x.AgentName).ToList()
-        };
+        SynthesizerRequest synthesizerRequest = new(
+            AgentCallResult: [.. parallelAgentCall.Select(x => x.Result)],
+            AgentRequest: reqData,
+            CalledAgentNames: [.. agentDeciderResult.AgentCalls.Select(x => x.AgentName)]
+        );
         
         context.SetCustomStatus(new AgentOrchestratorStatus(AgentOrchestratorStep.SynthesizerActivity,
             [new AgentCall(AgentActivityName.SynthesizerActivity, synthesizerRequest)]));

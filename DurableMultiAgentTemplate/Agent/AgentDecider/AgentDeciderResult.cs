@@ -2,10 +2,13 @@
 
 namespace DurableMultiAgentTemplate.Agent.AgentDecider;
 
-public class AgentDeciderResult
-{
-    public bool IsAgentCall { get; set; }
-    public string Content { get; set; } = string.Empty;
-    public IList<AgentCall> AgentCalls { get; set; } = default!;
-
-}
+/// <summary>
+/// Represents the result of an agent decider operation.
+/// </summary>
+/// <param name="IsAgentCall">Indicates whether the result involves an agent call.</param>
+/// <param name="Content">The content of the result.</param>
+/// <param name="AgentCalls">A list of agent calls associated with the result.</param>
+public record AgentDeciderResult(
+    bool IsAgentCall,
+    string Content,
+    IList<AgentCall> AgentCalls);

@@ -38,18 +38,15 @@ public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogge
 
         if (chatResult.Value.FinishReason == ChatFinishReason.Stop)
         {
-            AgentResponseWithAdditionalInfoFormat? res = JsonSerializer.Deserialize(
+            var res = JsonSerializer.Deserialize(
                 chatResult.Value.Content.First().Text,
-                SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat);
+                SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat) ?? 
+                throw new InvalidOperationException("Failed to deserialize the result");
 
-            if (res == null) throw new InvalidOperationException("Failed to deserialize the result");
-
-            return new AgentResponseWithAdditionalInfoDto
-            {
-                Content = res.Content ?? throw new InvalidOperationException("Content is null"),
-                AdditionalInfo = res.AdditionalInfo ?? throw new InvalidOperationException("AdditionalInfo is null"),
-                CalledAgentNames = req.CalledAgentNames,
-            };
+            return new AgentResponseWithAdditionalInfoDto(
+                res.Content ?? throw new InvalidOperationException("Content is null"),
+                req.CalledAgentNames,
+                res.AdditionalInfo ?? throw new InvalidOperationException("AdditionalInfo is null"));
         }
 
         throw new InvalidOperationException("Failed to synthesize the result");

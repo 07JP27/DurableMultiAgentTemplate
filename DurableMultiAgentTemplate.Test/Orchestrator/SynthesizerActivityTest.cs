@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate.Tests.Orchestrator;
+namespace DurableMultiAgentTemplate.Test.Orchestrator;
 
 [TestClass]
 public class SynthesizerActivityTest
@@ -33,8 +33,8 @@ public class SynthesizerActivityTest
 
         var loggerMock = new Mock<ILogger<SynthesizerActivity>>();
         var synthesizerActivity = new SynthesizerActivity(chatClientMock.Object,loggerMock.Object);
-        var synthesizerRequest = new SynthesizerRequest { 
-            AgentCallResult =["""
+        var synthesizerRequest = new SynthesizerRequest(
+            AgentCallResult: ["""
             暖かい場所の条件でおすすめの旅行先を提案します。好みに応じて選んでください。
             1. **ハワイ（オアフ島やマウイ島）**  
             - 年間を通して快適な気温。ビーチリゾートやトレッキングなど多様なアクティビティが可能。
@@ -58,17 +58,15 @@ public class SynthesizerActivityTest
 
             どれも暖かい気候を楽しめる場所です。予算や旅行期間に合わせてお選びください！
             """],
-            AgentRequest = new AgentRequestDto {
-                Messages = new List<AgentRequestMessageItem> { new AgentRequestMessageItem { Role = "user", Content = "あったかい場所に行きたいな" } },
-            },
-            CalledAgentNames = new List<string> { AgentActivityName.GetDestinationSuggestAgent }
-        };
+            AgentRequest: new AgentRequestDto([new("user", "あったかい場所に行きたいな")]),
+            CalledAgentNames: [AgentActivityName.GetDestinationSuggestAgent]
+        );
 
         var agentResponseDto = await synthesizerActivity.Run(synthesizerRequest);
         
         Assert.IsNotNull(agentResponseDto);
         Assert.IsNotEmpty(agentResponseDto.Content);
-        Assert.AreEqual(agentResponseDto.Content, expectedContent);
+        Assert.AreEqual(expectedContent, agentResponseDto.Content);
         Assert.AreEqual(synthesizerRequest.CalledAgentNames, agentResponseDto.CalledAgentNames);
     }
 }
