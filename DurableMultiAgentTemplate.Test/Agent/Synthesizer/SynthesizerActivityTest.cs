@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate.Test.Orchestrator;
+namespace DurableMultiAgentTemplate.Test.Agent.Synthesizer;
 
 [TestClass]
 public class SynthesizerActivityTest
