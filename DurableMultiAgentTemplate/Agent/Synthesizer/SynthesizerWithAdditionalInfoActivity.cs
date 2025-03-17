@@ -38,11 +38,10 @@ public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogge
 
         if (chatResult.Value.FinishReason == ChatFinishReason.Stop)
         {
-            AgentResponseWithAdditionalInfoFormat? res = JsonSerializer.Deserialize(
+            var res = JsonSerializer.Deserialize(
                 chatResult.Value.Content.First().Text,
-                SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat);
-
-            if (res == null) throw new InvalidOperationException("Failed to deserialize the result");
+                SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat) ?? 
+                throw new InvalidOperationException("Failed to deserialize the result");
 
             return new AgentResponseWithAdditionalInfoDto
             {
