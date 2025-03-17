@@ -1,5 +1,4 @@
-﻿using DurableMultiAgentTemplate.Model;
-using Microsoft.Azure.Functions.Worker;
+﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 

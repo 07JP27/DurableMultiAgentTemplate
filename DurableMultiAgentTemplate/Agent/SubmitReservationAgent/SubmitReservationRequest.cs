@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace DurableMultiAgentTemplate.Model;
+namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
 
 public class SubmitReservationRequest
 {

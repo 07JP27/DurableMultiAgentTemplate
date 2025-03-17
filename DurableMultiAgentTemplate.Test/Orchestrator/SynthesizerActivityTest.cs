@@ -2,6 +2,7 @@
 using System.ClientModel.Primitives;
 using DurableMultiAgentTemplate.Agent;
 using DurableMultiAgentTemplate.Agent.Orchestrator;
+using DurableMultiAgentTemplate.Agent.Synthesizer;
 using DurableMultiAgentTemplate.Model;
 using DurableMultiAgentTemplate.Shared.Model;
 using Microsoft.Extensions.Logging;

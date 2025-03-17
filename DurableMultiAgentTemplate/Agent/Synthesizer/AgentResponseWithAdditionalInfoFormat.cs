@@ -1,6 +1,6 @@
 using DurableMultiAgentTemplate.Shared.Model;
 
-namespace DurableMultiAgentTemplate;
+namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
 public class AgentResponseWithAdditionalInfoFormat
 {

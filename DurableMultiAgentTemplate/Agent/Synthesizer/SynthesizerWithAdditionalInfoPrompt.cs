@@ -1,4 +1,4 @@
-namespace DurableMultiAgentTemplate.Agent.Orchestrator;
+namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
 internal static class SynthesizerWithAdditionalInfoPrompt
 {

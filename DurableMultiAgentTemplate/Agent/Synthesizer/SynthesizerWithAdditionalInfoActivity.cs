@@ -8,7 +8,7 @@ using OpenAI.Chat;
 using DurableMultiAgentTemplate.Shared.Model;
 
 
-namespace DurableMultiAgentTemplate.Agent.Orchestrator;
+namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
 public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogger<SynthesizerWithAdditionalInfoActivity> logger)
 {

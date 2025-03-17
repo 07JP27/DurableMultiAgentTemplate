@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 using DurableMultiAgentTemplate.Shared.Model;
 
-namespace DurableMultiAgentTemplate.Agent.Orchestrator;
+namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
 public class SynthesizerActivity(ChatClient chatClient, ILogger<SynthesizerActivity> logger)
 {
