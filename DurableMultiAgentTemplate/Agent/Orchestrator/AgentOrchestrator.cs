@@ -21,7 +21,7 @@ public class AgentOrchestrator()
     public async Task<AgentResponseDto> RunOrchestrator(
         [OrchestrationTrigger] TaskOrchestrationContext context)
     {
-        ILogger logger = context.CreateReplaySafeLogger("AgentOrchestrator");
+        var logger = context.CreateReplaySafeLogger("AgentOrchestrator");
         var reqData = context.GetInput<AgentRequestDto>();
 
         ArgumentNullException.ThrowIfNull(reqData);
@@ -60,9 +60,9 @@ public class AgentOrchestrator()
         // Synthesizer呼び出し（回答集約）
         SynthesizerRequest synthesizerRequest = new()
         {
-            AgentCallResult = parallelAgentCall.Select(x => x.Result).ToList(),
+            AgentCallResult = [.. parallelAgentCall.Select(x => x.Result)],
             AgentRequest = reqData,
-            CalledAgentNames = agentDeciderResult.AgentCalls.Select(x => x.AgentName).ToList()
+            CalledAgentNames = [.. agentDeciderResult.AgentCalls.Select(x => x.AgentName)]
         };
         
         context.SetCustomStatus(new AgentOrchestratorStatus(AgentOrchestratorStep.SynthesizerActivity,

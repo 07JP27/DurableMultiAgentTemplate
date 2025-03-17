@@ -8,7 +8,7 @@ namespace DurableMultiAgentTemplate.Client.Services;
 /// </summary>
 public class AgentChatService(HttpClient httpClient, ILogger<AgentChatService> logger)
 {
-    private static readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
     };
@@ -31,11 +31,8 @@ public class AgentChatService(HttpClient httpClient, ILogger<AgentChatService> l
 
         var agentOrchestratorStatus = AgentOrchestratorStatus.NotStarted;
         progress?.Report(agentOrchestratorStatus);
-        var invokeAsyncResult = await response.Content.ReadFromJsonAsync<InvokeAsyncResult>(_jsonSerializerOptions, cancellationToken);
-        if (invokeAsyncResult == null)
-        {
+        var invokeAsyncResult = await response.Content.ReadFromJsonAsync<InvokeAsyncResult>(_jsonSerializerOptions, cancellationToken) ?? 
             throw new InvalidOperationException("The format of the response from the agent is invalid.");
-        }
 
         // The response from the agent is an async response, so we need to poll the status until it's completed.
         while (cancellationToken.IsCancellationRequested == false)

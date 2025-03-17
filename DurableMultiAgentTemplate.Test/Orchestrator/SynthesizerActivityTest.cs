@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate.Tests.Orchestrator;
+namespace DurableMultiAgentTemplate.Test.Orchestrator;
 
 [TestClass]
 public class SynthesizerActivityTest
@@ -59,16 +59,16 @@ public class SynthesizerActivityTest
             どれも暖かい気候を楽しめる場所です。予算や旅行期間に合わせてお選びください！
             """],
             AgentRequest = new AgentRequestDto {
-                Messages = new List<AgentRequestMessageItem> { new AgentRequestMessageItem { Role = "user", Content = "あったかい場所に行きたいな" } },
+                Messages = [new() { Role = "user", Content = "あったかい場所に行きたいな" }],
             },
-            CalledAgentNames = new List<string> { AgentActivityName.GetDestinationSuggestAgent }
+            CalledAgentNames = [AgentActivityName.GetDestinationSuggestAgent]
         };
 
         var agentResponseDto = await synthesizerActivity.Run(synthesizerRequest);
         
         Assert.IsNotNull(agentResponseDto);
         Assert.IsNotEmpty(agentResponseDto.Content);
-        Assert.AreEqual(agentResponseDto.Content, expectedContent);
+        Assert.AreEqual(expectedContent, agentResponseDto.Content);
         Assert.AreEqual(synthesizerRequest.CalledAgentNames, agentResponseDto.CalledAgentNames);
     }
 }
