@@ -43,12 +43,10 @@ public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogge
                 SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat) ?? 
                 throw new InvalidOperationException("Failed to deserialize the result");
 
-            return new AgentResponseWithAdditionalInfoDto
-            {
-                Content = res.Content ?? throw new InvalidOperationException("Content is null"),
-                AdditionalInfo = res.AdditionalInfo ?? throw new InvalidOperationException("AdditionalInfo is null"),
-                CalledAgentNames = req.CalledAgentNames,
-            };
+            return new AgentResponseWithAdditionalInfoDto(
+                res.Content ?? throw new InvalidOperationException("Content is null"),
+                req.CalledAgentNames,
+                res.AdditionalInfo ?? throw new InvalidOperationException("AdditionalInfo is null"));
         }
 
         throw new InvalidOperationException("Failed to synthesize the result");

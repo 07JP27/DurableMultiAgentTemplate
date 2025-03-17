@@ -1,9 +1,18 @@
-﻿namespace DurableMultiAgentTemplate.Shared.Model;
+﻿using System.Text.Json.Serialization;
 
-public class AgentResponseDto
+namespace DurableMultiAgentTemplate.Shared.Model;
+
+/// <summary>
+/// Represents the response from an agent.
+/// </summary>
+/// <param name="Content">The content of the response.</param>
+/// <param name="CalledAgentNames">The list of names of the agents that were called.</param>
+[method: JsonConstructor]
+public record AgentResponseDto(
+    string Content,
+    List<string> CalledAgentNames)
 {
-    public string Content { get; set; } = string.Empty;
-
-    public List<string> CalledAgentNames { get; set; } = new List<string>();
-
+    public AgentResponseDto(string content) : this(content, [])
+    {
+    }
 }

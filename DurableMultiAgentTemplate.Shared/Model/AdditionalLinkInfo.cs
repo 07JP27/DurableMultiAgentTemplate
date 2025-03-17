@@ -2,11 +2,8 @@
 
 namespace DurableMultiAgentTemplate.Shared.Model;
 
-public class AdditionalLinkInfo : IAdditionalInfo
-{
-    [Description("リンクのラベルとして表示されるテキスト")]
-    public string LinkText { get; set; } = "";
-
-    [Description("リンク先のURL")]
-    public required Uri Uri { get; set; }
-}
+public record AdditionalLinkInfo(
+    [property: Description("リンクのラベルとして表示されるテキスト")]
+    string LinkText,
+    [property: Description("リンク先のURL")]
+    Uri Uri) : IAdditionalInfo;

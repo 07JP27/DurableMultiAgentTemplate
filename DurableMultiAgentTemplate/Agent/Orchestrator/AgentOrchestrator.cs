@@ -37,11 +37,11 @@ public class AgentOrchestrator()
             logger.LogInformation("No agent call happened");
             if (reqData.RequireAdditionalInfo)
             {
-                return new AgentResponseWithAdditionalInfoDto{Content = agentDeciderResult.Content};
+                return new AgentResponseWithAdditionalInfoDto(agentDeciderResult.Content);
             }
             else
             {
-                return new AgentResponseDto{Content = agentDeciderResult.Content};
+                return new AgentResponseDto(agentDeciderResult.Content);
             }
         }
 

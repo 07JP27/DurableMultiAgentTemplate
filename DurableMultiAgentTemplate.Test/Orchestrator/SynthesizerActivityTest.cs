@@ -58,9 +58,7 @@ public class SynthesizerActivityTest
 
             どれも暖かい気候を楽しめる場所です。予算や旅行期間に合わせてお選びください！
             """],
-            AgentRequest: new AgentRequestDto {
-                Messages = [new() { Role = "user", Content = "あったかい場所に行きたいな" }],
-            },
+            AgentRequest: new AgentRequestDto([new("user", "あったかい場所に行きたいな")]),
             CalledAgentNames: [AgentActivityName.GetDestinationSuggestAgent]
         );
 

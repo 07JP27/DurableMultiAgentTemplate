@@ -60,24 +60,18 @@ public partial class Home(AgentChatService agentChatService, ILogger<Home> logge
                 StateHasChanged();
             });
 
-            var getAgentResponseTask = agentChatService.GetAgentResponseAsync(new AgentRequestDto
-            {
-                Messages = [.. _messages.Where(x => x.IsRequestTarget).Select(x => x switch
+            var getAgentResponseTask = agentChatService.GetAgentResponseAsync(new AgentRequestDto(
+                Messages: [.. _messages.Where(x => x.IsRequestTarget).Select(x => x switch
                 {
-                    UserChatMessage userChatMessage => new AgentRequestMessageItem
-                    {
-                        Role = userChatMessage.Role.ToRoleName(),
-                        Content = userChatMessage.Message,
-                    },
-                    AgentChatMessage agentChatMessage => new AgentRequestMessageItem
-                    {
-                        Role = agentChatMessage.Role.ToRoleName(),
-                        Content = agentChatMessage.Message.Content,
-                    },
+                    UserChatMessage userChatMessage => new AgentRequestMessageItem(
+                        userChatMessage.Role.ToRoleName(),
+                        userChatMessage.Message),
+                    AgentChatMessage agentChatMessage => new AgentRequestMessageItem(
+                        agentChatMessage.Role.ToRoleName(),
+                        agentChatMessage.Message.Content),
                     _ => throw new InvalidOperationException()
                 })],
-                RequireAdditionalInfo = _chatInput.RequireAdditionalInfo,
-            }, 
+                RequireAdditionalInfo: _chatInput.RequireAdditionalInfo), 
             progress,
             cancellationTokenSource.Token);
 
