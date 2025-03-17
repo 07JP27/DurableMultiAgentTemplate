@@ -297,6 +297,10 @@ public class AgentOrchestratorTest
         // Verify Synthesizer status was set
         Assert.IsTrue(statuses.Count >= 3);
         Assert.AreEqual(AgentOrchestratorStep.SynthesizerActivity, statuses[2].Step);
-        Assert.IsInstanceOfType<SynthesizerRequest>(statuses[2].AgentCalls.First().Arguments);
+        var synthesizerArgs = statuses[2].AgentCalls.Single().Arguments as SynthesizerRequest;
+        Assert.IsNotNull(synthesizerArgs);
+        Assert.AreEqual(reqData, synthesizerArgs.AgentRequest);
+        CollectionAssert.AreEqual(new[] { "TestAgent" }, synthesizerArgs.CalledAgentNames);
+        CollectionAssert.AreEqual(new[] { "AgentResult" }, synthesizerArgs.AgentCallResult);
     }
 }
