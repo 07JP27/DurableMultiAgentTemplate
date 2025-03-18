@@ -1,8 +1,8 @@
-using DurableMultiAgentTemplate.Json;
+﻿using DurableMultiAgentTemplate.Json;
 using DurableMultiAgentTemplate.Model;
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate.Agent;
+namespace DurableMultiAgentTemplate.Agent.Workers;
 
 //https://learn.microsoft.com/ja-jp/azure/ai-services/openai/how-to/dotnet-migration?tabs=stable
 internal class AgentDefinition

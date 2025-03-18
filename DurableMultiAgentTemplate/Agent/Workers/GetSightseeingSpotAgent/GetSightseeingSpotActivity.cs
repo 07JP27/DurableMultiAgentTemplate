@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate.Agent.GetSightseeingSpotAgent;
+namespace DurableMultiAgentTemplate.Agent.Workers.GetSightseeingSpotAgent;
 
 public class GetSightseeingSpotActivity(ChatClient chatClient,
     ILogger<GetSightseeingSpotActivity> logger)

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate.Agent.GetHotelAgent;
+namespace DurableMultiAgentTemplate.Agent.Workers.GetHotelAgent;
 
 public class GetHotelActivity(ChatClient chatClient, 
     ILogger<GetHotelActivity> logger)

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Functions.Worker;
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
+namespace DurableMultiAgentTemplate.Agent.Workers.SubmitReservationAgent;
 
 public class SubmitReservationActivity(ChatClient chatClient)//, CosmosClient cosmosClient)
 {

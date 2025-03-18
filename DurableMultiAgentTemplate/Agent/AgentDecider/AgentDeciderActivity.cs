@@ -4,6 +4,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 using DurableMultiAgentTemplate.Shared.Model;
+using DurableMultiAgentTemplate.Agent.Workers;
 
 
 namespace DurableMultiAgentTemplate.Agent.AgentDecider;

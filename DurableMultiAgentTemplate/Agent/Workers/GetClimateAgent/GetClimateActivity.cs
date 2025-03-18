@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate.Agent.GetClimateAgent;
+namespace DurableMultiAgentTemplate.Agent.Workers.GetClimateAgent;
 
 public class GetClimateActivity(ChatClient chatClient, 
     ILogger<GetClimateActivity> logger)

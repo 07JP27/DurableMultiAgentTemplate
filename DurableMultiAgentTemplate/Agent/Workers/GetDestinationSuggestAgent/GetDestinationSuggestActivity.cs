@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 
-namespace DurableMultiAgentTemplate.Agent.GetDestinationSuggestAgent;
+namespace DurableMultiAgentTemplate.Agent.Workers.GetDestinationSuggestAgent;
 
 public class GetDestinationSuggestActivity(ChatClient chatClient,
     ILogger<GetDestinationSuggestActivity> logger)
