@@ -58,15 +58,15 @@ public class SynthesizerActivityTest
 
             どれも暖かい気候を楽しめる場所です。予算や旅行期間に合わせてお選びください！
             """],
-            AgentRequest: new AgentRequestDto([new("user", "あったかい場所に行きたいな")]),
-            CalledAgentNames: [AgentActivityName.GetDestinationSuggestAgent]
+            AgentRequest: new AgentRequestDto([new UserMessageItem("あったかい場所に行きたいな")]),
+            CalledAgentNames: [AgentActivityNames.GetDestinationSuggestAgent]
         );
 
         var agentResponseDto = await synthesizerActivity.Run(synthesizerRequest);
         
         Assert.IsNotNull(agentResponseDto);
-        Assert.IsNotEmpty(agentResponseDto.Content);
-        Assert.AreEqual(expectedContent, agentResponseDto.Content);
+        Assert.IsNotNull(agentResponseDto.Item);
+        Assert.AreEqual(expectedContent, agentResponseDto.Item.Content);
         Assert.AreEqual(synthesizerRequest.CalledAgentNames, agentResponseDto.CalledAgentNames);
     }
 }

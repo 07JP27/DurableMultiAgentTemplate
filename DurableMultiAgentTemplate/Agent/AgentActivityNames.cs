@@ -1,6 +1,6 @@
 ﻿namespace DurableMultiAgentTemplate.Agent;
 
-public static class AgentActivityName
+public static class AgentActivityNames
 {
     // Orchestrator Agent functions
     public const string AgentDeciderActivity = nameof(AgentDeciderActivity);
@@ -13,5 +13,5 @@ public static class AgentActivityName
     public const string GetSightseeingSpotAgent = nameof(GetSightseeingSpotAgent);
     public const string GetHotelAgent = nameof(GetHotelAgent);
     public const string SubmitReservationAgent = nameof(SubmitReservationAgent);
-    public const string HumanInTheLoopAgent = nameof(HumanInTheLoopAgent);
+    public const string CommitReservationAgent = nameof(CommitReservationAgent);
 }

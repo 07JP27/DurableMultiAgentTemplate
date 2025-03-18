@@ -12,7 +12,7 @@ namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
 public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogger<SynthesizerWithAdditionalInfoActivity> logger)
 {
-    [Function(AgentActivityName.SynthesizerWithAdditionalInfoActivity)]
+    [Function(AgentActivityNames.SynthesizerWithAdditionalInfoActivity)]
     public async Task<AgentResponseWithAdditionalInfoDto> Run([ActivityTrigger] SynthesizerRequest req)
     {
         logger.LogInformation("Run SynthesizerActivity");
@@ -44,7 +44,7 @@ public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogge
                 throw new InvalidOperationException("Failed to deserialize the result");
 
             return new AgentResponseWithAdditionalInfoDto(
-                res.Content ?? throw new InvalidOperationException("Content is null"),
+                new(res.Content ?? throw new InvalidOperationException("Content is null")),
                 req.CalledAgentNames,
                 res.AdditionalInfo ?? throw new InvalidOperationException("AdditionalInfo is null"));
         }

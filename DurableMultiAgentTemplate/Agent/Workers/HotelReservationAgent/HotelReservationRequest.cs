@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace DurableMultiAgentTemplate.Agent.Workers.SubmitReservationAgent;
+namespace DurableMultiAgentTemplate.Agent.Workers.HotelReservationAgent;
 
-public record SubmitReservationRequest(
+public record HotelReservationRequest(
     [property: Description("行き先のホテルの名前。")]
     string Destination,
     [property: Description("チェックイン日。YYYY/MM/DD形式。")]

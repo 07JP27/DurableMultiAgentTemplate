@@ -5,36 +5,54 @@ using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 using DurableMultiAgentTemplate.Shared.Model;
 using DurableMultiAgentTemplate.Agent.Workers;
+using System.Text.Json.Nodes;
 
 
 namespace DurableMultiAgentTemplate.Agent.AgentDecider;
 
-public class AgentDeciderActivity(ChatClient chatClient, ILogger<AgentDeciderActivity> logger)
+public class AgentDeciderActivity(ChatClient chatClient, AgentDefinitions agentDefinitions, ILogger<AgentDeciderActivity> logger)
 {
-    [Function(AgentActivityName.AgentDeciderActivity)]
+    [Function(AgentActivityNames.AgentDeciderActivity)]
     public async Task<AgentDeciderResult> Run([ActivityTrigger] AgentRequestDto reqData)
     {
         var messages = reqData.Messages.ConvertToChatMessageArray();
+        var lastAgentMessage = (AgentMessageItem?)reqData.Messages.FindLast(x => x.Role == AgentRole.Agent);
+        if (lastAgentMessage != null && lastAgentMessage.NextAgentCall != null)
+        {
+            ChatMessage[] allMessagesForNextAgentCall = [
+                new SystemChatMessage(AgentDeciderPrompt.SystemPromptForNextAgentCall),
+                .. messages,
+            ];
+            var chatResultForNextAgentCall = await chatClient.CompleteChatAsync(
+                allMessagesForNextAgentCall,
+                CreateChatOptions(true)
+            );
+
+            if (chatResultForNextAgentCall.Value.FinishReason == ChatFinishReason.ToolCalls)
+            {
+                return new AgentDeciderResult(
+                    IsAgentCall: true,
+                    Content: "",
+                    AgentCalls: [.. chatResultForNextAgentCall.Value
+                        .ToolCalls
+                        .Select(toolCall => new AgentCall(
+                            toolCall.FunctionName,
+                            JsonSerializer.Deserialize<JsonElement>(toolCall.FunctionArguments)))
+                    ]
+                );
+            }
+        }
+
         logger.LogInformation("Run AgentDeciderActivity");
 
         ChatMessage[] allMessages = [
             new SystemChatMessage(AgentDeciderPrompt.SystemPrompt),
             .. messages,
         ];
-        ChatCompletionOptions options = new()
-        {
-            Tools = {
-                AgentDefinition.GetDestinationSuggestAgent,
-                AgentDefinition.GetClimateAgent,
-                AgentDefinition.GetSightseeingSpotAgent,
-                AgentDefinition.GetHotelAgent,
-                AgentDefinition.SubmitReservationAgent
-            }
-        };
 
         var chatResult = await chatClient.CompleteChatAsync(
             allMessages,
-            options
+            CreateChatOptions(false)
         );
 
         if (chatResult.Value.FinishReason == ChatFinishReason.ToolCalls)
@@ -44,7 +62,9 @@ public class AgentDeciderActivity(ChatClient chatClient, ILogger<AgentDeciderAct
                 Content: "",
                 AgentCalls: [.. chatResult.Value
                     .ToolCalls
-                    .Select(toolCall => new AgentCall(toolCall.FunctionName, JsonDocument.Parse(toolCall.FunctionArguments)))
+                    .Select(toolCall => new AgentCall(
+                        toolCall.FunctionName,
+                        JsonSerializer.Deserialize<JsonElement>(toolCall.FunctionArguments)))
                 ]
             );
         }
@@ -59,7 +79,19 @@ public class AgentDeciderActivity(ChatClient chatClient, ILogger<AgentDeciderAct
                 );
             }
         }
-        
+
         throw new InvalidOperationException("Invalid OpenAI response");
+    }
+
+    private ChatCompletionOptions CreateChatOptions(bool requiresUserConfirmation)
+    {
+        ChatCompletionOptions options = new();
+        var agents = agentDefinitions.GetAgentDefinitions(requiresUserConfirmation);
+        foreach (var agent in agents)
+        {
+            options.Tools.Add(agent.ChatTool);
+        }
+
+        return options;
     }
 }

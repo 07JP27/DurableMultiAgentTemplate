@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 using DurableMultiAgentTemplate.Shared.Model;
 using DurableMultiAgentTemplate.Agent.AgentDecider;
 using DurableMultiAgentTemplate.Agent.Synthesizer;
+using System.Text.Json.Nodes;
+using System.Text.Json;
+using DurableMultiAgentTemplate.Agent.Workers;
 
 namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 
@@ -27,9 +30,9 @@ public class AgentOrchestrator()
         ArgumentNullException.ThrowIfNull(reqData);
 
         context.SetCustomStatus(new AgentOrchestratorStatus(AgentOrchestratorStep.AgentDeciderActivity,
-            [new AgentCall(AgentActivityName.AgentDeciderActivity, reqData)]));
+            [new AgentCall(AgentActivityNames.AgentDeciderActivity, JsonSerializer.SerializeToElement(reqData))]));
         // AgentDecider呼び出し（呼び出すAgentの決定）
-        var agentDeciderResult = await context.CallActivityAsync<AgentDeciderResult>(AgentActivityName.AgentDeciderActivity, reqData, DefaultTaskOptions);
+        var agentDeciderResult = await context.CallActivityAsync<AgentDeciderResult>(AgentActivityNames.AgentDeciderActivity, reqData, DefaultTaskOptions);
 
         // AgentDeciderでエージェントを呼び出さない場合には、そのまま返す
         if (!agentDeciderResult.IsAgentCall)
@@ -37,11 +40,11 @@ public class AgentOrchestrator()
             logger.LogInformation("No agent call happened");
             if (reqData.RequireAdditionalInfo)
             {
-                return new AgentResponseWithAdditionalInfoDto(agentDeciderResult.Content);
+                return new AgentResponseWithAdditionalInfoDto(new(agentDeciderResult.Content));
             }
             else
             {
-                return new AgentResponseDto(agentDeciderResult.Content);
+                return new AgentResponseDto(new(agentDeciderResult.Content));
             }
         }
 
@@ -49,10 +52,10 @@ public class AgentOrchestrator()
         logger.LogInformation("Agent call happened");
         context.SetCustomStatus(
             new AgentOrchestratorStatus(AgentOrchestratorStep.WorkerAgentActivity, agentDeciderResult.AgentCalls));
-        var parallelAgentCall = new List<Task<string>>();
+        var parallelAgentCall = new List<Task<WorkerAgentResult>>();
         foreach (var agentCall in agentDeciderResult.AgentCalls)
         {
-            parallelAgentCall.Add(context.CallActivityAsync<string>(agentCall.AgentName, agentCall.Arguments, DefaultTaskOptions));
+            parallelAgentCall.Add(context.CallActivityAsync<WorkerAgentResult>(agentCall.AgentName, agentCall.Arguments, DefaultTaskOptions));
         }
 
         await Task.WhenAll(parallelAgentCall);
@@ -65,14 +68,14 @@ public class AgentOrchestrator()
         );
         
         context.SetCustomStatus(new AgentOrchestratorStatus(AgentOrchestratorStep.SynthesizerActivity,
-            [new AgentCall(AgentActivityName.SynthesizerActivity, synthesizerRequest)]));
+            [new AgentCall(AgentActivityNames.SynthesizerActivity, JsonSerializer.SerializeToElement(synthesizerRequest))]));
         if (reqData.RequireAdditionalInfo)
         {
-            return await context.CallActivityAsync<AgentResponseWithAdditionalInfoDto>(AgentActivityName.SynthesizerWithAdditionalInfoActivity, synthesizerRequest, DefaultTaskOptions);
+            return await context.CallActivityAsync<AgentResponseWithAdditionalInfoDto>(AgentActivityNames.SynthesizerWithAdditionalInfoActivity, synthesizerRequest, DefaultTaskOptions);
         }
         else
         {
-            return await context.CallActivityAsync<AgentResponseDto>(AgentActivityName.SynthesizerActivity, synthesizerRequest, DefaultTaskOptions);
+            return await context.CallActivityAsync<AgentResponseDto>(AgentActivityNames.SynthesizerActivity, synthesizerRequest, DefaultTaskOptions);
         }
     }
 }
