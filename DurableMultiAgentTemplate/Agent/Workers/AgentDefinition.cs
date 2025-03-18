@@ -1,6 +1,5 @@
 ﻿using DurableMultiAgentTemplate.Json;
 using DurableMultiAgentTemplate.Model;
-using Microsoft.Azure.Cosmos.Core.Networking;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.Workers;
