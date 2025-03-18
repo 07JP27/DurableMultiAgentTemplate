@@ -6,17 +6,16 @@ using OpenAI.Chat;
 using DurableMultiAgentTemplate.Shared.Model;
 using DurableMultiAgentTemplate.Agent.Workers;
 using System.Text.Json.Nodes;
+using DurableMultiAgentTemplate.Json;
 
 
 namespace DurableMultiAgentTemplate.Agent.AgentDecider;
 
-public class AgentDeciderActivity(ChatClient chatClient, AgentDefinitions agentDefinitions, ILogger<AgentDeciderActivity> logger)
+public class AgentDeciderActivity(ChatClient chatClient, 
+    AgentDefinitions agentDefinitions, 
+    JsonUtilities jsonUtilities,
+    ILogger<AgentDeciderActivity> logger)
 {
-    private static JsonSerializerOptions _jsonSerializerOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-    };
-
     [Function(AgentActivityNames.AgentDeciderActivity)]
     public async Task<AgentDeciderResult> Run([ActivityTrigger] AgentRequestDto reqData)
     {
@@ -52,7 +51,7 @@ public class AgentDeciderActivity(ChatClient chatClient, AgentDefinitions agentD
                     .ToolCalls
                     .Select(toolCall => new AgentCall(
                         toolCall.FunctionName,
-                        JsonSerializer.Deserialize<JsonElement>(toolCall.FunctionArguments)))
+                        jsonUtilities.Deserialize<JsonElement>(toolCall.FunctionArguments)))
                 ]
             );
         }
@@ -104,9 +103,8 @@ public class AgentDeciderActivity(ChatClient chatClient, AgentDefinitions agentD
             return null;
         }
 
-        var argJsonElement = JsonSerializer.Deserialize<JsonElement>(toolCall.FunctionArguments);
-        var argJson = JsonSerializer.Serialize(argJsonElement, _jsonSerializerOptions);
-        var prevJson = JsonSerializer.Serialize(nextAgentCall.Arguments, _jsonSerializerOptions);
+        var argJson = toolCall.FunctionArguments.ToString();
+        var prevJson = jsonUtilities.Serialize(nextAgentCall.Arguments);
         if (argJson != prevJson)
         {
             return null;
@@ -119,7 +117,7 @@ public class AgentDeciderActivity(ChatClient chatClient, AgentDefinitions agentD
                 .ToolCalls
                 .Select(toolCall => new AgentCall(
                     toolCall.FunctionName,
-                    argJsonElement))
+                    nextAgentCall.Arguments))
             ]
         );
     }

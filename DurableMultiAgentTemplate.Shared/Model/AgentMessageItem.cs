@@ -15,16 +15,16 @@ public abstract record MessageItem(
 
 public record UserMessageItem(string Content) : MessageItem(AgentRole.User, Content);
 
+/// <summary>
+/// Represents a message item for an agent response.
+/// </summary>
+/// <param name="Content">The content of the message.</param>
+/// <param name="NextAgentCall">Represents the next agent to be called.</param>
 [method: JsonConstructor]
-public record AgentMessageItem(AgentMessageType AgentMessageType,
-    string Content,
+public record AgentMessageItem(string Content,
     AgentCall? NextAgentCall) : MessageItem(AgentRole.Agent, Content)
 {
-    public AgentMessageItem(string Content) : this(AgentMessageType.Info, Content, null)
-    {
-    }
-
-    public AgentMessageItem(string Content, AgentCall NextAgentCall) : this(AgentMessageType.Ask, Content, NextAgentCall)
+    public AgentMessageItem(string content) : this(content, null)
     {
     }
 }
@@ -43,20 +43,4 @@ public enum AgentRole
     /// Represents a agent role.
     /// </summary>
     Agent
-}
-
-/// <summary>
-/// Represents a message type for an agent.
-/// </summary>
-[JsonConverter(typeof(JsonStringEnumConverter))]
-public enum AgentMessageType
-{
-    /// <summary>
-    /// Represents a question to the user.
-    /// </summary>
-    Ask,
-    /// <summary>
-    /// Represents general information.
-    /// </summary>
-    Info
 }

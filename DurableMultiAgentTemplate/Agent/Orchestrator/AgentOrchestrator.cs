@@ -8,10 +8,11 @@ using DurableMultiAgentTemplate.Agent.Synthesizer;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using DurableMultiAgentTemplate.Agent.Workers;
+using DurableMultiAgentTemplate.Json;
 
 namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 
-public class AgentOrchestrator()
+public class AgentOrchestrator(JsonUtilities jsonUtilities)
 {
     private static TaskOptions DefaultTaskOptions { get; } = new(
         new TaskRetryOptions(new RetryPolicy(
@@ -30,7 +31,7 @@ public class AgentOrchestrator()
         ArgumentNullException.ThrowIfNull(reqData);
 
         context.SetCustomStatus(new AgentOrchestratorStatus(AgentOrchestratorStep.AgentDeciderActivity,
-            [new AgentCall(AgentActivityNames.AgentDeciderActivity, JsonSerializer.SerializeToElement(reqData))]));
+            [new AgentCall(AgentActivityNames.AgentDeciderActivity, jsonUtilities.SerializeToElement(reqData))]));
         // AgentDecider呼び出し（呼び出すAgentの決定）
         var agentDeciderResult = await context.CallActivityAsync<AgentDeciderResult>(AgentActivityNames.AgentDeciderActivity, reqData, DefaultTaskOptions);
 
@@ -68,7 +69,7 @@ public class AgentOrchestrator()
         );
         
         context.SetCustomStatus(new AgentOrchestratorStatus(AgentOrchestratorStep.SynthesizerActivity,
-            [new AgentCall(AgentActivityNames.SynthesizerActivity, JsonSerializer.SerializeToElement(synthesizerRequest))]));
+            [new AgentCall(AgentActivityNames.SynthesizerActivity, jsonUtilities.SerializeToElement(synthesizerRequest))]));
         if (reqData.RequireAdditionalInfo)
         {
             return await context.CallActivityAsync<AgentResponseWithAdditionalInfoDto>(AgentActivityNames.SynthesizerWithAdditionalInfoActivity, synthesizerRequest, DefaultTaskOptions);

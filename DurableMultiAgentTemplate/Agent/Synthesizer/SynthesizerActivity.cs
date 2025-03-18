@@ -31,8 +31,7 @@ public class SynthesizerActivity(ChatClient chatClient, ILogger<SynthesizerActiv
                 .Select(x => x.NextAgentCall)
                 .SingleOrDefault(x => x != null);
             return new(
-                new(nextAgentCall == null ? AgentMessageType.Info : AgentMessageType.Ask, 
-                    chatResult.Value.Content.First().Text, 
+                new(chatResult.Value.Content.First().Text, 
                     nextAgentCall),
                 req.CalledAgentNames);
         }

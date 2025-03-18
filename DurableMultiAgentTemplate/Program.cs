@@ -5,6 +5,7 @@ using Azure;
 using Azure.AI.OpenAI;
 using Azure.Identity;
 using DurableMultiAgentTemplate.Agent.Workers;
+using DurableMultiAgentTemplate.Json;
 using DurableMultiAgentTemplate.Model;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker.Builder;
@@ -21,6 +22,7 @@ var configuration = builder.Configuration;
 
 builder.Services.Configure<AppConfig>(configuration.GetSection("AppConfig"));
 builder.Services.AddSingleton<AgentDefinitions>();
+builder.Services.AddSingleton<JsonUtilities>();
 
 builder.Services
     .AddAzureClients(clientBuilder =>

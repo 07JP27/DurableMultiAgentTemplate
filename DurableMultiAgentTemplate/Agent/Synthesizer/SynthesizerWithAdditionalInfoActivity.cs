@@ -10,7 +10,9 @@ using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
-public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogger<SynthesizerWithAdditionalInfoActivity> logger)
+public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, 
+    JsonUtilities jsonUtilities,
+    ILogger<SynthesizerWithAdditionalInfoActivity> logger)
 {
     [Function(AgentActivityNames.SynthesizerWithAdditionalInfoActivity)]
     public async Task<AgentResponseWithAdditionalInfoDto> Run([ActivityTrigger] SynthesizerRequest req)
@@ -28,7 +30,7 @@ public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogge
         {
             ResponseFormat = ChatResponseFormat.CreateJsonSchemaFormat(
             "AgentResponseWithAdditionalInfo",
-            JsonSchemaGenerator.GenerateSchemaAsBinaryData(SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat))
+            jsonUtilities.GenerateSchemaAsBinaryData(SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat))
         };
 
         var chatResult = await chatClient.CompleteChatAsync(
@@ -38,7 +40,7 @@ public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogge
 
         if (chatResult.Value.FinishReason == ChatFinishReason.Stop)
         {
-            var res = JsonSerializer.Deserialize(
+            var res = jsonUtilities.Deserialize(
                 chatResult.Value.Content.First().Text,
                 SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat) ?? 
                 throw new InvalidOperationException("Failed to deserialize the result");

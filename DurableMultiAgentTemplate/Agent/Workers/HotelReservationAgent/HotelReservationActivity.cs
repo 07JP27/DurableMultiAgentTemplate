@@ -1,16 +1,12 @@
 ﻿using System.Text.Json;
+using DurableMultiAgentTemplate.Json;
 using Microsoft.Azure.Functions.Worker;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.Workers.HotelReservationAgent;
 
-public class HotelReservationActivity(ChatClient chatClient)//, CosmosClient cosmosClient)
+public class HotelReservationActivity(ChatClient chatClient, JsonUtilities jsonUtilities)//, CosmosClient cosmosClient)
 {
-    private static JsonSerializerOptions _jsonSerializerOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-    };
-
     [Function(AgentActivityNames.SubmitReservationAgent)]
     public async Task<WorkerAgentResult> SubmitReservationRequestAsync([ActivityTrigger] HotelReservationRequest req)
     {
@@ -27,7 +23,7 @@ public class HotelReservationActivity(ChatClient chatClient)//, CosmosClient cos
             人数：{req.GuestsCount} 名
             --------------------------------
             """,
-            new(AgentActivityNames.CommitReservationAgent, JsonSerializer.SerializeToElement(req, _jsonSerializerOptions)));
+            new(AgentActivityNames.CommitReservationAgent, jsonUtilities.SerializeToElement(req)));
     }
 
     [Function(AgentActivityNames.CommitReservationAgent)]
