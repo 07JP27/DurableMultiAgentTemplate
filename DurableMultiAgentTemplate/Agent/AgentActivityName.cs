@@ -1,4 +1,4 @@
-namespace DurableMultiAgentTemplate.Agent;
+﻿namespace DurableMultiAgentTemplate.Agent;
 
 public static class AgentActivityName
 {
@@ -13,4 +13,5 @@ public static class AgentActivityName
     public const string GetSightseeingSpotAgent = nameof(GetSightseeingSpotAgent);
     public const string GetHotelAgent = nameof(GetHotelAgent);
     public const string SubmitReservationAgent = nameof(SubmitReservationAgent);
+    public const string HumanInTheLoopAgent = nameof(HumanInTheLoopAgent);
 }

@@ -1,5 +1,6 @@
 ﻿using DurableMultiAgentTemplate.Json;
 using DurableMultiAgentTemplate.Model;
+using Microsoft.Azure.Cosmos.Core.Networking;
 using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.Workers;
@@ -29,6 +30,11 @@ internal class AgentDefinition
 
     public static readonly ChatTool SubmitReservationAgent = ChatTool.CreateFunctionTool(
         functionName: AgentActivityName.SubmitReservationAgent,
-        functionDescription: "宿泊先の予約を行います。",
+        functionDescription: "宿泊先の予約を行います。予約には利用者の最終確認が必要です。",
         functionParameters: JsonSchemaGenerator.GenerateSchemaAsBinaryData(SourceGenerationContext.Default.SubmitReservationRequest));
+
+    public static readonly ChatTool HumanInTheLoopAgent = ChatTool.CreateFunctionTool(
+        functionName: AgentActivityName.HumanInTheLoopAgent,
+        functionDescription: "利用者に最終確認を行います。",
+        functionParameters: JsonSchemaGenerator.GenerateSchemaAsBinaryData(SourceGenerationContext.Default.HumanInTheLoopRequest));
 }
