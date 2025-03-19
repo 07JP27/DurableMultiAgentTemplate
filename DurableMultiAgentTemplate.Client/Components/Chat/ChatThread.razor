@@ -30,7 +30,7 @@
                         </FluentGridItem>
                         <FluentGridItem xs="11">
                             <div>
-                                @((MarkupString)Markdown.ToHtml(agentChatMessage.Message.Content))
+                                @((MarkupString)Markdown.ToHtml(agentChatMessage.Message.Item.Content))
                             </div>
                             <div>
                                 使用されたエージェント: @string.Join(", ", agentChatMessage.Message.CalledAgentNames)

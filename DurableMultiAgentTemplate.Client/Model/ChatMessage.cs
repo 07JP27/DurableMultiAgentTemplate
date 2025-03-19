@@ -14,12 +14,3 @@ public enum Role
     Info
 }
 
-public static class RoleExtensions
-{
-    public static string ToRoleName(this Role role) => role switch
-    {
-        Role.User => "user",
-        Role.Assistant => "assistant",
-        _ => throw new InvalidOperationException()
-    };
-}

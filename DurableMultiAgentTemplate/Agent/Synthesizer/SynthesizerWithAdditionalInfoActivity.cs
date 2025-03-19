@@ -10,9 +10,11 @@ using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
-public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogger<SynthesizerWithAdditionalInfoActivity> logger)
+public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, 
+    JsonUtilities jsonUtilities,
+    ILogger<SynthesizerWithAdditionalInfoActivity> logger)
 {
-    [Function(AgentActivityName.SynthesizerWithAdditionalInfoActivity)]
+    [Function(AgentActivityNames.SynthesizerWithAdditionalInfoActivity)]
     public async Task<AgentResponseWithAdditionalInfoDto> Run([ActivityTrigger] SynthesizerRequest req)
     {
         logger.LogInformation("Run SynthesizerActivity");
@@ -28,7 +30,7 @@ public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogge
         {
             ResponseFormat = ChatResponseFormat.CreateJsonSchemaFormat(
             "AgentResponseWithAdditionalInfo",
-            JsonSchemaGenerator.GenerateSchemaAsBinaryData(SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat))
+            jsonUtilities.GenerateSchemaAsBinaryData(SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat))
         };
 
         var chatResult = await chatClient.CompleteChatAsync(
@@ -38,13 +40,13 @@ public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogge
 
         if (chatResult.Value.FinishReason == ChatFinishReason.Stop)
         {
-            var res = JsonSerializer.Deserialize(
+            var res = jsonUtilities.Deserialize(
                 chatResult.Value.Content.First().Text,
                 SourceGenerationContext.Default.AgentResponseWithAdditionalInfoFormat) ?? 
                 throw new InvalidOperationException("Failed to deserialize the result");
 
             return new AgentResponseWithAdditionalInfoDto(
-                res.Content ?? throw new InvalidOperationException("Content is null"),
+                new(res.Content ?? throw new InvalidOperationException("Content is null")),
                 req.CalledAgentNames,
                 res.AdditionalInfo ?? throw new InvalidOperationException("AdditionalInfo is null"));
         }

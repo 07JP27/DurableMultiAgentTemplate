@@ -5,14 +5,14 @@ namespace DurableMultiAgentTemplate.Extension;
 
 public static class AgentRequestMessageItemExtension
 {
-    public static IEnumerable<ChatMessage> ConvertToChatMessageArray(this IEnumerable<AgentRequestMessageItem> messages)
+    public static IEnumerable<ChatMessage> ConvertToChatMessageArray(this IEnumerable<MessageItem> messages)
     {
-        return messages.Select<AgentRequestMessageItem, ChatMessage>(m =>
+        return messages.Select<MessageItem, ChatMessage>(m =>
         {
             return m.Role switch
             {
-                "user" => new UserChatMessage(m.Content),
-                "assistant" => new AssistantChatMessage(m.Content),
+                AgentRole.User => new UserChatMessage(m.Content),
+                AgentRole.Agent => new AssistantChatMessage(m.Content),
                 _ => throw new InvalidOperationException($"You can not set role: {m.Role}")
             };
         });

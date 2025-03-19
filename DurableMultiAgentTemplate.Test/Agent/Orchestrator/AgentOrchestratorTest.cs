@@ -1,10 +1,13 @@
-﻿using DurableMultiAgentTemplate.Agent;
+﻿using System.Text.Json;
+using DurableMultiAgentTemplate.Agent;
 using DurableMultiAgentTemplate.Agent.AgentDecider;
 using DurableMultiAgentTemplate.Agent.Orchestrator;
 using DurableMultiAgentTemplate.Agent.Synthesizer;
+using DurableMultiAgentTemplate.Json;
 using DurableMultiAgentTemplate.Shared.Model;
 using Microsoft.DurableTask;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 
 namespace DurableMultiAgentTemplate.Test.Agent.Orchestrator;
@@ -12,6 +15,12 @@ namespace DurableMultiAgentTemplate.Test.Agent.Orchestrator;
 [TestClass]
 public class AgentOrchestratorTest
 {
+    private readonly JsonUtilities _jsonUtilities = new(Options.Create(new JsonSerializerOptions()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = true
+    }));
+
     [TestMethod]
     public async Task SetCustomStatus_WhenAgentDeciderActivityIsCalled()
     {
@@ -31,11 +40,11 @@ public class AgentOrchestratorTest
         // Simulate cancellation of the activity
         using var cancellationTokenSource = new CancellationTokenSource();
         cancellationTokenSource.Cancel();
-        contextMock.Setup(x => x.CallActivityAsync<AgentDeciderResult>(AgentActivityName.AgentDeciderActivity, reqData, It.IsAny<TaskOptions>()))
+        contextMock.Setup(x => x.CallActivityAsync<AgentDeciderResult>(AgentActivityNames.AgentDeciderActivity, reqData, It.IsAny<TaskOptions>()))
             .Returns(Task.FromCanceled<AgentDeciderResult>(cancellationTokenSource.Token));
 
         // Act: Run the orchestrator and expect a TaskCanceledException
-        var orchestrator = new AgentOrchestrator();
+        var orchestrator = new AgentOrchestrator(_jsonUtilities);
         await Assert.ThrowsAsync<TaskCanceledException>(async () => await orchestrator.RunOrchestrator(contextMock.Object));
 
         // Assert: Verify the custom status was set correctly
@@ -44,7 +53,7 @@ public class AgentOrchestratorTest
         CollectionAssert.AreEqual(
             new List<AgentCall>()
             {
-                new (AgentActivityName.AgentDeciderActivity, reqData)
+                new (AgentActivityNames.AgentDeciderActivity, JsonSerializer.SerializeToElement(reqData))
             },
             status.AgentCalls.ToList());
     }
@@ -60,17 +69,17 @@ public class AgentOrchestratorTest
         contextMock.Setup(x => x.GetInput<AgentRequestDto>())
             .Returns(reqData);
         contextMock.Setup(x => x.CallActivityAsync<AgentDeciderResult>(
-            AgentActivityName.AgentDeciderActivity, reqData,
+            AgentActivityNames.AgentDeciderActivity, reqData,
             It.IsAny<TaskOptions>()))
             .ReturnsAsync(new AgentDeciderResult(IsAgentCall: false, Content: "No agent call", []));
 
         // Act: Run the orchestrator
-        var orchestrator = new AgentOrchestrator();
+        var orchestrator = new AgentOrchestrator(_jsonUtilities);
         var orchestratorResult = await orchestrator.RunOrchestrator(contextMock.Object);
 
         // Assert: Verify the result is of type AgentResponseDto and has the expected content
         Assert.IsInstanceOfType<AgentResponseDto>(orchestratorResult);
-        Assert.AreEqual("No agent call", orchestratorResult.Content);
+        Assert.AreEqual("No agent call", orchestratorResult.Item.Content);
     }
 
     [TestMethod]
@@ -84,17 +93,17 @@ public class AgentOrchestratorTest
         contextMock.Setup(x => x.GetInput<AgentRequestDto>())
             .Returns(reqData);
         contextMock.Setup(x => x.CallActivityAsync<AgentDeciderResult>(
-            AgentActivityName.AgentDeciderActivity, reqData,
+            AgentActivityNames.AgentDeciderActivity, reqData,
             It.IsAny<TaskOptions>()))
             .ReturnsAsync(new AgentDeciderResult(IsAgentCall: false, Content: "No agent call", []));
 
         // Act: Run the orchestrator
-        var orchestrator = new AgentOrchestrator();
+        var orchestrator = new AgentOrchestrator(_jsonUtilities);
         var orchestratorResult = await orchestrator.RunOrchestrator(contextMock.Object);
 
         // Assert: Verify the result is of type AgentResponseWithAdditionalInfoDto and has the expected content
         Assert.IsInstanceOfType<AgentResponseWithAdditionalInfoDto>(orchestratorResult);
-        Assert.AreEqual("No agent call", orchestratorResult.Content);
+        Assert.AreEqual("No agent call", orchestratorResult.Item.Content);
     }
 
     [TestMethod]
@@ -107,7 +116,7 @@ public class AgentOrchestratorTest
         contextMock.Setup(x => x.GetInput<AgentRequestDto>())
             .Returns((AgentRequestDto)null!);
         
-        var orchestrator = new AgentOrchestrator();
+        var orchestrator = new AgentOrchestrator(_jsonUtilities);
 
         // Act & Assert: Run the orchestrator and expect an ArgumentNullException
         await Assert.ThrowsExactlyAsync<ArgumentNullException>(() => orchestrator.RunOrchestrator(contextMock.Object));
@@ -127,13 +136,13 @@ public class AgentOrchestratorTest
 
         // Setup agent decider result with multiple agent calls
         List<AgentCall> agentCalls = [
-            new AgentCall("TestAgent1", "Argument1"),
-            new AgentCall("TestAgent2", "Argument2")
+            new AgentCall("TestAgent1", JsonSerializer.SerializeToElement("Argument1")),
+            new AgentCall("TestAgent2", JsonSerializer.SerializeToElement("Argument2"))
         ];
         var agentDeciderResult = new AgentDeciderResult(true, "Agent call", agentCalls);
         
         contextMock.Setup(x => x.CallActivityAsync<AgentDeciderResult>(
-            AgentActivityName.AgentDeciderActivity, reqData, It.IsAny<TaskOptions>()))
+            AgentActivityNames.AgentDeciderActivity, reqData, It.IsAny<TaskOptions>()))
             .ReturnsAsync(agentDeciderResult);
         
         // Capture the custom statuses set by the orchestrator
@@ -153,7 +162,7 @@ public class AgentOrchestratorTest
             .Returns(Task.FromCanceled<string>(cancellationTokenSource.Token));
 
         // Act: Run the orchestrator and expect a TaskCanceledException
-        var orchestrator = new AgentOrchestrator();
+        var orchestrator = new AgentOrchestrator(_jsonUtilities);
         await Assert.ThrowsAsync<TaskCanceledException>(async () => await orchestrator.RunOrchestrator(contextMock.Object));
 
         // Assert: Verify the custom status for WorkerAgentActivity was set correctly
@@ -176,13 +185,13 @@ public class AgentOrchestratorTest
         
         // Setup agent decider result with multiple agent calls
         List<AgentCall> agentCalls = [
-            new AgentCall("TestAgent1", "Argument1"),
-            new AgentCall("TestAgent2", "Argument2"),
+            new AgentCall("TestAgent1", JsonSerializer.SerializeToElement("Argument1")),
+            new AgentCall("TestAgent2", JsonSerializer.SerializeToElement("Argument2")),
         ];
         
         var agentDeciderResult = new AgentDeciderResult(true, "Agent call", agentCalls);
         contextMock.Setup(x => x.CallActivityAsync<AgentDeciderResult>(
-            AgentActivityName.AgentDeciderActivity, reqData, It.IsAny<TaskOptions>()))
+            AgentActivityNames.AgentDeciderActivity, reqData, It.IsAny<TaskOptions>()))
             .ReturnsAsync(agentDeciderResult);
         
         // Setup agent call results
@@ -194,12 +203,12 @@ public class AgentOrchestratorTest
         // Track synthesizer request
         SynthesizerRequest? capturedSynthesizerRequest = null;
         contextMock.Setup(x => x.CallActivityAsync<AgentResponseDto>(
-            AgentActivityName.SynthesizerActivity, It.IsAny<SynthesizerRequest>(), It.IsAny<TaskOptions>()))
+            AgentActivityNames.SynthesizerActivity, It.IsAny<SynthesizerRequest>(), It.IsAny<TaskOptions>()))
             .Callback<TaskName, object?, TaskOptions?>((_, obj, _) => capturedSynthesizerRequest = obj as SynthesizerRequest)
-            .ReturnsAsync(new AgentResponseDto("Synthesized result"));
+            .ReturnsAsync(new AgentResponseDto(new("Synthesized result")));
 
         // Act: Run the orchestrator
-        var orchestrator = new AgentOrchestrator();
+        var orchestrator = new AgentOrchestrator(_jsonUtilities);
         var result = await orchestrator.RunOrchestrator(contextMock.Object);
 
         // Assert: Verify the synthesizer request and result
@@ -209,7 +218,7 @@ public class AgentOrchestratorTest
         CollectionAssert.Contains(capturedSynthesizerRequest.AgentCallResult, "Agent2Result");
         CollectionAssert.Contains(capturedSynthesizerRequest.CalledAgentNames, "TestAgent1");
         CollectionAssert.Contains(capturedSynthesizerRequest.CalledAgentNames, "TestAgent2");
-        Assert.AreEqual("Synthesized result", result.Content);
+        Assert.AreEqual("Synthesized result", result.Item.Content);
     }
 
     [TestMethod]
@@ -226,12 +235,12 @@ public class AgentOrchestratorTest
 
         // Setup agent decider result with a single agent call
         List<AgentCall> agentCalls = [
-            new AgentCall("TestAgent1", "Argument1")
+            new AgentCall("TestAgent1", JsonSerializer.SerializeToElement("Argument1"))
         ];
         
         var agentDeciderResult = new AgentDeciderResult(true, "Agent call", agentCalls);
         contextMock.Setup(x => x.CallActivityAsync<AgentDeciderResult>(
-            AgentActivityName.AgentDeciderActivity, reqData, It.IsAny<TaskOptions>()))
+            AgentActivityNames.AgentDeciderActivity, reqData, It.IsAny<TaskOptions>()))
             .ReturnsAsync(agentDeciderResult);
         
         // Setup agent call result
@@ -241,9 +250,9 @@ public class AgentOrchestratorTest
         // Track synthesizer request and return response with additional info
         SynthesizerRequest? capturedSynthesizerRequest = null;
         contextMock.Setup(x => x.CallActivityAsync<AgentResponseWithAdditionalInfoDto>(
-            AgentActivityName.SynthesizerWithAdditionalInfoActivity, It.IsAny<SynthesizerRequest>(), It.IsAny<TaskOptions>()))
+            AgentActivityNames.SynthesizerWithAdditionalInfoActivity, It.IsAny<SynthesizerRequest>(), It.IsAny<TaskOptions>()))
             .Callback<TaskName, object, TaskOptions>((_, obj, _) => capturedSynthesizerRequest = (SynthesizerRequest)obj)
-            .ReturnsAsync(new AgentResponseWithAdditionalInfoDto("Synthesized result with additional info"));
+            .ReturnsAsync(new AgentResponseWithAdditionalInfoDto(new("Synthesized result with additional info")));
 
         // Capture the custom statuses set by the orchestrator
         List<AgentOrchestratorStatus> statuses = [];
@@ -255,7 +264,7 @@ public class AgentOrchestratorTest
             });
 
         // Act: Run the orchestrator
-        var orchestrator = new AgentOrchestrator();
+        var orchestrator = new AgentOrchestrator(_jsonUtilities);
         var result = await orchestrator.RunOrchestrator(contextMock.Object);
 
         // Assert: Verify the synthesizer request and result
@@ -265,7 +274,7 @@ public class AgentOrchestratorTest
         CollectionAssert.Contains(capturedSynthesizerRequest.CalledAgentNames, "TestAgent1");
         
         Assert.IsInstanceOfType<AgentResponseWithAdditionalInfoDto>(result);
-        Assert.AreEqual("Synthesized result with additional info", result.Content);
+        Assert.AreEqual("Synthesized result with additional info", result.Item.Content);
         
         // Verify SynthesizerActivity status was set
         Assert.IsTrue(statuses.Count >= 3);
@@ -285,11 +294,11 @@ public class AgentOrchestratorTest
             .Returns(reqData);
 
         // Setup agent decider result with a single agent call
-        List<AgentCall> agentCalls = [new AgentCall("TestAgent", "Argument")];
+        List<AgentCall> agentCalls = [new AgentCall("TestAgent", JsonSerializer.SerializeToElement("Argument"))];
         var agentDeciderResult = new AgentDeciderResult(true, "Agent call", agentCalls);
         
         contextMock.Setup(x => x.CallActivityAsync<AgentDeciderResult>(
-            AgentActivityName.AgentDeciderActivity, reqData, It.IsAny<TaskOptions>()))
+            AgentActivityNames.AgentDeciderActivity, reqData, It.IsAny<TaskOptions>()))
             .ReturnsAsync(agentDeciderResult);
         
         // Setup agent call result
@@ -310,17 +319,17 @@ public class AgentOrchestratorTest
         cancellationTokenSource.Cancel();
         
         contextMock.Setup(x => x.CallActivityAsync<AgentResponseDto>(
-            AgentActivityName.SynthesizerActivity, It.IsAny<SynthesizerRequest>(), It.IsAny<TaskOptions>()))
+            AgentActivityNames.SynthesizerActivity, It.IsAny<SynthesizerRequest>(), It.IsAny<TaskOptions>()))
             .Returns(Task.FromCanceled<AgentResponseDto>(cancellationTokenSource.Token));
 
         // Act: Run the orchestrator and expect a TaskCanceledException
-        var orchestrator = new AgentOrchestrator();
+        var orchestrator = new AgentOrchestrator(_jsonUtilities);
         await Assert.ThrowsAsync<TaskCanceledException>(async () => await orchestrator.RunOrchestrator(contextMock.Object));
         
         // Assert: Verify the custom status for SynthesizerActivity was set correctly
         Assert.IsTrue(statuses.Count >= 3);
         Assert.AreEqual(AgentOrchestratorStep.SynthesizerActivity, statuses[2].Step);
-        var synthesizerArgs = statuses[2].AgentCalls.Single().Arguments as SynthesizerRequest;
+        var synthesizerArgs = JsonSerializer.Deserialize<SynthesizerRequest>(statuses[2].AgentCalls.Single().Arguments);
         Assert.IsNotNull(synthesizerArgs);
         Assert.AreEqual(reqData, synthesizerArgs.AgentRequest);
         CollectionAssert.AreEqual(new[] { "TestAgent" }, synthesizerArgs.CalledAgentNames);

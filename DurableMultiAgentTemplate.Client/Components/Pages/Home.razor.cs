@@ -63,12 +63,8 @@ public partial class Home(AgentChatService agentChatService, ILogger<Home> logge
             var getAgentResponseTask = agentChatService.GetAgentResponseAsync(new AgentRequestDto(
                 Messages: [.. _messages.Where(x => x.IsRequestTarget).Select(x => x switch
                 {
-                    UserChatMessage userChatMessage => new AgentRequestMessageItem(
-                        userChatMessage.Role.ToRoleName(),
-                        userChatMessage.Message),
-                    AgentChatMessage agentChatMessage => new AgentRequestMessageItem(
-                        agentChatMessage.Role.ToRoleName(),
-                        agentChatMessage.Message.Content),
+                    UserChatMessage userChatMessage => (MessageItem)new UserMessageItem(userChatMessage.Message),
+                    AgentChatMessage agentChatMessage => agentChatMessage.Message.Item,
                     _ => throw new InvalidOperationException()
                 })],
                 RequireAdditionalInfo: _chatInput.RequireAdditionalInfo), 

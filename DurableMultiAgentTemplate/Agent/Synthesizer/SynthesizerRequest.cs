@@ -1,4 +1,5 @@
-﻿using DurableMultiAgentTemplate.Shared.Model;
+﻿using DurableMultiAgentTemplate.Agent.Workers;
+using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
@@ -9,6 +10,6 @@ namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 /// <param name="AgentRequest">The agent request details.</param>
 /// <param name="CalledAgentNames">The names of the called agents.</param>
 public record SynthesizerRequest(
-    List<string> AgentCallResult,
+    List<WorkerAgentResult> AgentCallResult,
     AgentRequestDto AgentRequest,
     List<string> CalledAgentNames);

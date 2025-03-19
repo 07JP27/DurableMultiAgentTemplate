@@ -9,7 +9,7 @@ namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
 public class SynthesizerActivity(ChatClient chatClient, ILogger<SynthesizerActivity> logger)
 {
-    [Function(AgentActivityName.SynthesizerActivity)]
+    [Function(AgentActivityNames.SynthesizerActivity)]
     public async Task<AgentResponseDto> Run([ActivityTrigger] SynthesizerRequest req)
     {
         logger.LogInformation("Run SynthesizerActivity");
@@ -27,8 +27,12 @@ public class SynthesizerActivity(ChatClient chatClient, ILogger<SynthesizerActiv
 
         if (chatResult.Value.FinishReason == ChatFinishReason.Stop)
         {
-            return new AgentResponseDto(
-                chatResult.Value.Content.First().Text,
+            var nextAgentCall = req.AgentCallResult
+                .Select(x => x.NextAgentCall)
+                .SingleOrDefault(x => x != null);
+            return new(
+                new(chatResult.Value.Content.First().Text, 
+                    nextAgentCall),
                 req.CalledAgentNames);
         }
 
