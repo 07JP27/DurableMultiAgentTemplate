@@ -15,6 +15,10 @@ This repository is a template project for implementing the Orchestrator-Workers 
 ![](https://www-cdn.anthropic.com/images/4zrzovbb/website/8985fc683fae4780fb34eab1365ab78c7e51bc8e-2401x1000.png)
 ref: [Anthropic-Building effective agents](https://www.anthropic.com/research/building-effective-agents)
 
+## Related Blog Posts
+For more insights on building serverless AI agents using Durable Functions, check out Chris Gillum's blog post:
+[Building Serverless AI Agents using Durable Functions on Azure](https://blog.cgillum.tech/building-serverless-ai-agents-using-durable-functions-on-azure-e1272882082c)
+
 ## Sequence Diagram
 Case of synchronous endpoint:
 
