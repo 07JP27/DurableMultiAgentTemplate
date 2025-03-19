@@ -15,6 +15,10 @@
 ![](https://www-cdn.anthropic.com/images/4zrzovbb/website/8985fc683fae4780fb34eab1365ab78c7e51bc8e-2401x1000.png)
 ref: [Anthropic-Building effective agents](https://www.anthropic.com/research/building-effective-agents)
 
+## 関連記事
+Durable Functions を使用してサーバーレス AI エージェントを構築する方法について詳しく知りたい方は、Chris Gillum のブログ記事をご覧ください:
+[Building Serverless AI Agents using Durable Functions on Azure](https://blog.cgillum.tech/building-serverless-ai-agents-using-durable-functions-on-azure-e1272882082c)
+
 ## シーケンス図
 同期エンドポイントの場合:
 
