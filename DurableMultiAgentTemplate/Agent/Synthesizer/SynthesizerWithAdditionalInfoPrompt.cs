@@ -1,5 +1,9 @@
 namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
+/// <summary>
+/// 補足情報付きの回答を生成するためのプロンプトを定義する静的クラス。
+/// システムプロンプトには、回答の生成方法や補足情報の分離に関する指示が含まれています。
+/// </summary>
 internal static class SynthesizerWithAdditionalInfoPrompt
 {
     // Orchestrator Agent functions
