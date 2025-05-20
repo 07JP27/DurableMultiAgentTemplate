@@ -1,8 +1,8 @@
 namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
 /// <summary>
-/// Static class defining prompts for generating responses with additional information.
-/// The system prompt includes instructions on how to generate responses and separate additional information.
+/// 補足情報付きの回答を生成するためのプロンプトを定義する静的クラス。
+/// システムプロンプトには、回答の生成方法や補足情報の分離に関する指示が含まれています。
 /// </summary>
 internal static class SynthesizerWithAdditionalInfoPrompt
 {
