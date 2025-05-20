@@ -3,11 +3,11 @@
 namespace DurableMultiAgentTemplate.Shared.Model;
 
 /// <summary>
-/// リンク形式の補足情報を表すレコード。
-/// エージェントの回答に追加情報としてリンクを提供する場合に使用されます。
+/// Record representing additional information in link format.
+/// Used when providing links as additional information to agent responses.
 /// </summary>
 public record AdditionalLinkInfo(
-    [property: Description("リンクのラベルとして表示されるテキスト")]
+    [property: Description("Text displayed as the link label")]
     string LinkText,
-    [property: Description("リンク先のURL")]
+    [property: Description("Destination URL of the link")]
     Uri Uri) : IAdditionalInfo;
