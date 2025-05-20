@@ -3,8 +3,8 @@
 namespace DurableMultiAgentTemplate.Shared.Model;
 
 /// <summary>
-/// Markdown形式の補足情報を表すレコード。
-/// エージェントの回答に追加情報としてMarkdown形式のテキストを提供する場合に使用されます。
+/// Record representing additional information in Markdown format.
+/// Used when providing Markdown text as additional information in agent responses.
 /// </summary>
 public record AdditionalMarkdownInfo(
     [property: Description("Markdown形式の補足情報")]

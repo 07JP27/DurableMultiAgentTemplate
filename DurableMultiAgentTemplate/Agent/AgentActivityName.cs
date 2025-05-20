@@ -1,8 +1,8 @@
 namespace DurableMultiAgentTemplate.Agent;
 
 /// <summary>
-/// エージェントのアクティビティ名を定義する静的クラス。
-/// オーケストレーターエージェントと各ワーカーエージェントの名前を定数として提供します。
+/// Static class defining agent activity names.
+/// Provides constants for orchestrator agent and worker agent names.
 /// </summary>
 public static class AgentActivityName
 {
