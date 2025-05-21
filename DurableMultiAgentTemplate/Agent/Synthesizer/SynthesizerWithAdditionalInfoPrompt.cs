@@ -1,5 +1,9 @@
 namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
+/// <summary>
+/// Static class defining prompts for generating responses with additional information.
+/// The system prompt includes instructions on how to generate responses and separate additional information.
+/// </summary>
 internal static class SynthesizerWithAdditionalInfoPrompt
 {
     // Orchestrator Agent functions

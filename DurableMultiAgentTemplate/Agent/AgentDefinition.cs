@@ -4,6 +4,10 @@ using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent;
 
+/// <summary>
+/// Class providing agent definitions.
+/// Defines the functionality, descriptions, and parameters for each agent.
+/// </summary>
 //https://learn.microsoft.com/ja-jp/azure/ai-services/openai/how-to/dotnet-migration?tabs=stable
 internal class AgentDefinition
 {

@@ -1,5 +1,9 @@
 namespace DurableMultiAgentTemplate.Agent;
 
+/// <summary>
+/// Static class defining agent activity names.
+/// Provides constants for orchestrator agent and worker agent names.
+/// </summary>
 public static class AgentActivityName
 {
     // Orchestrator Agent functions
