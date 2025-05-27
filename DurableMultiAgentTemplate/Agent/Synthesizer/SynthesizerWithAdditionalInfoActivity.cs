@@ -10,6 +10,10 @@ using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
+/// <summary>
+/// Activity class responsible for synthesizing results from multiple agent calls into a unified response
+/// with additional information. Handles formatting and processing responses with supplementary data.
+/// </summary>
 public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogger<SynthesizerWithAdditionalInfoActivity> logger)
 {
     [Function(AgentActivityName.SynthesizerWithAdditionalInfoActivity)]

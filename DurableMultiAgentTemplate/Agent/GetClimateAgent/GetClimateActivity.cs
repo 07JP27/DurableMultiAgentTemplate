@@ -4,6 +4,10 @@ using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.GetClimateAgent;
 
+/// <summary>
+/// Activity class responsible for retrieving climate information for a specified location.
+/// Part of the multi-agent travel concierge system.
+/// </summary>
 public class GetClimateActivity(ChatClient chatClient, 
     ILogger<GetClimateActivity> logger)
 {
