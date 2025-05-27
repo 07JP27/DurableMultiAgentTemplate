@@ -3,6 +3,10 @@ using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
 
+/// <summary>
+/// Activity class responsible for handling hotel reservation submissions.
+/// Creates a reservation record and returns confirmation details.
+/// </summary>
 public class SubmitReservationActivity(ChatClient chatClient)//, CosmosClient cosmosClient)
 {
     [Function(AgentActivityName.SubmitReservationAgent)]

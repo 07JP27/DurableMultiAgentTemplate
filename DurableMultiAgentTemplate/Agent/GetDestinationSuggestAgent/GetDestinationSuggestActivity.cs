@@ -4,6 +4,10 @@ using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.GetDestinationSuggestAgent;
 
+/// <summary>
+/// Activity class responsible for suggesting travel destinations based on user preferences.
+/// Provides recommendations for both domestic and international locations.
+/// </summary>
 public class GetDestinationSuggestActivity(ChatClient chatClient,
     ILogger<GetDestinationSuggestActivity> logger)
 {

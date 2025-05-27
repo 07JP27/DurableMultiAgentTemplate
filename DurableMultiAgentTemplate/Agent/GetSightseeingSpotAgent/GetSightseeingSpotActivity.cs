@@ -4,6 +4,10 @@ using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.GetSightseeingSpotAgent;
 
+/// <summary>
+/// Activity class responsible for providing information about sightseeing spots at a specified location.
+/// Delivers details about temples, natural attractions, beaches, cultural experiences, and activities.
+/// </summary>
 public class GetSightseeingSpotActivity(ChatClient chatClient,
     ILogger<GetSightseeingSpotActivity> logger)
 {
