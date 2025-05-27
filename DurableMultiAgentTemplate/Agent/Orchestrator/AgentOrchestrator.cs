@@ -8,6 +8,11 @@ using DurableMultiAgentTemplate.Agent.Synthesizer;
 
 namespace DurableMultiAgentTemplate.Agent.Orchestrator;
 
+/// <summary>
+/// Orchestrator class that coordinates the entire multi-agent workflow.
+/// Manages the flow of requests through agent decision, worker agent activities, and result synthesis.
+/// Implements retry policies and handles parallel agent execution.
+/// </summary>
 public class AgentOrchestrator()
 {
     private static TaskOptions DefaultTaskOptions { get; } = new(
