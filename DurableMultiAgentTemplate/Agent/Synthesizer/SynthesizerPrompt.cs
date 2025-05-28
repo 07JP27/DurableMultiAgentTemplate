@@ -1,5 +1,9 @@
 namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 
+/// <summary>
+/// Static class containing prompt templates for the Synthesizer.
+/// Provides the system prompt used to guide the synthesizer's response generation process.
+/// </summary>
 internal static class SynthesizerPrompt
 {
     // Orchestrator Agent functions

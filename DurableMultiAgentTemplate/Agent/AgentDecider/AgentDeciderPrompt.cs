@@ -1,5 +1,9 @@
 namespace DurableMultiAgentTemplate.Agent.AgentDecider;
 
+/// <summary>
+/// Static class containing prompt templates for the AgentDecider.
+/// Provides the system prompt used to guide the agent's decision-making process.
+/// </summary>
 internal static class AgentDeciderPrompt
 {
     // Orchestrator Agent functions
