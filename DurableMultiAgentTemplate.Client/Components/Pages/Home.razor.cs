@@ -7,6 +7,10 @@ using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Client.Components.Pages;
 
+/// <summary>
+/// Main home page component for the chat interface.
+/// Handles user interactions and communication with agent services.
+/// </summary>
 public partial class Home(AgentChatService agentChatService, ILogger<Home> logger)
 {
     private const int _chatTimeoutMs = 60000;
@@ -17,6 +21,10 @@ public partial class Home(AgentChatService agentChatService, ILogger<Home> logge
     private readonly List<ChatMessage> _messages = [];
     private readonly List<IAdditionalInfo> _additionalInfo = [];
 
+    /// <summary>
+    /// Sends a message to the agent and processes the response.
+    /// Manages the UI state during the request/response cycle.
+    /// </summary>
     private async Task SendMessageAsync()
     {
         void handleError(string originalInputMessage, string errorMessage)
@@ -105,6 +113,9 @@ public partial class Home(AgentChatService agentChatService, ILogger<Home> logge
         }
     }
 
+    /// <summary>
+    /// Resets the chat interface by clearing all messages and additional information.
+    /// </summary>
     private void Reset()
     {
         _messages.Clear();
