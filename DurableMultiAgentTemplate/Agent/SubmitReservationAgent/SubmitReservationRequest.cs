@@ -2,6 +2,10 @@
 
 namespace DurableMultiAgentTemplate.Agent.SubmitReservationAgent;
 
+/// <summary>
+/// Record representing a request to submit a hotel reservation.
+/// Used as input for the SubmitReservationActivity.
+/// </summary>
 public record SubmitReservationRequest(
     [property: Description("行き先のホテルの名前。")]
     string Destination,
