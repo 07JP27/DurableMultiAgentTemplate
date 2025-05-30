@@ -11,6 +11,12 @@ namespace DurableMultiAgentTemplate.Agent.GetDestinationSuggestAgent;
 public class GetDestinationSuggestActivity(ChatClient chatClient,
     ILogger<GetDestinationSuggestActivity> logger)
 {
+    /// <summary>
+    /// Generates travel destination suggestions based on the provided search criteria.
+    /// Simulates a network call with potential failures and returns categorized destination recommendations.
+    /// </summary>
+    /// <param name="req">Request containing search terms and criteria for destination suggestions</param>
+    /// <returns>Categorized destination suggestions (domestic and international) in Japanese</returns>
     [Function(AgentActivityName.GetDestinationSuggestAgent)]
     public async Task<string> RunAsync([ActivityTrigger] GetDestinationSuggestRequest req)
     {

@@ -10,15 +10,15 @@ namespace DurableMultiAgentTemplate.Json;
 
 
 /// <summary>
-/// JsonSchema を生成する。
-/// クラス定義に Description 属性を指定することで JsonSchema にも description を追加する。
+/// Generator for JSON schema creation.
+/// Supports adding descriptions to JSON schemas by specifying Description attributes on class definitions.
 /// </summary>
 internal static class JsonSchemaGenerator
 {
     private static readonly JsonSchemaExporterOptions _jsonSchemaExporterOptions = new()
     {
         TreatNullObliviousAsNonNullable = true,
-        // Description を追加する
+        // Add description to schema
         TransformSchemaNode = (context, schema) =>
         {
             var attributeProvider = context.PropertyInfo is not null ?
@@ -44,8 +44,19 @@ internal static class JsonSchemaGenerator
         Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
     };
 
+    /// <summary>
+    /// Generates a JSON schema as a string from the specified type information.
+    /// </summary>
+    /// <param name="type">The JSON type information to generate the schema from</param>
+    /// <returns>JSON schema as a string with Unicode encoding support</returns>
     public static string GenerateSchema(JsonTypeInfo type) =>
         JsonSchemaExporter.GetJsonSchemaAsNode(type, _jsonSchemaExporterOptions).ToJsonString(_jsonSerializerOptions);
+    
+    /// <summary>
+    /// Generates a JSON schema as binary data from the specified type information.
+    /// </summary>
+    /// <param name="type">The JSON type information to generate the schema from</param>
+    /// <returns>JSON schema as binary data</returns>
     public static BinaryData GenerateSchemaAsBinaryData(JsonTypeInfo type) =>
         BinaryData.FromString(GenerateSchema(type));
 }

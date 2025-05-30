@@ -11,6 +11,12 @@ namespace DurableMultiAgentTemplate.Agent.GetSightseeingSpotAgent;
 public class GetSightseeingSpotActivity(ChatClient chatClient,
     ILogger<GetSightseeingSpotActivity> logger)
 {
+    /// <summary>
+    /// Retrieves detailed information about sightseeing spots at the specified location.
+    /// Simulates a network call with potential failures and returns comprehensive attraction recommendations.
+    /// </summary>
+    /// <param name="req">Request containing the location for which to retrieve sightseeing information</param>
+    /// <returns>Detailed information about temples, nature spots, beaches, cultural experiences, and activities in Japanese</returns>
     [Function(AgentActivityName.GetSightseeingSpotAgent)]
     public async Task<string> RunAsync([ActivityTrigger] GetSightseeingSpotRequest req)
     {

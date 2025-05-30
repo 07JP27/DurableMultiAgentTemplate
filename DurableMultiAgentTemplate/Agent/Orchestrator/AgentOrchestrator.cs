@@ -22,6 +22,12 @@ public class AgentOrchestrator()
             1,
             TimeSpan.FromSeconds(10))));
 
+    /// <summary>
+    /// Orchestrates the complete multi-agent workflow execution.
+    /// Coordinates agent decision, parallel agent execution, and result synthesis with retry policies.
+    /// </summary>
+    /// <param name="context">Orchestration context for managing workflow state and activities</param>
+    /// <returns>Aggregated response from all executed agents, with or without additional information</returns>
     [Function(nameof(AgentOrchestrator))]
     public async Task<AgentResponseDto> RunOrchestrator(
         [OrchestrationTrigger] TaskOrchestrationContext context)

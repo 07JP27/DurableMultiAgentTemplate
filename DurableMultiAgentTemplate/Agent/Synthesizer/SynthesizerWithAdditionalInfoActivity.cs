@@ -16,6 +16,12 @@ namespace DurableMultiAgentTemplate.Agent.Synthesizer;
 /// </summary>
 public class SynthesizerWithAdditionalInfoActivity(ChatClient chatClient, ILogger<SynthesizerWithAdditionalInfoActivity> logger)
 {
+    /// <summary>
+    /// Synthesizes results from multiple agent calls into a unified response with additional information.
+    /// Uses OpenAI structured output to combine agent results and generate supplementary data.
+    /// </summary>
+    /// <param name="req">Request containing agent results, original request, and called agent names for synthesis</param>
+    /// <returns>Enhanced agent response with synthesized content, additional information, and list of called agents</returns>
     [Function(AgentActivityName.SynthesizerWithAdditionalInfoActivity)]
     public async Task<AgentResponseWithAdditionalInfoDto> Run([ActivityTrigger] SynthesizerRequest req)
     {

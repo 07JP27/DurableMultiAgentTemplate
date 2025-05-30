@@ -11,6 +11,12 @@ namespace DurableMultiAgentTemplate.Agent.GetClimateAgent;
 public class GetClimateActivity(ChatClient chatClient, 
     ILogger<GetClimateActivity> logger)
 {
+    /// <summary>
+    /// Retrieves climate information for the specified location.
+    /// Simulates a network call with potential failures and returns detailed climate data.
+    /// </summary>
+    /// <param name="req">Request containing the location for which to retrieve climate information</param>
+    /// <returns>Detailed climate information for the specified location in Japanese</returns>
     [Function(AgentActivityName.GetClimateAgent)]
     public async Task<string> RunAsync([ActivityTrigger] GetClimateRequest req)
     {

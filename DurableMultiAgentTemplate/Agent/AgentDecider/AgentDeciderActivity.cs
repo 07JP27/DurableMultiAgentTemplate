@@ -14,6 +14,12 @@ namespace DurableMultiAgentTemplate.Agent.AgentDecider;
 /// </summary>
 public class AgentDeciderActivity(ChatClient chatClient, ILogger<AgentDeciderActivity> logger)
 {
+    /// <summary>
+    /// Executes the agent decision logic to determine which agents should be called.
+    /// Analyzes user messages and uses OpenAI function calling to route to appropriate agents.
+    /// </summary>
+    /// <param name="reqData">Request data containing user messages and configuration</param>
+    /// <returns>Agent decision result indicating whether agent calls are needed and which agents to call</returns>
     [Function(AgentActivityName.AgentDeciderActivity)]
     public async Task<AgentDeciderResult> Run([ActivityTrigger] AgentRequestDto reqData)
     {
