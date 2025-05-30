@@ -14,6 +14,10 @@ public record AgentResponseWithAdditionalInfoDto(string Content,
     List<string> CalledAgentNames,
     List<IAdditionalInfo> AdditionalInfo) : AgentResponseDto(Content, CalledAgentNames)
 {
+    /// <summary>
+    /// Initializes a new instance of the AgentResponseWithAdditionalInfoDto class with empty called agent names and additional info.
+    /// </summary>
+    /// <param name="content">The content of the response.</param>
     public AgentResponseWithAdditionalInfoDto(string content) : this(content, [], [])
     {
     }
