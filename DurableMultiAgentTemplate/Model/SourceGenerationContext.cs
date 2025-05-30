@@ -9,6 +9,11 @@ using DurableMultiAgentTemplate.Shared.Model;
 
 namespace DurableMultiAgentTemplate.Model;
 
+/// <summary>
+/// Source generation context for JSON serialization.
+/// Configures the JSON serialization options and declares serializable types
+/// for performance optimization through source generation.
+/// </summary>
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, PropertyNameCaseInsensitive = true)]
 [JsonSerializable(typeof(GetClimateRequest))]
 [JsonSerializable(typeof(GetDestinationSuggestRequest))]

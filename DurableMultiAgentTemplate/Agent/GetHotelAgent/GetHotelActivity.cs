@@ -4,9 +4,19 @@ using OpenAI.Chat;
 
 namespace DurableMultiAgentTemplate.Agent.GetHotelAgent;
 
+/// <summary>
+/// Activity class responsible for retrieving hotel information for a specified location.
+/// Part of the multi-agent travel concierge system.
+/// </summary>
 public class GetHotelActivity(ChatClient chatClient, 
     ILogger<GetHotelActivity> logger)
 {
+    /// <summary>
+    /// Retrieves hotel information for the specified location.
+    /// Simulates a network call with potential failures and returns hotel recommendations.
+    /// </summary>
+    /// <param name="req">Request containing the location for which to retrieve hotel information</param>
+    /// <returns>Detailed hotel recommendations for the specified location in Japanese</returns>
     [Function(AgentActivityName.GetHotelAgent)]
     public async Task<string> Run([ActivityTrigger] GetHotelRequest req)
     {
