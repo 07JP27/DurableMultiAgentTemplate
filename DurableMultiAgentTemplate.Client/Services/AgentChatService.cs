@@ -26,7 +26,10 @@ public class AgentChatService(HttpClient httpClient, ILogger<AgentChatService> l
         IProgress<AgentOrchestratorStatus>? progress = null,
         CancellationToken cancellationToken = default)
     {
-        var response = await httpClient.PostAsJsonAsync("api/invoke/async", agentRequestDto, cancellationToken);
+        var response = await httpClient.PostAsJsonAsync("api/invoke/async", 
+            agentRequestDto, 
+            _jsonSerializerOptions,
+            cancellationToken);
         response.EnsureSuccessStatusCode();
 
         var agentOrchestratorStatus = AgentOrchestratorStatus.NotStarted;
@@ -35,9 +38,11 @@ public class AgentChatService(HttpClient httpClient, ILogger<AgentChatService> l
             throw new InvalidOperationException("The format of the response from the agent is invalid.");
 
         // The response from the agent is an async response, so we need to poll the status until it's completed.
+        var statusQueryGetUri = new Uri(invokeAsyncResult.StatusQueryGetUri).PathAndQuery;
+        statusQueryGetUri = statusQueryGetUri.TrimStart('/');
         while (cancellationToken.IsCancellationRequested == false)
         {
-            var statusResponse = await httpClient.GetAsync(invokeAsyncResult.StatusQueryGetUri, cancellationToken);
+            var statusResponse = await httpClient.GetAsync(statusQueryGetUri, cancellationToken);
             statusResponse.EnsureSuccessStatusCode();
             var status = await statusResponse.Content.ReadFromJsonAsync<OrchestrationStatus>(_jsonSerializerOptions, cancellationToken)
                 ?? throw new InvalidOperationException("The format of the status response from the agent is invalid.");

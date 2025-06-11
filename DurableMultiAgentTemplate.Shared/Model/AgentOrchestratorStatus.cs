@@ -30,6 +30,7 @@ public record AgentOrchestratorStatus(
 /// <summary>
 /// Defines the steps of the agent orchestrator.
 /// </summary>
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum AgentOrchestratorStep
 {
     /// <summary>
