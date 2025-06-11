@@ -14,7 +14,7 @@ namespace DurableMultiAgentTemplate.Model;
 /// Configures the JSON serialization options and declares serializable types
 /// for performance optimization through source generation.
 /// </summary>
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, PropertyNameCaseInsensitive = true)]
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, PropertyNameCaseInsensitive = false)]
 [JsonSerializable(typeof(GetClimateRequest))]
 [JsonSerializable(typeof(GetDestinationSuggestRequest))]
 [JsonSerializable(typeof(GetHotelRequest))]
@@ -24,4 +24,4 @@ namespace DurableMultiAgentTemplate.Model;
 [JsonSerializable(typeof(AdditionalMarkdownInfo))]
 [JsonSerializable(typeof(AdditionalLinkInfo))]
 [JsonSerializable(typeof(AgentResponseWithAdditionalInfoFormat))]
-internal partial class SourceGenerationContext : JsonSerializerContext;
+public partial class SourceGenerationContext : JsonSerializerContext;

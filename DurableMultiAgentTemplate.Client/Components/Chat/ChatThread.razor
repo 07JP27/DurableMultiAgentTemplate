@@ -33,7 +33,7 @@
                                 @((MarkupString)Markdown.ToHtml(agentChatMessage.Message.Content))
                             </div>
                             <div>
-                                使用されたエージェント: @string.Join(", ", agentChatMessage.Message.CalledAgentNames)
+                                使用されたエージェント: @string.Join(", ", agentChatMessage.Message.CalledAgentNames ?? [])
                             </div>
                         </FluentGridItem>
                     </FluentGrid>
